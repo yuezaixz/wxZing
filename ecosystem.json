@@ -1,0 +1,41 @@
+{
+  "apps": [
+    {
+      "name": "wxZing",
+      "script": "start.js",
+      "instances": 4,
+      "env": {
+        "COMMON_VARIABLE": "true"
+      },
+      "env_production": {
+        "NODE_ENV": "production"
+      }
+    }
+  ],
+  "deploy": {
+    "production": {
+      "user":"david",
+      "host": ["pservice.runmaf.com"],
+      "ref": "origin/master",
+      "repo": "git@git.coding.net:David_woo/wxZing.git",
+      "path": "/data/www/wxZing",
+      "ssh_options": "StrictHostKeyChecking=no",
+      "post-deploy": "yarn install && npm run product_build && pm2 startOrRestart ecosystem.json --env production",
+      "env": {
+        "NODE_ENV": "production"
+      }
+    },
+    "plus": {
+      "user": "david",
+      "host": ["pservice.runmaf.com"],
+      "ref": "origin/master",
+      "repo": "git@git.coding.net:David_woo/wxZing.git",
+      "path": "/data/www/wxZing",
+      "ssh_options": "StrictHostKeyChecking=no",
+      "post-deploy": "yarn install && pm2 startOrRestart ecosystem.json --env production",
+      "env": {
+        "NODE_ENV": "production"
+      }
+    }
+  }
+}

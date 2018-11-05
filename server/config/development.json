@@ -1,0 +1,39 @@
+{
+  "db":"mongodb://localhost/wxZing",
+  "port": 3008,
+  "base": "http://localhost:3008",
+  "SITE_ROOT_URL": "http://pservice.free.ngrok.cc",
+  "WEBSITE_ROOT_URL": "http://www.paodong.cn",
+  "ngrok": "0435e5ee8076f21a",
+  "shop": {
+    "appID": "你的 shop ID",
+    "mchId": "你的 shop mchId",
+    "notifyUrl": "接收通知的 URL",
+    "key": "key"
+  },
+  "wechat": {
+    "appID": "wxe306edb1cfde3126",
+    "appSecret": "3d29a052a838970034010c40d6ddb2b3",
+    "baseUrl": "测试微信的接入地址",
+    "token": "davidisAhandsomeyoungman"
+  },
+  "mina": {
+    "appid": "小程序 appid",
+    "secret": "小程序 app Secret"
+  },
+  "qiniu": {
+    "AK": "p1M5dhnOpB0rDvbV6AGGBtfuXIBy5-40_k9h7wpj",
+    "SK": "l9TD7YTZp-sNE4nNY3vSEnFpvrGrOuJM20k54Mk6",
+    "bucket": "wxlovewedding",
+    "qiniuURL": "pb8e92vqk.bkt.clouddn.com"
+  },
+  "cloudinary": {
+    "cloud_name": "你的 cloudinary 账户名",
+    "api_key": "852224485571877",
+    "api_secret": "ht91J3cXl2TnkAgLR-ftK-iasPE",
+    "base": "http://res.cloudinary.com/你的 cloudinary 账户名",
+    "image": "https://api.cloudinary.com/v1_1/你的 cloudinary 账户名/image/upload",
+    "video": "https://api.cloudinary.com/v1_1/你的 cloudinary 账户名/video/upload",
+    "audio": "https://api.cloudinary.com/v1_1/你的 cloudinary 账户名/raw/upload"
+  }
+}
