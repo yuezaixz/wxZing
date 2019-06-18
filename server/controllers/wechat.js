@@ -38,22 +38,6 @@ export async function redirect(ctx, next) {
   ctx.redirect(url)
 }
 
-export async function redirectFreeUse(ctx, next) {
-  let url = 'https://wj.qq.com/s/2565575/eea4'
-  const {
-    source
-  } = ctx.query
-
-  if (source) {
-    const mongoose = require('mongoose')
-    const Questionnaire = mongoose.model('Questionnaire')
-    let questionnaire = new Questionnaire({version: '1.0', source: source})
-    questionnaire.save()
-  }
-
-  ctx.redirect(url)
-}
-
 export async function oauth(ctx, next) {
   const url = ctx.query.url
   const urlObj = urlParse(decodeURIComponent(url))

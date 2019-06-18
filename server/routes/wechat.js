@@ -47,11 +47,6 @@ export class WxController {
     await wechat.redirect(ctx, next)
   }
 
-  @get('/pillow_questionnaire')
-  async pillowQuestionnaire(ctx, next) {
-    await wechat.redirectFreeUse(ctx, next)
-  }
-
   @get('/wechat-oauth')
   async wxOAuth(ctx, next) {
     await wechat.oauth(ctx, next)

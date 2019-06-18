@@ -5,47 +5,49 @@ const SALT_WORK_FACTOR = 10
 const MAX_LOGIN_ATTEMPTS = 5
 const LOCK_TIME = 2 * 60 * 60 * 1000
 const Schema = mongoose.Schema
+const ObjectId = Schema.Types.ObjectId
 // const ObjectId = Schema.Types.ObjectId
 // const Mixed = Schema.Types.Mixed
 
 const UserSchema = new Schema({
   // user admin superAdmin
   userId: { type: Number, default: 0 },
+  openid: [String],
+  unionid: String,
+  // user普通 vip会员 admin管理员 superadmin超级管理员
   role: {
     type: String,
     default: 'user'
   },
-  openid: [String],
-  unionid: String,
   nickname: String,
-  address: String,
-  province: String,
-  country: String,
-  city: String,
-  // 哪个区
-  region: String,
-  age: Number,
-  gender: String,
-  email: String,
-  height: Number,
-  weight: Number,
-  education: String,
-  school: String,
-  companyType: String,
-  salary: Number,
-  // 从属那个用户的好友
-  follow: Number,
-  password: {
-    type: String
-  },
-  avatarUrl: String,
   phoneNumber: String,
-  name: String,
-  loginAttempts: {
-    type: Number,
-    required: true,
-    default: 0
-  },
+  wxcode: String,
+  // 0 未知 1男 2女
+  gender: Number,
+  // 0 保密 1博士及以上 2研究生 3本科 4专科 5专科以下
+  degree: Number,
+  // 格式固定 1988-11-14
+  birthday: String,
+  // 0-12 未知,魔羯座,水瓶座,双鱼座,白羊座,金牛座,双子座,巨蟹座,狮子座,处女座,天秤座,天蝎座,射手座
+  星座: Number,
+  // 工作城市
+  city: String,
+  hometown: String,
+  career: String,
+  // 0 未知, 1 10w内, 2 10-20, 3 20-50, 4 50以上
+  income: Number,
+  // 0其他 1国企 2外企 3私企 4事业单位 5自由职业 6创业
+  jobType: Number,
+  photos: [String],
+  // 0 我想保密 1无房产 2和家人住 3已购房产
+  houseType: Number,
+  aboutMe: String,
+  aboutOther: String,
+  interestId: [{
+    type: ObjectId,
+    ref: 'Interest'
+  }],
+
   // 暂时锁定
   lockUntil: {
     type: Number
@@ -61,11 +63,15 @@ const UserSchema = new Schema({
     }
   },
   description: String,
-  code: String
-  // resetPasswordToken: String,
-  // resetPasswordTime: Date
-
-  // 婚恋相关属性
+  code: String,
+  password: {
+    type: String
+  },
+  loginAttempts: {
+    type: Number,
+    required: true,
+    default: 0
+  }
 })
 
 UserSchema.virtual('isLocked').get(function () {
@@ -91,7 +97,7 @@ UserSchema.pre('save', function (next) {
     const Counter = mongoose.model('Counter')
     var doc = this
     Counter.findByIdAndUpdate({_id: 'entityId'}, { $inc: {seq: 1} }, function (error, counter) {
-      console.log('test', error, counter)
+      console.log('userId:', error, counter)
       if (error) {
         return next(error)
       }
@@ -126,18 +132,18 @@ UserSchema.pre('save', function (next) {
 UserSchema.statics = {
   async removeAll() {
     await this.find({}).remove().exec()
-  },
-  async getFollower(userId, depth) {
-    const User = this
-    let currentUsers = await this.find({follow: userId}).exec()
-    let allFollowers = [...currentUsers]
-    if (depth > 0) {
-      currentUsers.forEach(async currentUser => {
-        allFollowers.push(await User.getFollower(currentUser.userId, depth - 1))
-      })
-    }
-    return allFollowers
   }
+  // async getFollower(userId, depth) {
+  //   const User = this
+  //   let currentUsers = await this.find({follow: userId}).exec()
+  //   let allFollowers = [...currentUsers]
+  //   if (depth > 0) {
+  //     currentUsers.forEach(async currentUser => {
+  //       allFollowers.push(await User.getFollower(currentUser.userId, depth - 1))
+  //     })
+  //   }
+  //   return allFollowers
+  // }
 }
 
 UserSchema.methods = {

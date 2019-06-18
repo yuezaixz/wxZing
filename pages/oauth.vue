@@ -20,7 +20,7 @@ export default {
   },
   beforeMount() {
     // 微信公众号测试工具打开链接
-    //http://pservice.free.ngrok.cc/wechat-redirect?visit=about&id=2
+    //http://paodong.vipgz1.idcfengye.com/wechat-redirect?visit=about&id=2
 
     // const wx = window.wx
     const url = window.location.href
@@ -29,6 +29,7 @@ export default {
       console.log(data)
       if (data.success) {
         this.$store.dispatch('setAuthUser', data.user)
+        // visit=about&id=2 => about_2 看要约定如何拼visit和参数了
         const visit = '/' + getUrlParam('state')
         this.$router.replace(visit)
       } else {

@@ -2,9 +2,9 @@
   "db":"mongodb://localhost/wxZing",
   "port": 3008,
   "base": "http://localhost:3008",
-  "SITE_ROOT_URL": "http://pservice.free.ngrok.cc",
+  "SITE_ROOT_URL": "http://paodong.vipgz1.idcfengye.com",
   "WEBSITE_ROOT_URL": "http://www.paodong.cn",
-  "ngrok": "0435e5ee8076f21a",
+  "ngrok": "110636128451",
   "shop": {
     "appID": "你的 shop ID",
     "mchId": "你的 shop mchId",
@@ -12,8 +12,8 @@
     "key": "key"
   },
   "wechat": {
-    "appID": "wxe306edb1cfde3126",
-    "appSecret": "3d29a052a838970034010c40d6ddb2b3",
+    "appID": "wxd8abea96f5088dcb",
+    "appSecret": "a9142aef522f15f5c6fdd4d17bc9501c",
     "baseUrl": "测试微信的接入地址",
     "token": "davidisAhandsomeyoungman"
   },
