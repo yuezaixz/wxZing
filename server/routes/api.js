@@ -51,6 +51,25 @@ export class DatabaseController {
 
   }
 
+  @post('auto_signin')
+  async auto_signin(ctx, next) {
+    var openid = ctx.request.body.openid
+    const findUser = await User.findOne({unionid: openid,}).exec()
+
+    if (findUser) {
+      ctx.session.user = findUser
+  
+      return (ctx.body = {
+        success: true,
+        data:{findUser}
+      })
+    } else {
+      return (ctx.body = {
+        success: false
+      })
+    }
+  }
+
   @post('signin')
   async signin(ctx, next) {
     const tel = ctx.request.body.tel
@@ -69,7 +88,7 @@ export class DatabaseController {
     }
 
     var openid = ctx.request.body.openid
-    var unionid = ctx.request.body.unionid
+    var unionid = ctx.request.body.openid
     var nickname = ctx.request.body.nickname
     var phoneNumber = tel
     var wxcode = ctx.request.body.wxcode
