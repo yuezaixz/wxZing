@@ -24,6 +24,50 @@ export default {
     commit('SET_AUTHUSER', authUser)
   },
 
+  async signin({ commit }, {
+    openid, unionid, code, nickname,
+    wxcode, gender, degree, birthday,
+    city, tel, hometown, career,
+    income, jobType, photos, houseType,
+    aboutMe, aboutOther, smscode
+   }) {
+    try {
+      let res = await axios.post('/api/signin', {
+        openid,
+        unionid,
+        code,
+        nickname,
+        wxcode,
+        gender,
+        degree,
+        birthday,
+        city,
+        tel,
+        hometown,
+        career,
+        income,
+        jobType,
+        photos,
+        houseType,
+        aboutMe,
+        aboutOther,
+        smscode
+      })
+
+      let { data } = res
+      if (data.success) {
+        let user = data.data.user
+        commit('SET_USER', user)
+      }
+
+      return data
+    } catch (e) {
+      if (e.response.status === 401) {
+        throw new Error('You can\'t do it')
+      }
+    }
+  },
+
   async login({ commit }, { email, password }) {
     try {
       let res = await axios.post('/api/login', {

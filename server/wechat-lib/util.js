@@ -91,6 +91,17 @@ function dayTimeStr(date) {
   return [year, month, day].join('-')
 }
 
+function getXingzuo(m, d) {
+  if (!m || !d) {
+    return 0
+  }
+  // 输出0～12的数字，0表示摩羯，1表示水瓶，依此类推，...，11是射手，12是摩羯。
+  var result = m - (d < '102223444433'.charAt(m - 1) - -19)
+  result += 1
+  result %= 12
+  return result
+}
+
 function raw(args) {
   let keys = Object.keys(args)
   let newArgs = {}
@@ -138,5 +149,6 @@ export {
   parseXML,
   tpl,
   sign,
-  dayTimeStr
+  dayTimeStr,
+  getXingzuo
 }

@@ -29,7 +29,7 @@ const UserSchema = new Schema({
   // 格式固定 1988-11-14
   birthday: String,
   // 0-12 未知,魔羯座,水瓶座,双鱼座,白羊座,金牛座,双子座,巨蟹座,狮子座,处女座,天秤座,天蝎座,射手座
-  星座: Number,
+  xingzuo: Number,
   // 工作城市
   city: String,
   hometown: String,
@@ -48,6 +48,7 @@ const UserSchema = new Schema({
     ref: 'Interest'
   }],
 
+  userToken: String,
   // 暂时锁定
   lockUntil: {
     type: Number
