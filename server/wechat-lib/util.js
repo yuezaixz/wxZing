@@ -84,6 +84,13 @@ function createTimestamp() {
   return parseInt(new Date().getTime() / 1000, 0) + ''
 }
 
+function dayTimeStr(date) {
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+  return [year, month, day].join('-')
+}
+
 function raw(args) {
   let keys = Object.keys(args)
   let newArgs = {}
@@ -130,5 +137,6 @@ export {
   formatMessage,
   parseXML,
   tpl,
-  sign
+  sign,
+  dayTimeStr
 }
