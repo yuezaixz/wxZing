@@ -1,0 +1,63 @@
+<template lang="pug">
+
+.container
+  .card
+    .card-header
+      img.card-left-circle(src='~static/img/banner_circle.png')
+      .card-flex-1
+      img.card-bgsjh(src='~static/img/banner_bgsjh.png')
+      img.card-op(src='~static/img/banner_office_planning.png')
+      img.card-close(src='~static/img/banner_close.png')
+
+    .card-body
+      .card-column
+        .card-row(style='justify-content:flex-start;')
+          .card-title 你的性别
+          img.card-arrow-down(src='~static/img/arrow_down.png')
+        .card-column(style='height:10px;')
+        .card-inner 性别选择后不可更改，却不限于肉体或灵魂 
+      .card-column(style='height:89px;')
+      .card-column
+        .card-row(style='justify-content:center;')
+          .card-block(@click='selectGender(1)')
+            img.card-gender(v-if='activeGender===1' src='~static/img/male_selected_icon.png')
+            img.card-gender(v-else src='~static/img/male_icon.png')
+            .card-prompt(style="margin-top:36px;") 我是男生
+            //- img(v-if='activeRoute !== item.name' src='~/static/images/home.png')
+            //- img(v-else src='~/static/images/home-selected.png')
+          .card-block(style="width:56px;")
+          .card-block(@click='selectGender(2)')
+            img.card-gender(v-if='activeGender===2' src='~static/img/female_selected_icon.png')
+            img.card-gender(v-else src='~static/img/female_icon.png')
+            .card-prompt(style="margin-top:36px;") 我是女生
+
+    .card-footer
+  .next
+    .title 下一步
+
+</template>
+
+<script>
+
+export default {
+  data() {
+    return {
+      user: {},
+      activeGender:0
+    }
+  },
+
+  methods: {
+    async selectGender(gender) {
+      this.activeGender = gender
+    },
+    async next() {
+    }
+  },
+
+  components: {
+  }
+}
+</script>
+
+<style scoped, lang="sass" src='~/static/css/register.sass'></style>

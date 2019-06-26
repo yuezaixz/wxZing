@@ -1,6 +1,12 @@
 <template>
   <section class="container">
     <img src="../static/img/logo.png" alt="Nuxt.js Logo" class="logo" />
+    <h1 class="title">
+      测试一下
+    </h1>
+    <nuxt-link class="button" to="/about">
+      哈哈哈哈
+    </nuxt-link>
   </section>
 </template>
 <script>
@@ -23,7 +29,7 @@ export default {
       if (res.data.success) {
         const params = res.data.params
         wx.config({
-          debug: true, // 调试模式
+          // debug: true, // 调试模式
           appId: params.appId, // 公众号的唯一标识
           timestamp: params.timestamp, // 生成签名的时间戳
           nonceStr: params.noncestr, // 生成签名的随机串
@@ -40,7 +46,7 @@ export default {
         })
         wx.ready(() => {
           setTimeout(() => {
-            wx.hideAllNonBaseMenuItem()
+            // wx.hideAllNonBaseMenuItem()
             console.log('success')
           }, 10000)
         })

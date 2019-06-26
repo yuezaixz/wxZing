@@ -4,7 +4,7 @@ module.exports = {
    ** Headers of the page
    */
   head: {
-    title: 'starter',
+    title: 'Office Plan',
     meta: [{
         // 禁止下一行的各种警告
         // eslint-disable-next-line
@@ -12,8 +12,9 @@ module.exports = {
       },
       {
         name: 'viewport',
-        content: 'width=device-width, initial-scale=1'
+        content: 'width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0'
       },
+      
       {
         hid: 'description',
         name: 'description',
