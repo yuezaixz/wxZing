@@ -91,6 +91,14 @@ export default {
     commit('SET_USER', null)
   },
 
+  async selectGender({state}, gender) {
+    state.registerInfo.gender = gender
+  },
+
+  async toggleLocal({state}) {
+    state.registerInfo.isLocal = !state.registerInfo.isLocal
+  },
+
   async fetchPayments({ state }) {
     let { data } = await Services.getPayments()
     console.log(data)

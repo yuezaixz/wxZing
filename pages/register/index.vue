@@ -20,24 +20,27 @@
       .card-column
         .card-row(style='justify-content:center;')
           .card-block(@click='selectGender(1)')
-            img.card-gender(v-if='activeGender===1' src='~static/img/male_selected_icon.png')
+            img.card-gender(v-if='registerInfo.gender===1' src='~static/img/male_selected_icon.png')
             img.card-gender(v-else src='~static/img/male_icon.png')
             .card-prompt(style="margin-top:36px;") 我是男生
             //- img(v-if='activeRoute !== item.name' src='~/static/images/home.png')
             //- img(v-else src='~/static/images/home-selected.png')
           .card-block(style="width:56px;")
           .card-block(@click='selectGender(2)')
-            img.card-gender(v-if='activeGender===2' src='~static/img/female_selected_icon.png')
+            img.card-gender(v-if='registerInfo.gender===2' src='~static/img/female_selected_icon.png')
             img.card-gender(v-else src='~static/img/female_icon.png')
             .card-prompt(style="margin-top:36px;") 我是女生
 
     .card-footer
   .next
-    .title 下一步
+    nuxt-link(to='/register/registercity')
+      .title 下一步
 
 </template>
 
 <script>
+
+import { mapState } from 'vuex'
 
 export default {
   data() {
@@ -47,9 +50,15 @@ export default {
     }
   },
 
+  computed: {
+    ...mapState([
+      'registerInfo'
+    ])
+  },
+
   methods: {
     async selectGender(gender) {
-      this.activeGender = gender
+      this.$store.dispatch('selectGender', gender)
     },
     async next() {
     }

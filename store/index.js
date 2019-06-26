@@ -15,7 +15,12 @@ const createStore = () => {
       IMDb: null,
       user: null,
       payments: [],
-      authUser: null
+      authUser: null,
+      registerInfo: {
+        gender: 1,
+        isLocal: false,
+        code: ''
+      }
       // shoppingScroll: 0,
       // houses: [],
       // characters: [],
