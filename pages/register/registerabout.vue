@@ -12,17 +12,21 @@
     .card-body
       .card-column
         .card-row(style='justify-content:flex-start;')
-          .card-title 你的职业或领域
+          .card-title 关于我，关于你
           img.card-arrow-down(src='~static/img/arrow_down.png')
         .card-column(style='height:10px;')
-        .card-inner 请填写你的职业或专业领域
+        .card-inner 介绍下自己和你的理想型， 
+        .card-column(style='height:2px;')
+        .card-inner 优秀的介绍能让ta更快找到你
         .city-control
-          //- .city-titl(v-if='!registerInfo.career') 请在此输入
-          input.city-input(v-model="registerInfo.career" value="registerInfo.career" , placeholder='请在此输入')
+          input.about-input(v-model="registerInfo.aboutMe" value="registerInfo.aboutMe", placeholder='关于我')
+        .card-column(style='height:10px;')
+        .city-control
+          input.about-input(v-model="registerInfo.aboutOther" value="registerInfo.aboutOther", placeholder='理想型')
 
     .card-footer
   .next
-    nuxt-link(to='/register/registerincome')
+    nuxt-link(to='/register/registername')
       .title 下一步
 
 </template>

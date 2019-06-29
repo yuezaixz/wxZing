@@ -11,19 +11,19 @@
 
     .card-body
       .card-column
-        .card-row(style='justify-content:flex-start;')
-          .card-title 你的职业或领域
-          img.card-arrow-down(src='~static/img/arrow_down.png')
+        .card-column(style='height:20px;')
+        .card-row(style='justify-content:center;')
+          .done-title 注册成功！
         .card-column(style='height:10px;')
-        .card-inner 请填写你的职业或专业领域
-        .city-control
-          //- .city-titl(v-if='!registerInfo.career') 请在此输入
-          input.city-input(v-model="registerInfo.career" value="registerInfo.career" , placeholder='请在此输入')
+        .card-inner(style='text-align:center;padding-left: 0px;') 欢迎加入办公室计划，编号0000001是您的专属号码
+        .card-inner(style='text-align:center;padding-left: 0px;') 由这串数字开始，
+        .card-inner(style='text-align:center;padding-left: 0px;') 让有趣的灵魂遇见好看的皮囊~
 
     .card-footer
+  img.astronauts(src='~static/img/astronauts.png')
   .next
-    nuxt-link(to='/register/registerincome')
-      .title 下一步
+    nuxt-link(to='/register/registercode')
+      .title 查看会员
 
 </template>
 
@@ -46,11 +46,6 @@ export default {
   },
 
   methods: {
-    async selectGender(gender) {
-      this.$store.dispatch('selectGender', gender)
-    },
-    async next() {
-    }
   },
 
   components: {

@@ -12,17 +12,18 @@
     .card-body
       .card-column
         .card-row(style='justify-content:flex-start;')
-          .card-title 你的职业或领域
+          .card-title 你的昵称
           img.card-arrow-down(src='~static/img/arrow_down.png')
         .card-column(style='height:10px;')
-        .card-inner 请填写你的职业或专业领域
+        .card-inner 美丽的人类， 
+        .card-column(style='height:2px;')
+        .card-inner 请给自己取一个好听的名字吧
         .city-control
-          //- .city-titl(v-if='!registerInfo.career') 请在此输入
-          input.city-input(v-model="registerInfo.career" value="registerInfo.career" , placeholder='请在此输入')
+          input.about-input(v-model="registerInfo.nickname" value="registerInfo.nickname", placeholder='点击在此输入')
 
     .card-footer
   .next
-    nuxt-link(to='/register/registerincome')
+    nuxt-link(to='/register/registerdone')
       .title 下一步
 
 </template>
@@ -46,9 +47,6 @@ export default {
   },
 
   methods: {
-    async selectGender(gender) {
-      this.$store.dispatch('selectGender', gender)
-    },
     async next() {
     }
   },

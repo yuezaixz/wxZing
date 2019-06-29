@@ -19,7 +19,11 @@ const createStore = () => {
       registerInfo: {
         gender: 1,
         isLocal: false,
-        code: ''
+        jobType: 0,
+        income: 0,
+        houseType: 0,
+        code: '',
+        photos: [1, 2, 3, 4, 5]
       }
       // shoppingScroll: 0,
       // houses: [],

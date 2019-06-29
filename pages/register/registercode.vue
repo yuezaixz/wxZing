@@ -23,7 +23,7 @@
 
     .card-footer
   .next
-    nuxt-link(to='/register/registercode')
+    nuxt-link(to='/register/registerjob')
       .title 下一步
 
 </template>

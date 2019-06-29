@@ -12,17 +12,21 @@
     .card-body
       .card-column
         .card-row(style='justify-content:flex-start;')
-          .card-title 你的职业或领域
+          .card-title 请添加你的照片
           img.card-arrow-down(src='~static/img/arrow_down.png')
         .card-column(style='height:10px;')
-        .card-inner 请填写你的职业或专业领域
-        .city-control
-          //- .city-titl(v-if='!registerInfo.career') 请在此输入
-          input.city-input(v-model="registerInfo.career" value="registerInfo.career" , placeholder='请在此输入')
+        .card-inner 上传一些生活照，首张将作为封面展示
+        .card-column(style='height:40px;')
+        .card-select-row(style='flex-wrap: wrap; margin-right: 20px;')
+          .city-photo-flex1(v-for='(item, index) in registerInfo.photos' @click='selectPhoto(index)')
+            img.card-photo(src='~static/img/sample_photo.png')
+          .city-photo-flex1(@click='selectPhoto(registerInfo.photos.length+1)')
+            img.add-photo(src='~static/img/add.png')
+            .add-title 点击添加照片
 
     .card-footer
   .next
-    nuxt-link(to='/register/registerincome')
+    nuxt-link(to='/register/registerabout')
       .title 下一步
 
 </template>
@@ -46,8 +50,8 @@ export default {
   },
 
   methods: {
-    async selectGender(gender) {
-      this.$store.dispatch('selectGender', gender)
+    async selectHouseType(houseType) {
+      this.$store.dispatch('selectHouseType', houseType)
     },
     async next() {
     }

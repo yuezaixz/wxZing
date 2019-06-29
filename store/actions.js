@@ -99,6 +99,18 @@ export default {
     state.registerInfo.isLocal = !state.registerInfo.isLocal
   },
 
+  async selectJobType({state}, jobType) {
+    state.registerInfo.jobType = jobType
+  },
+
+  async selectHouseType({state}, houseType) {
+    state.registerInfo.houseType = houseType
+  },
+
+  async selectIncome({state}, income) {
+    state.registerInfo.income = income
+  },
+
   async fetchPayments({ state }) {
     let { data } = await Services.getPayments()
     console.log(data)
