@@ -35,6 +35,15 @@
     nuxt-link(to='/register/registerwx')
       .title 下一步
 
+  vue-picker(
+    :show="show"
+    :columns="columns"
+    :defaultData="defaultData"
+    :selectData="pickData"
+    @cancel="close"
+    @confirm="confirmFn"
+  )
+
   transition(name='slide-top')
     .payment-modal(v-if='citySelectType > 0')
       .payment-modal-header
@@ -47,12 +56,64 @@
 <script>
 
 import { mapState } from 'vuex'
+import vuePicker from '~/components/picker'
 
 export default {
   data() {
     return {
       citySelectType: 0,
-      info:{}
+      info:{},
+      show: false,
+      columns: 2,
+      defaultData: [
+        {
+          text: 1999,
+          value: 1999
+        },
+        {
+          text: 11,
+          value: 11
+        }
+      ],
+      pickData: {
+        // 第一列的数据结构
+        data1: [
+          {
+            text: 1999,
+            value: 1999
+          },
+          {
+            text: 2001,
+            value: 2001
+          }
+        ],
+        data2: [
+          {
+            text: 11,
+            value: 11
+          },
+          {
+            text: 12,
+            value: 12
+          },
+          {
+            text: 13,
+            value: 13
+          },
+          {
+            text: 14,
+            value: 14
+          },
+          {
+            text: 15,
+            value: 15
+          },
+          {
+            text: 12,
+            value: 12
+          }
+        ]
+      }
     }
   },
 
@@ -64,16 +125,27 @@ export default {
 
   methods: {
     async showCityDialog(type) {
-      this.citySelectType = type
+      this.toShow()
+      // this.citySelectType = type
       // this.$store.dispatch('toggleLocal')
     },
     async handleCityPick() {
       this.citySelectType = 0
       // this.$store.dispatch('toggleLocal')
+    },
+    close() {
+      this.show = false
+    },
+    confirmFn(val, val2) {
+      this.show = false
+      this.defaultData = [val.select, val2.select]
+    },
+    toShow() {
+      this.show = true
     }
   },
-
   components: {
+    vuePicker
   }
 }
 </script>
