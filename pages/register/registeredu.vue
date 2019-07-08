@@ -28,7 +28,7 @@
         .card-column(style='height:10px;')
         .card-inner 从此记得你生日的人又多了一个
         .city-control(@click='showCityDialog(2)')
-          .city-title 1990-01-01
+          .city-title {{displayDateStr}}
 
     .card-footer
   .next
@@ -40,6 +40,7 @@
     :columns="columns"
     :defaultData="defaultData"
     :selectData="pickData"
+    link=true
     @cancel="close"
     @confirm="confirmFn"
   )
@@ -56,6 +57,7 @@
 <script>
 
 import { mapState } from 'vuex'
+import { yearsData, monthsData, daysData } from '~/components/dateData.js'
 import vuePicker from '~/components/picker'
 
 export default {
@@ -64,60 +66,34 @@ export default {
       citySelectType: 0,
       info:{},
       show: false,
-      columns: 2,
+      columns: 3,
       defaultData: [
         {
-          text: 1999,
-          value: 1999
+          text: '2000年',
+          value: 2000
         },
         {
-          text: 11,
+          text: '11月',
           value: 11
+        },
+        {
+          text: '14日',
+          value: 14
         }
       ],
       pickData: {
         // 第一列的数据结构
-        data1: [
-          {
-            text: 1999,
-            value: 1999
-          },
-          {
-            text: 2001,
-            value: 2001
-          }
-        ],
-        data2: [
-          {
-            text: 11,
-            value: 11
-          },
-          {
-            text: 12,
-            value: 12
-          },
-          {
-            text: 13,
-            value: 13
-          },
-          {
-            text: 14,
-            value: 14
-          },
-          {
-            text: 15,
-            value: 15
-          },
-          {
-            text: 12,
-            value: 12
-          }
-        ]
+        data1: yearsData,
+        data2: monthsData,
+        data3: daysData
       }
     }
   },
 
   computed: {
+    displayDateStr() {
+      return "" + this.defaultData[0].value + "-" + this.defaultData[1].value + "-" + this.defaultData[2].value
+    },
     ...mapState([
       'registerInfo'
     ])
@@ -136,9 +112,9 @@ export default {
     close() {
       this.show = false
     },
-    confirmFn(val, val2) {
+    confirmFn(val, val2, val3) {
       this.show = false
-      this.defaultData = [val.select, val2.select]
+      this.defaultData = [val.select, val2.select, val3.select]
     },
     toShow() {
       this.show = true
