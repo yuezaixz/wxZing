@@ -389,6 +389,7 @@
     watch: {
       selectData: {
         handler: function () {
+          console.log(1111)
           this.init()
         },
         deep: true

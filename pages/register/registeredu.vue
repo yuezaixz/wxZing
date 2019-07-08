@@ -17,7 +17,7 @@
         .card-column(style='height:10px;')
         .card-inner 学历是部分的实力
         .city-control(@click='showCityDialog(1)')
-          .city-title 本科
+          .city-title {{displayEduStr}}
           img.card-arrow-down(src='~static/img/arrow_down.png')
 
       .card-column(style='height:89px;')
@@ -40,18 +40,10 @@
     :columns="columns"
     :defaultData="defaultData"
     :selectData="pickData"
-    link=true
+    :link="selectDate"
     @cancel="close"
     @confirm="confirmFn"
   )
-
-  transition(name='slide-top')
-    .payment-modal(v-if='citySelectType > 0')
-      .payment-modal-header
-        span(@click='handleCityPick') 确定
-        span(@click='citySelectType = 0') 取消
-      .payment-modal-body
-        div 测试
 </template>
 
 <script>
@@ -66,8 +58,38 @@ export default {
       citySelectType: 0,
       info:{},
       show: false,
-      columns: 3,
-      defaultData: [
+      selectDate: false,
+      eduData:[//0 保密 1博士及以上 2研究生 3本科 4专科 5专科以下
+        {
+          text:'本科',
+          value: 3
+        }
+      ],
+      eduPickData: {
+        data1:[
+          {
+            text:'博士及以上',
+            value: 1
+          },
+          {
+            text:'研究生',
+            value: 2
+          },
+          {
+            text:'本科',
+            value: 3
+          },
+          {
+            text:'专科',
+            value: 4
+          },
+          {
+            text:'其他',
+            value: 5
+          },
+        ]
+      },
+      dateData: [
         {
           text: '2000年',
           value: 2000
@@ -81,7 +103,7 @@ export default {
           value: 14
         }
       ],
-      pickData: {
+      datePickData: {
         // 第一列的数据结构
         data1: yearsData,
         data2: monthsData,
@@ -91,8 +113,20 @@ export default {
   },
 
   computed: {
+    columns() {
+      return this.selectDate ? 3 : 1;
+    },
+    pickData() {
+      return this.selectDate ? this.datePickData : this.eduPickData;
+    },
+    defaultData() {
+      return this.selectDate ? this.dateData: this.eduData;
+    },
+    displayEduStr() {
+      return this.eduData[0].text
+    },
     displayDateStr() {
-      return "" + this.defaultData[0].value + "-" + this.defaultData[1].value + "-" + this.defaultData[2].value
+      return "" + this.dateData[0].value + "-" + this.dateData[1].value + "-" + this.dateData[2].value
     },
     ...mapState([
       'registerInfo'
@@ -102,6 +136,11 @@ export default {
   methods: {
     async showCityDialog(type) {
       this.toShow()
+      if (type === 1) {
+        this.selectDate = false;
+      } else {
+        this.selectDate = true;
+      }
       // this.citySelectType = type
       // this.$store.dispatch('toggleLocal')
     },
@@ -114,7 +153,11 @@ export default {
     },
     confirmFn(val, val2, val3) {
       this.show = false
-      this.defaultData = [val.select, val2.select, val3.select]
+      if (this.selectDate) {
+        this.dateData = [val.select1, val.select2, val.select3]
+      } else {
+        this.eduData = [val.select1]
+      }
     },
     toShow() {
       this.show = true
