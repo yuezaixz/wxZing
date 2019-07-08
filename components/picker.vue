@@ -19,7 +19,7 @@
                   @touchstart="gearTouchStart"
                   @touchmove="gearTouchMove"
                   @touchend="gearTouchEnd">
-                <div class="tooth" v-for="(item,index) in pData1" :key="index">{{item.text}}</div>
+                <div class="tooth" v-for="(item,index) in pData1" :style="{'color': selects.select1 && item.value === selects.select1.value ? '#6765ff':''}" :key="index">{{item.text}}</div>
               </div>
               <div class="area_grid">
               </div>
@@ -36,7 +36,7 @@
                   @touchmove="gearTouchMove"
                   @touchend="gearTouchEnd"
                   val="5">
-                <div class="tooth" v-for="(item,index) in pData2" :key="index">{{item.text}}</div>
+                <div class="tooth" v-for="(item,index) in pData2" :style="{'color': selects.select2 && item.value === selects.select2.value ? '#6765ff':''}" :key="index">{{item.text}}</div>
               </div>
               <div class="area_grid">
               </div>
@@ -53,7 +53,7 @@
                   @touchmove="gearTouchMove"
                   @touchend="gearTouchEnd"
                   val="5">
-                <div class="tooth" v-for="(item,index) in pData3" :key="index">{{item.text}}</div>
+                <div class="tooth" v-for="(item,index) in pData3" :style="{'color': selects.select3 && item.value === selects.select3.value ? '#6765ff':''}" :key="index">{{item.text}}</div>
               </div>
               <div class="area_grid">
               </div>
@@ -389,7 +389,6 @@
     watch: {
       selectData: {
         handler: function () {
-          console.log(1111)
           this.init()
         },
         deep: true
@@ -434,7 +433,9 @@
 .area_ctrl {
   font-size: 12px;
   vertical-align: middle;
-  background-color: #d5d8df;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  background-color: #ffffff;
   color: #000;
   margin: 0;
   height: auto;
@@ -467,13 +468,14 @@
   width: 100%;
   height: auto;
   overflow: hidden;
+  margin-bottom: 4em;
   background-color: transparent;
   -webkit-mask: -webkit-gradient(linear, 0% 50%, 0% 100%, from(#debb47), to(rgba(36, 142, 36, 0)));
   -webkit-mask: -webkit-linear-gradient(top, #debb47 50%, rgba(36, 142, 36, 0))
 }
 
 .area_roll>div {
-  font-size: 1.6em;
+  font-size: 13px;
   height: 10em;
   float: left;
   background-color: transparent;
@@ -490,7 +492,8 @@
   float: left;
   position: absolute;
   z-index: 9902;
-  margin-top: 4em
+  margin-top: 4em;
+  margin-bottom: 4em;
 }
 
 .area_roll_mask {
@@ -502,13 +505,13 @@
 .area_grid {
   position: relative;
   top: 4em;
-  width: 100%;
+  width: 88px;
   height: 2em;
-  margin: 0;
+  margin: auto auto;
   box-sizing: border-box;
   z-index: 0;
-  border-top: 1px solid #abaeb5;
-  border-bottom: 1px solid #abaeb5
+  border-top: 1px solid #6765ff;
+  border-bottom: 1px solid #6765ff;
 }
 
 .area_roll>div:nth-child(3) .area_grid>div {
@@ -516,15 +519,18 @@
 }
 
 .area_btn {
-  color: #0575f2;
-  font-size: 1.6em;
-  line-height: 1em;
+  font-size: 13px;
+  letter-spacing: 1px;
+  line-height: 14px;
+  color: #6765ff;
+  font-family: "PingFang SC";
+  font-weight: 400;
   text-align: center;
-  padding: .8em 1em
+  padding: 23px 23px
 }
 
 .area_btn_box:before,
-.area_btn_box:after {
+/* .area_btn_box:after {
   content: '';
   position: absolute;
   height: 1px;
@@ -534,7 +540,7 @@
   z-index: 15;
   -webkit-transform: scaleY(0.33);
   transform: scaleY(0.33)
-}
+} */
 
 .area_btn_box {
   display: -webkit-box;
@@ -549,7 +555,8 @@
   -webkit-align-items: stretch;
   -ms-flex-align: stretch;
   align-items: stretch;
-  background-color: #f1f2f4;
+  border-radius: 10px;
+  background-color: #ffffff;
   position: relative
 }
 
