@@ -38,7 +38,9 @@
 
     .card-footer
   .next
-    nuxt-link(to='/register/registeredu')
+    nuxt-link(to='/register/registeredu'  v-if="(registerInfo.isLocal && registerInfo.hometown) || (registerInfo.hometown && registerInfo.city)")
+      .title 下一步
+    div(@click='next'  v-else)
       .title 下一步
 
   transition(name='slide-top')
@@ -81,6 +83,11 @@ export default {
       // this.$store.dispatch('toggleLocal')
     },
     async next() {
+      if (!registerInfo.hometown) {
+        alert('请选择故乡')
+      } else if (!registerInfo.isLocal && registerInfo.hometown) {
+        alert('请选择工作城市')
+      }
     }
   },
 

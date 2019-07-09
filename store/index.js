@@ -23,6 +23,8 @@ const createStore = () => {
         income: 0,
         houseType: 0,
         degree: 0,
+        hometown: '',
+        city: '',
         birthdayYear: 0,
         birthdayMonth: 0,
         birthdayDay: 0,

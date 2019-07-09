@@ -23,7 +23,9 @@
 
     .card-footer
   .next
-    nuxt-link(to='/register/registercode')
+    nuxt-link(to='/register/registercode'  v-if="registerInfo.phoneNum")
+      .title 下一步
+    div(@click='next'  v-else)
       .title 下一步
 
 </template>
@@ -51,6 +53,7 @@ export default {
       this.$store.dispatch('selectGender', gender)
     },
     async next() {
+      alert('请填写手机号')
     }
   },
 

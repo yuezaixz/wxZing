@@ -157,7 +157,11 @@ export default {
       // this.$store.dispatch('toggleLocal')
     },
     async next(){
-      alert('请选择')
+      if (this.$store.state.registerInfo.degree) {
+        alert('请选择出生日期')
+      } else {
+        alert('请选择学位')
+      }
     },
     close() {
       this.show = false

@@ -18,12 +18,14 @@
         .card-inner 注意：
         .card-inner 填对微信号，才能找到对的人
         .city-control
-          .city-title 微信号
+          .city-title(style='width:60px;') 微信号
           input.city-input(v-model="registerInfo.wxcode" value="registerInfo.wxcode")
 
     .card-footer
   .next
-    nuxt-link(to='/register/registertel')
+    nuxt-link(to='/register/registertel'  v-if="registerInfo.wxcode")
+      .title 下一步
+    div(@click='next'  v-else)
       .title 下一步
 
 </template>
@@ -51,6 +53,7 @@ export default {
       this.$store.dispatch('selectGender', gender)
     },
     async next() {
+      alert('请填写微信号')
     }
   },
 
