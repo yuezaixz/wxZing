@@ -32,7 +32,9 @@
 
     .card-footer
   .next
-    nuxt-link(to='/register/registerwx')
+    nuxt-link(to='/register/registerwx'  v-if="registerInfo.degree && registerInfo.birthdayYear && registerInfo.birthdayMonth && registerInfo.birthdayDay")
+      .title 下一步
+    div(@click='next'  v-else)
       .title 下一步
 
   vue-picker(
@@ -59,12 +61,6 @@ export default {
       info:{},
       show: false,
       selectDate: false,
-      eduData:[//0 保密 1博士及以上 2研究生 3本科 4专科 5专科以下
-        {
-          text:'本科',
-          value: 3
-        }
-      ],
       eduPickData: {
         data1:[
           {
@@ -89,20 +85,6 @@ export default {
           },
         ]
       },
-      dateData: [
-        {
-          text: '2000年',
-          value: 2000
-        },
-        {
-          text: '11月',
-          value: 11
-        },
-        {
-          text: '14日',
-          value: 14
-        }
-      ],
       datePickData: {
         // 第一列的数据结构
         data1: yearsData,
@@ -120,13 +102,39 @@ export default {
       return this.selectDate ? this.datePickData : this.eduPickData;
     },
     defaultData() {
-      return this.selectDate ? this.dateData: this.eduData;
+      if (this.selectDate) {
+        return [
+          {
+            text: ''+this.$store.state.registerInfo.birthdayYear+'年',
+            value: this.$store.state.registerInfo.birthdayYear
+          },
+          {
+            text: ''+this.$store.state.registerInfo.birthdayMonth+'月',
+            value: this.$store.state.registerInfo.birthdayMonth
+          },
+          {
+            text: ''+this.$store.state.registerInfo.birthdayDay+'日',
+            value: this.$store.state.registerInfo.birthdayDay
+          }
+        ];
+      } else {
+        return [//0 保密 1博士及以上 2研究生 3本科 4专科 5专科以下
+          {
+            text: ['保密', '博士及以上', '研究生', '本科', '专科', '其他'][this.$store.state.degree],
+            value: this.$store.state.registerInfo.degree
+          }
+        ];
+      }
     },
     displayEduStr() {
-      return this.eduData[0].text
+      return ['请选择', '博士及以上', '研究生', '本科', '专科', '其他'][this.$store.state.registerInfo.degree]
     },
     displayDateStr() {
-      return "" + this.dateData[0].value + "-" + this.dateData[1].value + "-" + this.dateData[2].value
+      if (this.$store.state.registerInfo.birthdayYear) {
+        return "" + this.$store.state.registerInfo.birthdayYear + "-" + this.$store.state.registerInfo.birthdayMonth + "-" + this.$store.state.registerInfo.birthdayDay
+      } else {
+        return "请选择"
+      }
     },
     ...mapState([
       'registerInfo'
@@ -148,15 +156,20 @@ export default {
       this.citySelectType = 0
       // this.$store.dispatch('toggleLocal')
     },
+    async next(){
+      alert('请选择')
+    },
     close() {
       this.show = false
     },
     confirmFn(val, val2, val3) {
       this.show = false
       if (this.selectDate) {
-        this.dateData = [val.select1, val.select2, val.select3]
+        this.$store.state.registerInfo.birthdayYear = val.select1.value
+        this.$store.state.registerInfo.birthdayMonth = val.select2.value
+        this.$store.state.registerInfo.birthdayDay = val.select3.value
       } else {
-        this.eduData = [val.select1]
+        this.$store.state.registerInfo.degree = val.select1.value
       }
     },
     toShow() {
