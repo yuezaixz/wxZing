@@ -17,7 +17,7 @@
         .card-column(style='height:10px;')
         .card-inner 选择籍贯，如果在老家工作，可勾选“土著”
         .city-control(@click='showCityDialog(1)')
-          .city-title 城市
+          .city-title {{displayHometown}}
           img.card-arrow-down(src='~static/img/arrow_down.png')
         .card-column(style='height:29px;')
         .card-row(@click='toggleLocal()')
@@ -33,7 +33,7 @@
         .card-column(style='height:10px;')
         .card-inner 选择你的城市，找到留住你的人
         .city-control(@click='showCityDialog(2)')
-          .city-title 城市
+          .city-title {{displayCity}}
           img.card-arrow-down(src='~static/img/arrow_down.png')
 
     .card-footer
@@ -43,39 +43,108 @@
     div(@click='next'  v-else)
       .title 下一步
 
-  transition(name='slide-top')
-    .payment-modal(v-if='citySelectType > 0')
-      .payment-modal-header
-        span(@click='handleCityPick') 确定
-        span(@click='citySelectType = 0') 取消
-      .payment-modal-body
-        div 测试
+  vue-picker(
+    :show="show"
+    :columns="columns"
+    :defaultData="defaultData"
+    :selectData="cityPickData"
+    link=true
+    @cancel="close"
+    @confirm="confirmFn"
+  )
 </template>
 
 <script>
 
 import { mapState } from 'vuex'
+import { provsData, citysData } from '~/components/areaData.js'
+import vuePicker from '~/components/picker'
 
 export default {
   data() {
     return {
       citySelectType: 0,
-      info:{}
+      selectCity: false,
+      info:{},
+      show: false,
+      cityPickData: {
+        data1:provsData,
+        data2:citysData
+      },
+      columns: 2,
+
     }
   },
 
   computed: {
+    displayHometown() {
+      return this.displayName(1) || "请选择城市"
+    },
+    displayCity() {
+      return this.displayName(2) || "请选择城市"
+    },
+    defaultData() {
+      var code = this.selectCity?this.$store.state.registerInfo.city : this.$store.state.registerInfo.hometown
+      var provCode = code && code.length == 6 ? (code.substr(0,2)+'0000'):null
+      return code ? [
+        {
+          text: provsData[provCode],
+          value: provCode
+        },
+        {
+          text: citysData[provCode][code],
+          value: code
+        }
+      ]:[
+        {
+          text: '',
+          value: ''
+        },
+        {
+          text: '',
+          value: ''
+        }
+      ]
+      
+    },
     ...mapState([
       'registerInfo'
     ])
   },
 
   methods: {
+    displayName(type) {
+      var code = type ===1? this.$store.state.registerInfo.hometown : this.$store.state.registerInfo.city
+      var provCode = code && code.length == 6 ? (code.substr(0,2)+'0000'):null
+      var cityName
+      var provName
+      for (const key in citysData[provCode]) {
+        if (citysData[provCode].hasOwnProperty(key)) {
+          const element = citysData[provCode][key];
+          if (element.value === code) {
+            cityName = element.text
+          }
+        }
+      }
+      for (const key in provsData) {
+        const element = provsData[key];
+        if (element.value === provCode) {
+          provName = element.text
+        }
+      }
+      return cityName && provName ? (provName + cityName) : cityName;
+    },
     async toggleLocal() {
       this.$store.dispatch('toggleLocal')
     },
     async showCityDialog(type) {
-      this.citySelectType = type
+      this.toShow()
+      if (type === 1) {
+        this.selectCity = false;
+      } else {
+        this.selectCity = true;
+      }
+      // this.citySelectType = type
       // this.$store.dispatch('toggleLocal')
     },
     async handleCityPick() {
@@ -83,15 +152,30 @@ export default {
       // this.$store.dispatch('toggleLocal')
     },
     async next() {
-      if (!registerInfo.hometown) {
+      if (!this.$store.state.registerInfo.hometown) {
         alert('请选择故乡')
-      } else if (!registerInfo.isLocal && registerInfo.hometown) {
+      } else if (!this.$store.state.registerInfo.isLocal && this.$store.state.registerInfo.hometown) {
         alert('请选择工作城市')
       }
+    },
+    close() {
+      this.show = false
+    },
+    confirmFn(val, val2) {
+      this.show = false
+      if (this.selectCity) {
+        this.$store.state.registerInfo.city = val.select2.value
+      } else {
+        this.$store.state.registerInfo.hometown = val.select2.value
+      }
+    },
+    toShow() {
+      this.show = true
     }
   },
 
   components: {
+    vuePicker
   }
 }
 </script>
