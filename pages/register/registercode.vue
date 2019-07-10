@@ -22,9 +22,9 @@
           label.retry-prompt(@click="startCountRetry") {{retrySeconds > 0?''+retrySeconds+'s':'重发'}}
 
     .card-footer
-  //- .next
-  //-   nuxt-link(to='/register/registerjob')
-  //-     .title 下一步
+  .next
+    nuxt-link(to='/register/registerjob')
+      .title 下一步
 
 </template>
 

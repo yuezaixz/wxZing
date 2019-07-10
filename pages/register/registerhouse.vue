@@ -19,14 +19,14 @@
         .card-column(style='height:40px;')
         .card-column
           .card-select-row
-            .city-select-flex1(@click='selectHouseType(1)', :style="{'background-color': registerInfo.houseType === 2 ? '#97aef1':''}")
+            .city-select-flex1(@click='selectHouseType(1)', :style="{'background-color': registerInfo.houseType === 1 ? '#97aef1':''}")
               .city-title 无房产,仍在奋斗
-            .city-select-flex1(@click='selectHouseType(2)', :style="{'background-color': registerInfo.houseType === 3 ? '#97aef1':''}")
+            .city-select-flex1(@click='selectHouseType(2)', :style="{'background-color': registerInfo.houseType === 2 ? '#97aef1':''}")
               .city-title 和家人同住
           .card-select-row
-            .city-select-flex1(@click='selectHouseType(3)', :style="{'background-color': registerInfo.houseType === 4 ? '#97aef1':''}")
+            .city-select-flex1(@click='selectHouseType(3)', :style="{'background-color': registerInfo.houseType === 3 ? '#97aef1':''}")
               .city-title 已购房产
-            .city-select-flex1(@click='selectHouseType(0)', :style="{'background-color': registerInfo.houseType === 1 ? '#97aef1':''}")
+            .city-select-flex1(@click='selectHouseType(0)', :style="{'background-color': registerInfo.houseType === 0 ? '#97aef1':''}")
               .city-title 我想保密
 
     .card-footer
