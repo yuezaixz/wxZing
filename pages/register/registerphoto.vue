@@ -18,11 +18,13 @@
         .card-inner 上传一些生活照，首张将作为封面展示
         .card-column(style='height:40px;')
         .card-select-row(style='flex-wrap: wrap; margin-right: 20px;')
-          .city-photo-flex1(v-for='(item, index) in registerInfo.photos' @click='selectPhoto(index)')
-            img.card-photo(src='~static/img/sample_photo.png')
-          .city-photo-flex1(@click='selectPhoto(registerInfo.photos.length+1)')
+          .city-photo-flex1(v-for='(item, index) in registerInfo.photos')
+            img.card-photo(:src='"http://wxzing.podoon.cn/"+item')
+            input(type='file', @change='uploadImg(index, $event)')
+          .city-photo-flex1(v-if='registerInfo.photos.length < 5')
             img.add-photo(src='~static/img/add.png')
             .add-title 点击添加照片
+            input(type='file', @change='uploadImg(registerInfo.photos.length, $event)')
 
     .card-footer
   .next
@@ -34,6 +36,9 @@
 <script>
 
 import { mapState } from 'vuex'
+import axios from 'axios'
+import randomToken from 'random-token'
+import Uploader from 'qiniu-web-uploader'
 
 export default {
   data() {
@@ -50,8 +55,49 @@ export default {
   },
 
   methods: {
-    async selectHouseType(houseType) {
-      this.$store.dispatch('selectHouseType', houseType)
+    async selectPhoto(photoIndex) {
+      console.log(photoIndex)
+      // this.$store.dispatch('selectHouseType', houseType)
+    },
+
+    async getUptoken (key) {
+      let res = await axios.get('/api/qiniu/token', {
+        params: {
+          key: key
+        }
+      })
+
+      return res.data.token
+    },
+
+    async uploadImg (index, e) {
+      let file = e.target.files[0]
+      let key = randomToken(32)
+
+      key = `products/${key}`
+      let token = await this.getUptoken(key)
+
+      let uptoken = {
+        uptoken: token,
+        key: Buffer.from(key).toString('base64')
+      }
+      console.log(uptoken)
+      Uploader.QINIU_UPLOAD_URL = 'http://up-z2.qiniu.com/'
+
+      let uploader = new Uploader(file, uptoken) 
+
+      uploader.on('progress', () => {
+        console.log(uploader.percent)
+        // let dashoffset = this.upload.dasharray * (1 - uploader.percent)
+        // this.upload.dashoffset = dashoffset
+      })
+
+      let res = await uploader.upload()
+
+      uploader.cancel()
+      console.log(res)
+      this.$store.state.registerInfo.photos.push(res.key)
+      // this.edited.images.push(res.key)
     },
     async next() {
     }

@@ -4,6 +4,15 @@ import mutations from './mutations'
 import getters from './getters'
 
 const createStore = () => {
+  var qiniuOptions = {
+    host: 'http://upload.qiniu.com',
+    tokenUrl: 'http://localhost:8083/uptoken',
+    domain: 'http://orqjqg7zj.bkt.clouddn.com/',
+    mockToken: true,
+    mockTokenValue: 'FMVCRs2-LO1ivRNi4l7mEZE6ZDvPv-519D12kZCO:ZXOlC4-SKwZfalWNIvXUNUZg1wA=:eyJzY29wZSI6InJ0Y3Rlc3QiLCJkZWFkbGluZSI6MjUwMjY5NjAxNH0=',
+    hash: true
+  }
+
   return new Vuex.Store({
     state: {
       imageCDN: 'pb8e92vqk.bkt.clouddn.com',
@@ -16,6 +25,7 @@ const createStore = () => {
       user: null,
       payments: [],
       authUser: null,
+      qiniuOptions: qiniuOptions,
       registerInfo: {
         gender: 1,
         isLocal: false,
@@ -29,7 +39,7 @@ const createStore = () => {
         birthdayMonth: 0,
         birthdayDay: 0,
         code: '',
-        photos: [1, 2, 3, 4, 5]
+        photos: []
       }
       // shoppingScroll: 0,
       // houses: [],

@@ -9,7 +9,7 @@ const bucket = config.qiniu.bucket
 
 // const bucketManager = new qiniu.rs.Client()
 
-const uptoken = (key) => new qiniu.rs.PutPolicy(`${bucket}:${key}`).token()
+const uptoken = (key) => new qiniu.rs.PutPolicy({scope: bucket + ':' + key}).uploadToken()
 
 const uploadFile = (uptoken, key, localFile) => new Promise((resolve, reject) => {
   var extra = new qiniu.io.PutExtra()
