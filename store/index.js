@@ -27,7 +27,12 @@ const createStore = () => {
       authUser: null,
       qiniuOptions: qiniuOptions,
       registerInfo: {
+        code: null,
+        openid: null,
+        unionid: null,
         gender: 1,
+        tel: '13599915039',
+        smscode: '0018',
         isLocal: false,
         jobType: 0,
         income: 0,
@@ -38,7 +43,6 @@ const createStore = () => {
         birthdayYear: 0,
         birthdayMonth: 0,
         birthdayDay: 0,
-        code: '',
         photos: []
       }
       // shoppingScroll: 0,

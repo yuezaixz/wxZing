@@ -40,6 +40,9 @@ module.exports = {
     },
     {
       src: 'swiper/dist/css/swiper.css'
+    },
+    {
+      src: 'static/css/weui.min.css'
     }
   ],
   /*
@@ -47,7 +50,8 @@ module.exports = {
    */
   plugins: [
     { src: '~plugins/swiper.js', ssr: false },
-    { src: '~plugins/flexible.js', ssr: false }
+    { src: '~plugins/flexible.js', ssr: false },
+    // { src: '~plugins/weui.js', ssr: false }
   ],
   loading: {
     color: '#3B8070'

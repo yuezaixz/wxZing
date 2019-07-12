@@ -31,6 +31,11 @@
     nuxt-link(to='/register/registerabout')
       .title 下一步
 
+  div#loadingToast(style="display:none;")
+    div.weui-mask_transparent
+    div.weui-toast
+      i.weui-loading.weui-icon_toast
+      p.weui-toast__content 数据加载中
 </template>
 
 <script>

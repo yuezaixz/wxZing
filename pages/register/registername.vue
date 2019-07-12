@@ -23,7 +23,9 @@
 
     .card-footer
   .next
-    nuxt-link(to='/register/registerdone')
+    //- nuxt-link(to='/register/registerdone')
+    //-   .title 下一步
+    div(@click='done')
       .title 下一步
 
 </template>
@@ -47,7 +49,33 @@ export default {
   },
 
   methods: {
-    async next() {
+    async done() {
+      var registerInfo = this.$store.state.registerInfo
+      if (registerInfo.openid) {
+
+      } else {
+        this.$store.dispatch('signin', {
+          openid,
+          unionid,
+          code,
+          nickname,
+          wxcode,
+          gender,
+          degree,
+          birthday,
+          city,
+          tel,
+          hometown,
+          career,
+          income,
+          jobType,
+          photos,
+          houseType,
+          aboutMe,
+          aboutOther,
+          smscode
+        })
+      }
     }
   },
 
