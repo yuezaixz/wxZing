@@ -24,6 +24,23 @@ export default {
     commit('SET_AUTHUSER', authUser)
   },
 
+  showToast({state}, args) {
+    let {duration, str, toastType} = args || {duration: 0, str: '加载中', toastType: 'loading'}
+    duration = duration || 0
+    str = str || '加载中'
+    toastType = toastType || 'loading'
+    state.showToast = true
+    state.toastType = `weui-${toastType}`
+    state.toastStr = str
+    if (duration) {
+      setTimeout(() => { state.showToast = false }, duration)
+    }
+  },
+
+  hiddenToast({state}) {
+    state.showToast = false
+  },
+
   async signin({ commit }, {
     openid, unionid, code, nickname,
     wxcode, gender, degree, birthday,

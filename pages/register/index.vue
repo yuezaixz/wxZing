@@ -35,17 +35,12 @@
   .next
     nuxt-link(to='/register/registercity')
       .title 下一步
-
 </template>
 
 <script>
 
 import { mapState } from 'vuex'
-
-var weui
-if (process.BROWSER_BUILD) {
-  weui = require('weui.js')
-}
+import { setTimeout } from 'timers';
 
 export default {
   middleware: 'wechat-auth',
@@ -62,35 +57,7 @@ export default {
     ])
   },
   beforeMount() {
-    const wx = window.wx
-    const url = window.location.href
-
-    this.$store.dispatch('getWechatSignature', url).then(res => {
-      if (res.data.success) {
-        const params = res.data.params
-        wx.config({
-          // debug: true, // 调试模式
-          appId: params.appId, // 公众号的唯一标识
-          timestamp: params.timestamp, // 生成签名的时间戳
-          nonceStr: params.noncestr, // 生成签名的随机串
-          signature: params.signature, // 签名
-          jsApiList: [
-            'chooseImage',
-            'previewImage',
-            'uploadImage',
-            'downloadImage',
-            'onMenuShareTimeline',
-            'showMenuItems',
-            'hideAllNonBaseMenuItem'
-          ]
-        })
-        wx.ready(() => {
-          setTimeout(() => {
-            weui.toast('权限成功', 3000);
-          }, 10000)
-        })
-      }
-    })
+    
   },
 
   methods: {

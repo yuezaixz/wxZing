@@ -30,12 +30,6 @@
   .next
     nuxt-link(to='/register/registerabout')
       .title 下一步
-
-  div#loadingToast(style="display:none;")
-    div.weui-mask_transparent
-    div.weui-toast
-      i.weui-loading.weui-icon_toast
-      p.weui-toast__content 数据加载中
 </template>
 
 <script>
@@ -76,6 +70,8 @@ export default {
     },
 
     async uploadImg (index, e) {
+      console.log('authUser', this.$store.state.authUser)
+      this.$store.dispatch('showToast', {str:'上传中'})
       let file = e.target.files[0]
       let key = randomToken(32)
 
@@ -102,6 +98,8 @@ export default {
       uploader.cancel()
       console.log(res)
       this.$store.state.registerInfo.photos.push(res.key)
+
+      this.$store.dispatch('showToast', {duration: 2000, str:'上传成功', toastType:'icon-success-no-circle'})
       // this.edited.images.push(res.key)
     },
     async next() {
