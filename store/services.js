@@ -40,6 +40,16 @@ class Services {
     return axios.get('/api/payments')
   }
 
+  changeUser(user) {
+    try {
+      return axios.post('/api/change_user', (user || {}))
+    } catch (e) {
+      if (e.response.status === 401) {
+        throw new Error('You can\'t do it')
+      }
+    }
+  }
+
   followers(userId, depeth) {
     return axios.get('api/followers', {
       params: {

@@ -20,14 +20,14 @@
       .card-column
         .card-row(style='justify-content:center;')
           .card-block(@click='selectGender(1)')
-            img.card-gender(v-if='registerInfo.gender===1' src='~static/img/male_selected_icon.png')
+            img.card-gender(v-if='authUser.gender===1' src='~static/img/male_selected_icon.png')
             img.card-gender(v-else src='~static/img/male_icon.png')
             .card-prompt(style="margin-top:36px;") 我是男生
             //- img(v-if='activeRoute !== item.name' src='~/static/images/home.png')
             //- img(v-else src='~/static/images/home-selected.png')
           .card-block(style="width:56px;")
           .card-block(@click='selectGender(2)')
-            img.card-gender(v-if='registerInfo.gender===2' src='~static/img/female_selected_icon.png')
+            img.card-gender(v-if='authUser.gender===2' src='~static/img/female_selected_icon.png')
             img.card-gender(v-else src='~static/img/female_icon.png')
             .card-prompt(style="margin-top:36px;") 我是女生
 
@@ -53,7 +53,7 @@ export default {
 
   computed: {
     ...mapState([
-      'registerInfo'
+      'authUser'
     ])
   },
   beforeMount() {

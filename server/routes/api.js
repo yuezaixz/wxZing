@@ -51,6 +51,95 @@ export class DatabaseController {
 
   }
 
+  @post('change_user')
+  async change_user(ctx, next) {
+    let {
+      openid,
+      nickname,
+      phoneNumber,
+      wxcode,
+      gender,
+      degree,
+      birthday,
+      xingzuo,
+      city,
+      hometown,
+      career,
+      income,
+      jobType,
+      photos,
+      houseType,
+      aboutMe,
+      aboutOther,
+    } = ctx.request.body
+    if (openid) {
+      const findUser = await User.findOne({unionid: openid,}).exec()
+      if (findUser) {
+        if (nickname) {
+          findUser.nickname = nickname
+        }
+        if (phoneNumber) {
+          findUser.phoneNumber = phoneNumber
+        }
+        if (wxcode) {
+          findUser.wxcode = wxcode
+        }
+        if (gender) {
+          findUser.gender = gender
+        }
+        if (degree) {
+          findUser.degree = degree
+        }
+        if (birthday) {
+          findUser.birthday = birthday
+        }
+        if (xingzuo) {
+          findUser.xingzuo = xingzuo
+        }
+        if (city) {
+          findUser.city = city
+        }
+        if (hometown) {
+          findUser.hometown = hometown
+        }
+        if (career) {
+          findUser.career = career
+        }
+        if (income) {
+          findUser.income = income
+        }
+        if (jobType) {
+          findUser.jobType = jobType
+        }
+        if (photos) {
+          findUser.photos = photos
+        }
+        if (houseType) {
+          findUser.houseType = houseType
+        }
+        if (aboutMe) {
+          findUser.aboutMe = aboutMe
+        }
+        if (aboutOther) {
+          findUser.aboutOther = aboutOther
+        }
+        findUser.save()
+        ctx.session = {
+          openid: findUser.openid,
+          user: findUser
+        }
+        ctx.body = {
+          success: true,
+          user: findUser
+        }
+      }
+    }
+
+    return (ctx.body = {
+      success: false
+    })
+  }
+
   @post('auto_signin')
   async auto_signin(ctx, next) {
     var openid = ctx.request.body.openid

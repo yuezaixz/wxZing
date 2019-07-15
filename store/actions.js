@@ -41,50 +41,6 @@ export default {
     state.showToast = false
   },
 
-  async signin({ commit }, {
-    openid, unionid, code, nickname,
-    wxcode, gender, degree, birthday,
-    city, tel, hometown, career,
-    income, jobType, photos, houseType,
-    aboutMe, aboutOther, smscode
-   }) {
-    try {
-      let res = await axios.post('/api/signin', {
-        openid,
-        unionid,
-        code,
-        nickname,
-        wxcode,
-        gender,
-        degree,
-        birthday,
-        city,
-        tel,
-        hometown,
-        career,
-        income,
-        jobType,
-        photos,
-        houseType,
-        aboutMe,
-        aboutOther,
-        smscode
-      })
-
-      let { data } = res
-      if (data.success) {
-        let user = data.data.user
-        commit('SET_USER', user)
-      }
-
-      return data
-    } catch (e) {
-      if (e.response.status === 401) {
-        throw new Error('You can\'t do it')
-      }
-    }
-  },
-
   async login({ commit }, { email, password }) {
     try {
       let res = await axios.post('/api/login', {
@@ -108,8 +64,33 @@ export default {
     commit('SET_USER', null)
   },
 
-  async selectGender({state}, gender) {
-    state.registerInfo.gender = gender
+  async selectGender({state, commit}, gender) {
+    state.authUser.gender = gender
+    let { data } = await Services.changeUser({
+      openid: state.authUser.unionid,
+      nickname: state.authUser.nickname,
+      phoneNumber: state.authUser.phoneNumber,
+      wxcode: state.authUser.wxcode,
+      gender: state.authUser.gender,
+      degree: state.authUser.degree,
+      birthday: state.authUser.birthday,
+      xingzuo: state.authUser.xingzuo,
+      city: state.authUser.city,
+      hometown: state.authUser.hometown,
+      career: state.authUser.career,
+      income: state.authUser.income,
+      jobType: state.authUser.jobType,
+      photos: state.authUser.photos,
+      houseType: state.authUser.houseType,
+      aboutMe: state.authUser.aboutMe,
+      aboutOther: state.authUser.aboutOther
+    })
+    if (data.success) {
+      let user = data.data.user
+      commit('SET_USER', user)
+    }
+
+    return data
   },
 
   async toggleLocal({state}) {

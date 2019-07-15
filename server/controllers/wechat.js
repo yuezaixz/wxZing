@@ -54,7 +54,7 @@ export async function oauth(ctx, next) {
     dbUser = new User({
       role: 'user',
       openid: user.openid,
-      unionid: user.unionid,
+      unionid: user.openid,
       city: user.city,
       nickname: user.nickname,
       province: user.province,
@@ -66,6 +66,8 @@ export async function oauth(ctx, next) {
   } else {
     console.log('update user')
     dbUser.code = code
+    dbUser.openid = user.openid
+    dbUser.unionid = user.openid
     dbUser.city = user.city
     dbUser.nickname = user.nickname
     dbUser.province = user.province
