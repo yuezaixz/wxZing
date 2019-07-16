@@ -1,6 +1,33 @@
 import axios from 'axios'
 import Services from './services'
 
+async function postUserInfo(state, commit) {
+  let { data } = await Services.changeUser({
+    openid: state.authUser.unionid,
+    nickname: state.authUser.nickname,
+    phoneNumber: state.authUser.phoneNumber,
+    wxcode: state.authUser.wxcode,
+    gender: state.authUser.gender,
+    degree: state.authUser.degree,
+    birthday: state.authUser.birthday,
+    xingzuo: state.authUser.xingzuo,
+    city: state.authUser.city,
+    hometown: state.authUser.hometown,
+    career: state.authUser.career,
+    income: state.authUser.income,
+    jobType: state.authUser.jobType,
+    photos: state.authUser.photos,
+    houseType: state.authUser.houseType,
+    aboutMe: state.authUser.aboutMe,
+    aboutOther: state.authUser.aboutOther
+  })
+  if (data.success) {
+    let user = data.user
+    commit('SET_USER', user)
+  }
+  return data
+}
+
 export default {
   nuxtServerInit({ commit }, { req }) {
     if (req.session && req.session.openid) {
@@ -37,6 +64,16 @@ export default {
     }
   },
 
+  async sendSmscode({state}, {tel}) {
+    let { data } = await Services.sendSmscode(tel)
+    return data
+  },
+
+  async checkSmsCode({state}, {tel, smscode}) {
+    let { data } = Services.checkSmsCode(tel, smscode)
+    return data
+  },
+
   hiddenToast({state}) {
     state.showToast = false
   },
@@ -66,47 +103,55 @@ export default {
 
   async selectGender({state, commit}, gender) {
     state.authUser.gender = gender
-    let { data } = await Services.changeUser({
-      openid: state.authUser.unionid,
-      nickname: state.authUser.nickname,
-      phoneNumber: state.authUser.phoneNumber,
-      wxcode: state.authUser.wxcode,
-      gender: state.authUser.gender,
-      degree: state.authUser.degree,
-      birthday: state.authUser.birthday,
-      xingzuo: state.authUser.xingzuo,
-      city: state.authUser.city,
-      hometown: state.authUser.hometown,
-      career: state.authUser.career,
-      income: state.authUser.income,
-      jobType: state.authUser.jobType,
-      photos: state.authUser.photos,
-      houseType: state.authUser.houseType,
-      aboutMe: state.authUser.aboutMe,
-      aboutOther: state.authUser.aboutOther
-    })
-    if (data.success) {
-      let user = data.data.user
-      commit('SET_USER', user)
-    }
-
-    return data
+    return postUserInfo(state, commit)
   },
 
-  async toggleLocal({state}) {
-    state.registerInfo.isLocal = !state.registerInfo.isLocal
+  async selectCity({state, commit}, city) {
+    state.authUser.city = city
+    return postUserInfo(state, commit)
   },
 
-  async selectJobType({state}, jobType) {
-    state.registerInfo.jobType = jobType
+  async selectHometown({state, commit}, hometown) {
+    state.authUser.hometown = hometown
+    return postUserInfo(state, commit)
   },
 
-  async selectHouseType({state}, houseType) {
-    state.registerInfo.houseType = houseType
+  async selectDate({state, commit}, birthday) {
+    state.authUser.birthday = birthday
+    return postUserInfo(state, commit)
   },
 
-  async selectIncome({state}, income) {
-    state.registerInfo.income = income
+  async selectDegree({state, commit}, degree) {
+    state.authUser.degree = degree
+    return postUserInfo(state, commit)
+  },
+
+  async selectWxcode({state, commit}, wxcode) {
+    state.authUser.wxcode = wxcode
+    return postUserInfo(state, commit)
+  },
+
+  async toggleLocal({state, commit}) {
+    state.authUser.isLocal = !state.authUser.isLocal
+    return postUserInfo(state, commit)
+  },
+
+  async selectJobType({state, commit}, jobType) {
+    state.authUser.jobType = jobType
+    return postUserInfo(state, commit)
+  },
+
+  async selectHouseType({state, commit}, houseType) {
+    state.authUser.houseType = houseType
+    return postUserInfo(state, commit)
+  },
+
+  async selectIncome({state, commit}, income) {
+    state.authUser.income = income
+    return postUserInfo(state, commit)
+  },
+
+  next({ state }) {
   },
 
   async fetchPayments({ state }) {

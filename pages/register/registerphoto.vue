@@ -18,13 +18,13 @@
         .card-inner 上传一些生活照，首张将作为封面展示
         .card-column(style='height:40px;')
         .card-select-row(style='flex-wrap: wrap; margin-right: 20px;')
-          .city-photo-flex1(v-for='(item, index) in registerInfo.photos')
+          .city-photo-flex1(v-for='(item, index) in authUser.photos')
             img.card-photo(:src='"http://wxzing.podoon.cn/"+item')
             input(type='file', @change='uploadImg(index, $event)')
-          .city-photo-flex1(v-if='registerInfo.photos.length < 5')
+          .city-photo-flex1(v-if='authUser.photos.length < 5')
             img.add-photo(src='~static/img/add.png')
             .add-title 点击添加照片
-            input(type='file', @change='uploadImg(registerInfo.photos.length, $event)')
+            input(type='file', @change='uploadImg(authUser.photos.length, $event)')
 
     .card-footer
   .next
@@ -49,7 +49,7 @@ export default {
 
   computed: {
     ...mapState([
-      'registerInfo'
+      'authUser'
     ])
   },
 
@@ -97,7 +97,7 @@ export default {
 
       uploader.cancel()
       console.log(res)
-      this.$store.state.registerInfo.photos.push(res.key)
+      this.$store.state.authUser.photos.push(res.key)
 
       this.$store.dispatch('showToast', {duration: 2000, str:'上传成功', toastType:'icon-success-no-circle'})
       // this.edited.images.push(res.key)

@@ -17,8 +17,8 @@
         .card-column(style='height:10px;')
         .card-inner 请填写你的职业或专业领域
         .city-control
-          //- .city-titl(v-if='!registerInfo.career') 请在此输入
-          input.city-input(v-model="registerInfo.career" value="registerInfo.career" , placeholder='请在此输入')
+          //- .city-titl(v-if='!authUser.career') 请在此输入
+          input.city-input(v-model="authUser.career" value="authUser.career" , placeholder='请在此输入')
 
     .card-footer
   .next
@@ -41,7 +41,7 @@ export default {
 
   computed: {
     ...mapState([
-      'registerInfo'
+      'authUser'
     ])
   },
 

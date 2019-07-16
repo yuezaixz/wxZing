@@ -40,6 +40,16 @@ class Services {
     return axios.get('/api/payments')
   }
 
+  sendSmscode(tel) {
+    return axios.post(`/api/smscode/${tel}`)
+  }
+
+  checkSmsCode(tel, smscode) {
+    return axios.post('/api/check_smscode', {
+      tel, smscode
+    })
+  }
+
   changeUser(user) {
     try {
       return axios.post('/api/change_user', (user || {}))

@@ -19,14 +19,14 @@
         .card-column(style='height:40px;')
         .card-column
           .card-select-row
-            .city-select-flex1(@click='selectIncome(1)', :style="{'background-color': registerInfo.income === 1 ? '#97aef1':''}")
+            .city-select-flex1(@click='selectIncome(1)', :style="{'background-color': authUser.income === 1 ? '#97aef1':''}")
               .city-title 10W内
-            .city-select-flex1(@click='selectIncome(2)', :style="{'background-color': registerInfo.income === 2 ? '#97aef1':''}")
+            .city-select-flex1(@click='selectIncome(2)', :style="{'background-color': authUser.income === 2 ? '#97aef1':''}")
               .city-title 10-20W
           .card-select-row
-            .city-select-flex1(@click='selectIncome(3)', :style="{'background-color': registerInfo.income === 3 ? '#97aef1':''}")
+            .city-select-flex1(@click='selectIncome(3)', :style="{'background-color': authUser.income === 3 ? '#97aef1':''}")
               .city-title 20-50W
-            .city-select-flex1(@click='selectIncome(4)', :style="{'background-color': registerInfo.income === 4 ? '#97aef1':''}")
+            .city-select-flex1(@click='selectIncome(4)', :style="{'background-color': authUser.income === 4 ? '#97aef1':''}")
               .city-title 50W以上
 
     .card-footer
@@ -50,7 +50,7 @@ export default {
 
   computed: {
     ...mapState([
-      'registerInfo'
+      'authUser'
     ])
   },
 

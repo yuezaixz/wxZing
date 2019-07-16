@@ -19,7 +19,7 @@
         .card-column(style='height:2px;')
         .card-inner 请给自己取一个好听的名字吧
         .city-control
-          input.about-input(v-model="registerInfo.nickname" value="registerInfo.nickname", placeholder='点击在此输入')
+          input.about-input(v-model="authUser.nickname" value="authUser.nickname", placeholder='点击在此输入')
 
     .card-footer
   .next
@@ -44,14 +44,14 @@ export default {
 
   computed: {
     ...mapState([
-      'registerInfo'
+      'authUser'
     ])
   },
 
   methods: {
     async done() {
       var registerInfo = this.$store.state.registerInfo
-      if (registerInfo.openid) {
+      if (authUser.openid) {
 
       } else {
         this.$store.dispatch('signin', {

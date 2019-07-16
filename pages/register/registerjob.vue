@@ -19,22 +19,22 @@
         .card-column(style='height:40px;')
         .card-column
           .card-select-row
-            .city-select-flex1(@click='selectJobType(1)', :style="{'background-color': registerInfo.jobType === 1 ? '#97aef1':''}")
+            .city-select-flex1(@click='selectJobType(1)', :style="{'background-color': authUser.jobType === 1 ? '#97aef1':''}")
               .city-title 国企
-            .city-select-flex1(@click='selectJobType(2)', :style="{'background-color': registerInfo.jobType === 2 ? '#97aef1':''}")
+            .city-select-flex1(@click='selectJobType(2)', :style="{'background-color': authUser.jobType === 2 ? '#97aef1':''}")
               .city-title 外企
           .card-select-row
-            .city-select-flex1(@click='selectJobType(3)', :style="{'background-color': registerInfo.jobType === 3 ? '#97aef1':''}")
+            .city-select-flex1(@click='selectJobType(3)', :style="{'background-color': authUser.jobType === 3 ? '#97aef1':''}")
               .city-title 私企
-            .city-select-flex1(@click='selectJobType(4)', :style="{'background-color': registerInfo.jobType === 4 ? '#97aef1':''}")
+            .city-select-flex1(@click='selectJobType(4)', :style="{'background-color': authUser.jobType === 4 ? '#97aef1':''}")
               .city-title 事业单位
           .card-select-row
-            .city-select-flex1(@click='selectJobType(5)', :style="{'background-color': registerInfo.jobType === 5 ? '#97aef1':''}")
+            .city-select-flex1(@click='selectJobType(5)', :style="{'background-color': authUser.jobType === 5 ? '#97aef1':''}")
               .city-title 自由职业
-            .city-select-flex1(@click='selectJobType(6)', :style="{'background-color': registerInfo.jobType === 6 ? '#97aef1':''}")
+            .city-select-flex1(@click='selectJobType(6)', :style="{'background-color': authUser.jobType === 6 ? '#97aef1':''}")
               .city-title 创业
           .card-select-row
-            .city-select-flex1(@click='selectJobType(0)', :style="{'background-color': registerInfo.jobType === 0 ? '#97aef1':''}")
+            .city-select-flex1(@click='selectJobType(0)', :style="{'background-color': authUser.jobType === 0 ? '#97aef1':''}")
               .city-title 其他
             .city-select-flex1(style="border:none;")
 
@@ -59,7 +59,7 @@ export default {
 
   computed: {
     ...mapState([
-      'registerInfo'
+      'authUser'
     ])
   },
 

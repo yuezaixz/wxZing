@@ -30,23 +30,7 @@ const createStore = () => {
       authUser: null,
       qiniuOptions: qiniuOptions,
       registerInfo: {
-        code: null,
-        openid: null,
-        unionid: null,
-        gender: 1,
-        tel: '13599915039',
-        smscode: '0018',
-        isLocal: false,
-        jobType: 0,
-        income: 0,
-        houseType: 0,
-        degree: 0,
-        hometown: '',
-        city: '',
-        birthdayYear: 0,
-        birthdayMonth: 0,
-        birthdayDay: 0,
-        photos: []
+        tel: ''
       }
       // shoppingScroll: 0,
       // houses: [],

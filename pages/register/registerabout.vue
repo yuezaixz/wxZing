@@ -19,10 +19,10 @@
         .card-column(style='height:2px;')
         .card-inner 优秀的介绍能让ta更快找到你
         .city-control
-          input.about-input(v-model="registerInfo.aboutMe" value="registerInfo.aboutMe", placeholder='关于我')
+          input.about-input(v-model="authUser.aboutMe" value="authUser.aboutMe", placeholder='关于我')
         .card-column(style='height:10px;')
         .city-control
-          input.about-input(v-model="registerInfo.aboutOther" value="registerInfo.aboutOther", placeholder='理想型')
+          input.about-input(v-model="authUser.aboutOther" value="authUser.aboutOther", placeholder='理想型')
 
     .card-footer
   .next
@@ -45,7 +45,7 @@ export default {
 
   computed: {
     ...mapState([
-      'registerInfo'
+      'authUser'
     ])
   },
 

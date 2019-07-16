@@ -75,63 +75,31 @@ export class DatabaseController {
     if (openid) {
       const findUser = await User.findOne({unionid: openid,}).exec()
       if (findUser) {
-        if (nickname) {
-          findUser.nickname = nickname
-        }
-        if (phoneNumber) {
-          findUser.phoneNumber = phoneNumber
-        }
-        if (wxcode) {
-          findUser.wxcode = wxcode
-        }
-        if (gender) {
-          findUser.gender = gender
-        }
-        if (degree) {
-          findUser.degree = degree
-        }
-        if (birthday) {
-          findUser.birthday = birthday
-        }
-        if (xingzuo) {
-          findUser.xingzuo = xingzuo
-        }
-        if (city) {
-          findUser.city = city
-        }
-        if (hometown) {
-          findUser.hometown = hometown
-        }
-        if (career) {
-          findUser.career = career
-        }
-        if (income) {
-          findUser.income = income
-        }
-        if (jobType) {
-          findUser.jobType = jobType
-        }
-        if (photos) {
-          findUser.photos = photos
-        }
-        if (houseType) {
-          findUser.houseType = houseType
-        }
-        if (aboutMe) {
-          findUser.aboutMe = aboutMe
-        }
-        if (aboutOther) {
-          findUser.aboutOther = aboutOther
-        }
+        findUser.nickname = nickname
+        findUser.phoneNumber = phoneNumber
+        findUser.wxcode = wxcode
+        findUser.gender = gender
+        findUser.degree = degree
+        findUser.birthday = birthday
+        findUser.xingzuo = xingzuo
+        findUser.city = city
+        findUser.hometown = hometown
+        findUser.career = career
+        findUser.income = income
+        findUser.jobType = jobType
+        findUser.photos = photos
+        findUser.houseType = houseType
+        findUser.aboutMe = aboutMe
+        findUser.aboutOther = aboutOther
         findUser.save()
         ctx.session = {
           openid: findUser.openid,
           user: findUser
         }
-        ctx.body = {
+        return (ctx.body = {
           success: true,
           user: findUser
-        }
+        })
       }
     }
 
@@ -235,44 +203,46 @@ export class DatabaseController {
 
   @post('smscode/:tel')
   async sendSmscode(ctx, next) {
-    const tel = ctx.params.tel
-    const ip = ctx.ip.replace('::ffff:','')
-    var todayDate = dayTimeStr(new Date())
-    const res = await SmsCode.findOne({tel: tel,}).exec()
+    // TODO 暂时不真的发送，直接给成功
+    return (ctx.body = {success:true})
+    // const tel = ctx.params.tel
+    // const ip = ctx.ip.replace('::ffff:','')
+    // var todayDate = dayTimeStr(new Date())
+    // const res = await SmsCode.findOne({tel: tel,}).exec()
 
-    if (res) {
-      // 如果发送不到60秒，直接提示过于频繁
-      if (new Date().getTime() - res.meta.updateAt.getTime() < 60000) {
-        ctx.body = {success:false, msg:'发送过于频繁'}
-      } else if (res.sendCount >= 10) {
-        ctx.body = {success:false, msg:'发送次数超过限制'}
-      } else {// 如果超过60秒，重新发送二维码
-        var secode = await sms.sendSmsCode(tel)
-        //保存二维码，更新发送次数
-        res.sendCount += 1
-        res.secode = secode
-        res.recordDate = todayDate
-        res.meta.updateAt = new Date()
-        await res.save()
+    // if (res) {
+    //   // 如果发送不到60秒，直接提示过于频繁
+    //   if (new Date().getTime() - res.meta.updateAt.getTime() < 60000) {
+    //     ctx.body = {success:false, msg:'发送过于频繁'}
+    //   } else if (res.sendCount >= 10) {
+    //     ctx.body = {success:false, msg:'发送次数超过限制'}
+    //   } else {// 如果超过60秒，重新发送二维码
+    //     var secode = await sms.sendSmsCode(tel)
+    //     //保存二维码，更新发送次数
+    //     res.sendCount += 1
+    //     res.secode = secode
+    //     res.recordDate = todayDate
+    //     res.meta.updateAt = new Date()
+    //     await res.save()
 
-        ctx.body = {success:true}
-      }
+    //     ctx.body = {success:true}
+    //   }
 
-    } else {
-      var secode = await sms.sendSmsCode(tel)
-      //保存二维码，更新发送次数
-      var smsCode = SmsCode({
-        tel:tel,
-        secode:secode,
-        ip:ip,
-        recordDate:todayDate,
-        sendCount:1,
-        // expiresIn:300
-        expiresIn:3000000
-      })
-      smsCode.save()
-      ctx.body = {success:true}
-    }
+    // } else {
+    //   var secode = await sms.sendSmsCode(tel)
+    //   //保存二维码，更新发送次数
+    //   var smsCode = SmsCode({
+    //     tel:tel,
+    //     secode:secode,
+    //     ip:ip,
+    //     recordDate:todayDate,
+    //     sendCount:1,
+    //     // expiresIn:300
+    //     expiresIn:3000000
+    //   })
+    //   smsCode.save()
+    //   ctx.body = {success:true}
+    // }
     
   }
 

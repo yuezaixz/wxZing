@@ -30,6 +30,9 @@ const UserSchema = new Schema({
   birthday: String,
   // 0-12 未知,魔羯座,水瓶座,双鱼座,白羊座,金牛座,双子座,巨蟹座,狮子座,处女座,天秤座,天蝎座,射手座
   xingzuo: Number,
+  // 微信读取到的
+  provinceName: String,
+  cityName: String,
   // 工作城市
   city: String,
   hometown: String,

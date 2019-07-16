@@ -19,13 +19,11 @@
         .card-inner 填对微信号，才能找到对的人
         .city-control
           .city-title(style='width:60px;') 微信号
-          input.city-input(v-model="registerInfo.wxcode" value="registerInfo.wxcode")
+          input.city-input(v-model="authUser.wxcode" value="authUser.wxcode")
 
     .card-footer
   .next
-    nuxt-link(to='/register/registertel'  v-if="registerInfo.wxcode")
-      .title 下一步
-    div(@click='next'  v-else)
+    div(@click='next')
       .title 下一步
 
 </template>
@@ -44,7 +42,7 @@ export default {
 
   computed: {
     ...mapState([
-      'registerInfo'
+      'authUser'
     ])
   },
 
@@ -53,7 +51,16 @@ export default {
       this.$store.dispatch('selectGender', gender)
     },
     async next() {
-      alert('请填写微信号')
+      // /register/registertel
+      if (this.$store.state.authUser.wxcode) {
+        var data = await this.$store.dispatch('selectWxcode', this.$store.state.authUser.wxcode)
+        if (data.success) {
+          const visit = '/register/registertel'
+          this.$router.replace(visit)
+        }
+      } else {
+        alert('请填写微信号')
+      }
     }
   },
 

@@ -22,11 +22,11 @@
         .card-column(style='height:29px;')
         .card-row(@click='toggleLocal()')
           .check-box(style='margin-left:20px;')
-            .check-box-select(v-if='registerInfo.isLocal')
+            .check-box-select(v-if='authUser.isLocal')
           .check-title(style='margin-left:5px;') 我是土著
 
       .card-column(style='height:49px;')
-      .card-column(v-if='!registerInfo.isLocal')
+      .card-column(v-if='!authUser.isLocal')
         .card-row(style='justify-content:flex-start;')
           .card-title 你工作的城市
           img.card-arrow-down(src='~static/img/arrow_down.png')
@@ -38,7 +38,7 @@
 
     .card-footer
   .next
-    nuxt-link(to='/register/registeredu'  v-if="(registerInfo.isLocal && registerInfo.hometown) || (registerInfo.hometown && registerInfo.city)")
+    nuxt-link(to='/register/registeredu'  v-if="(authUser.isLocal && authUser.hometown) || (authUser.hometown && authUser.city)")
       .title 下一步
     div(@click='next'  v-else)
       .title 下一步
@@ -61,6 +61,7 @@ import { provsData, citysData } from '~/components/areaData.js'
 import vuePicker from '~/components/picker'
 
 export default {
+  middleware: 'wechat-auth',
   data() {
     return {
       citySelectType: 0,
@@ -72,19 +73,22 @@ export default {
         data2:citysData
       },
       columns: 2,
-
     }
   },
 
   computed: {
     displayHometown() {
-      return this.displayName(1) || "请选择城市"
+      var code = this.$store.state.authUser.hometown
+      return this.displayName(code) || "请选择城市"
     },
     displayCity() {
-      return this.displayName(2) || "请选择城市"
+      var code = this.$store.state.authUser.city
+      return this.displayName(code) || "请选择城市"
     },
     defaultData() {
-      var code = this.selectCity?this.$store.state.registerInfo.city : this.$store.state.registerInfo.hometown
+      // 防止错误的数据，读取微信数据后就先要转换成city code
+
+      var code = this.selectCity?this.$store.state.authUser.city : this.$store.state.authUser.hometown
       var provCode = code && code.length == 6 ? (code.substr(0,2)+'0000'):null
       return code ? [
         {
@@ -108,13 +112,12 @@ export default {
       
     },
     ...mapState([
-      'registerInfo'
+      'authUser'
     ])
   },
 
   methods: {
-    displayName(type) {
-      var code = type ===1? this.$store.state.registerInfo.hometown : this.$store.state.registerInfo.city
+    displayName(code) {
       var provCode = code && code.length == 6 ? (code.substr(0,2)+'0000'):null
       var cityName
       var provName
@@ -152,21 +155,23 @@ export default {
       // this.$store.dispatch('toggleLocal')
     },
     async next() {
-      if (!this.$store.state.registerInfo.hometown) {
+      if (!this.$store.state.authUser.hometown) {
         alert('请选择故乡')
-      } else if (!this.$store.state.registerInfo.isLocal && this.$store.state.registerInfo.hometown) {
+      } else if (!this.$store.state.authUser.isLocal && this.$store.state.authUser.hometown) {
         alert('请选择工作城市')
       }
     },
     close() {
       this.show = false
     },
-    confirmFn(val, val2) {
+    async confirmFn(val, val2) {
       this.show = false
       if (this.selectCity) {
-        this.$store.state.registerInfo.city = val.select2.value
+        await this.$store.dispatch('selectCity', val.select2.value)
+        // this.$store.state.authUser.city = val.select2.value
       } else {
-        this.$store.state.registerInfo.hometown = val.select2.value
+        await this.$store.dispatch('selectHometown', val.select2.value)
+        // this.$store.state.authUser.hometown = val.select2.value
       }
     },
     toShow() {

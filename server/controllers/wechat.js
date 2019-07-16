@@ -55,9 +55,9 @@ export async function oauth(ctx, next) {
       role: 'user',
       openid: user.openid,
       unionid: user.openid,
-      city: user.city,
+      cityName: user.city,
       nickname: user.nickname,
-      province: user.province,
+      provinceName: user.province,
       country: user.country,
       gender: user.sex,
       avatarUrl: user.headimgurl,
@@ -68,9 +68,9 @@ export async function oauth(ctx, next) {
     dbUser.code = code
     dbUser.openid = user.openid
     dbUser.unionid = user.openid
-    dbUser.city = user.city
+    dbUser.cityName = user.city
     dbUser.nickname = user.nickname
-    dbUser.province = user.province
+    dbUser.provinceName = user.province
     dbUser.country = user.country
     dbUser.gender = user.sex
     dbUser.avatarUrl = user.headimgurl

@@ -19,13 +19,11 @@
         .city-control
           .city-title +86
           .city-title |
-          input.city-input(v-model="registerInfo.phoneNum" value="registerInfo.phoneNum")
+          input.city-input(v-model="registerInfo.tel" value="registerInfo.tel")
 
     .card-footer
   .next
-    nuxt-link(to='/register/registercode'  v-if="registerInfo.phoneNum")
-      .title 下一步
-    div(@click='next'  v-else)
+    div(@click='next')
       .title 下一步
 
 </template>
@@ -44,16 +42,25 @@ export default {
 
   computed: {
     ...mapState([
+      'authUser',
       'registerInfo'
     ])
   },
 
   methods: {
-    async selectGender(gender) {
-      this.$store.dispatch('selectGender', gender)
-    },
     async next() {
-      alert('请填写手机号')
+      if (this.$store.state.registerInfo.tel) {// TODO 验证下手机号
+        //手机号正则
+        var phoneReg = /(^1[3|4|5|7|8]\d{9}$)|(^09\d{8}$)/;
+        if (!phoneReg.test(this.$store.state.registerInfo.tel)) {
+          this.$store.dispatch('showToast', {duration: 2000, str:'错误的手机号码', toastType:'icon-warn'})
+        } else {
+          const visit = '/register/registercode'
+          this.$router.replace(visit)
+        }
+      } else {
+        this.$store.dispatch('showToast', {duration: 2000, str:'请填写手机号', toastType:'icon-warn'})
+      }
     }
   },
 
