@@ -34,6 +34,7 @@ import { mapState } from 'vuex'
 import { setTimeout } from 'timers';
 
 export default {
+  middleware: 'wechat-auth',
   data() {
     return {
       telDisabled: false,
@@ -94,20 +95,17 @@ export default {
       }
     },
     async next() {
-      //TODO check code
-
-      // if (this.$store.state.registerInfo.tel) {// TODO 验证下手机号
-      //   //手机号正则
-      //   var phoneReg = /(^1[3|4|5|7|8]\d{9}$)|(^09\d{8}$)/;
-      //   if (!phoneReg.test(this.$store.state.registerInfo.tel)) {
-      //     this.$store.dispatch('showToast', {duration: 2000, str:'错误的手机号码', toastType:'icon-warn'})
-      //   } else {
-      //     const visit = '/register/registercode'
-      //     this.$router.replace(visit)
-      //   }
-      // } else {
-      //   this.$store.dispatch('showToast', {duration: 2000, str:'请填写手机号', toastType:'icon-warn'})
-      // }
+      if (this.code && this.code.length == 4) {
+        var data = await this.$store.dispatch('checkSmsCode', {tel: this.$store.state.registerInfo.tel, smscode: this.code})
+        if (data.success) {
+          const visit = '/register/registerjob'
+          this.$router.replace(visit)
+        } else {
+          this.$store.dispatch('showToast', {duration: 2000, str:data.msg, toastType:'icon-warn'})
+        }
+      } else {
+        this.$store.dispatch('showToast', {duration: 2000, str:'请填写验证码', toastType:'icon-warn'})
+      }
     }
     
   },
@@ -115,12 +113,17 @@ export default {
   components: {
   },
   async mounted() {
-    var responseData = await this.$store.dispatch('sendSmscode', {tel: this.$store.state.registerInfo.tel})
-    console.log(responseData)
-    if (responseData.success ) {
-      this.startCountRetry()
+    if (this.$store.state.registerInfo.tel) {
+      var responseData = await this.$store.dispatch('sendSmscode', {tel: this.$store.state.registerInfo.tel})
+      console.log(responseData)
+      if (responseData.success ) {
+        this.startCountRetry()
+      } else {
+        this.$store.dispatch('showToast', {duration: 2000, str:'无法发送验证码', toastType:'icon-warn'})
+      }
     } else {
-      this.$store.dispatch('showToast', {duration: 2000, str:'无法发送验证码', toastType:'icon-warn'})
+      const visit = '/register/registertel'
+      this.$router.replace(visit)
     }
   },
 }

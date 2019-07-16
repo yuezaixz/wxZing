@@ -69,8 +69,13 @@ export default {
     return data
   },
 
-  async checkSmsCode({state}, {tel, smscode}) {
-    let { data } = Services.checkSmsCode(tel, smscode)
+  async checkSmsCode({ state, commit }, {tel, smscode}) {
+    let { data } = await Services.checkSmsCode(tel, smscode)
+    console.log('data', data)
+    if (data.success) {
+      state.authUser.phoneNumber = tel
+      postUserInfo(state, commit)
+    }
     return data
   },
 

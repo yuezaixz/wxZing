@@ -40,6 +40,7 @@ import randomToken from 'random-token'
 import Uploader from 'qiniu-web-uploader'
 
 export default {
+  middleware: 'wechat-auth',
   data() {
     return {
       user: {},

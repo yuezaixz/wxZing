@@ -265,11 +265,11 @@ export class DatabaseController {
     const res = await SmsCode.findOne({tel: tel,}).exec()
     console.log(res)
     if (res == null || res.secode !== smscode) {
-      ctx.body = {success:false, msg: '验证码错误'}
+      return (ctx.body = {success:false, msg: '验证码错误'})
     } else if ((new Date().getTime() - res.meta.updateAt.getTime())/1000 > res.expiresIn) {
-      ctx.body = {success:false, msg: '验证码过期'}
+      return (ctx.body = {success:false, msg: '验证码过期'})
     } else {
-      ctx.body = {success:true}
+      return (ctx.body = {success:true})
     }
   }
 

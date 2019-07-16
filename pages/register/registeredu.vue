@@ -55,6 +55,7 @@ import { yearsData, monthsData, daysData } from '~/components/dateData.js'
 import vuePicker from '~/components/picker'
 
 export default {
+  middleware: 'wechat-auth',
   data() {
     return {
       citySelectType: 0,
