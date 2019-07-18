@@ -12,10 +12,10 @@
     .card-body
       .card-column
         .card-row(style='justify-content:flex-start;')
-          .card-title 你的工作性质
+          .card-title 你的年收入
           img.card-arrow-down(src='~static/img/arrow_down.png')
         .card-column(style='height:10px;')
-        .card-inner 一个人也是一个办公室
+        .card-inner 只有四个区间选择，贫穷限制了我的想象
         .card-column(style='height:40px;')
         .card-column
           .card-select-row
@@ -31,7 +31,7 @@
 
     .card-footer
   .next
-    nuxt-link(to='/register/registerhouse')
+    div(@click='next')
       .title 下一步
 
 </template>
@@ -57,9 +57,15 @@ export default {
 
   methods: {
     async selectIncome(income) {
-      this.$store.dispatch('selectIncome', income)
+      await this.$store.dispatch('selectIncome', income)
     },
     async next() {
+      if (this.$store.state.authUser.income) {
+        const visit = '/register/registerhouse'
+        this.$router.replace(visit)
+      } else {
+        this.$store.dispatch('showToast', {duration: 2000, str:'请选择', toastType:'icon-warn'})
+      }
     }
   },
 

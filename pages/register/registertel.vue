@@ -54,13 +54,13 @@ export default {
         //手机号正则
         var phoneReg = /(^1[3|4|5|7|8]\d{9}$)|(^09\d{8}$)/;
         if (!phoneReg.test(this.$store.state.registerInfo.tel)) {
-          this.$store.dispatch('showToast', {duration: 2000, str:'错误的手机号码', toastType:'icon-warn'})
+          this.$store.dispatch('showToast', {duration: 2000, str:'号码错误', toastType:'icon-warn'})
         } else {
           const visit = '/register/registercode'
           this.$router.replace(visit)
         }
       } else {
-        this.$store.dispatch('showToast', {duration: 2000, str:'请填写手机号', toastType:'icon-warn'})
+        this.$store.dispatch('showToast', {duration: 2000, str:'请填写', toastType:'icon-warn'})
       }
     }
   },

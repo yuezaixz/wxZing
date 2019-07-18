@@ -28,7 +28,7 @@
 
     .card-footer
   .next
-    nuxt-link(to='/register/registerabout')
+    div(@click='next')
       .title 下一步
 </template>
 
@@ -104,6 +104,17 @@ export default {
       // this.edited.images.push(res.key)
     },
     async next() {
+      if (this.$store.state.authUser.photos) {
+        var data = await this.$store.dispatch('selectPhoto', this.$store.state.authUser.photos)
+        if (data.success) {
+          const visit = '/register/registerincome'
+          this.$router.replace(visit)
+        }
+        const visit = '/register/registerabout'
+        this.$router.replace(visit)
+      } else {
+        this.$store.dispatch('showToast', {duration: 2000, str:'请选择', toastType:'icon-warn'})
+      }
     }
   },
 

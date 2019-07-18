@@ -22,7 +22,7 @@
 
     .card-footer
   .next
-    nuxt-link(to='/register/registerincome')
+    div(@click='next')
       .title 下一步
 
 </template>
@@ -47,10 +47,16 @@ export default {
   },
 
   methods: {
-    async selectGender(gender) {
-      this.$store.dispatch('selectGender', gender)
-    },
     async next() {
+      if (this.$store.state.authUser.career) {
+        var data = await this.$store.dispatch('selectCareer', this.$store.state.authUser.career)
+        if (data.success) {
+          const visit = '/register/registerincome'
+          this.$router.replace(visit)
+        }
+      } else {
+        alert('请填写职业或领域')
+      }
     }
   },
 

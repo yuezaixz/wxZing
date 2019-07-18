@@ -31,7 +31,7 @@
 
     .card-footer
   .next
-    nuxt-link(to='/register/registerphoto')
+    div(@click='next')
       .title 下一步
 
 </template>
@@ -57,9 +57,15 @@ export default {
 
   methods: {
     async selectHouseType(houseType) {
-      this.$store.dispatch('selectHouseType', houseType)
+      await this.$store.dispatch('selectHouseType', houseType)
     },
     async next() {
+      if (this.$store.state.authUser.houseType) {
+        const visit = '/register/registerphoto'
+        this.$router.replace(visit)
+      } else {
+        this.$store.dispatch('showToast', {duration: 2000, str:'请选择', toastType:'icon-warn'})
+      }
     }
   },
 

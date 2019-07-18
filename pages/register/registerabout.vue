@@ -26,7 +26,7 @@
 
     .card-footer
   .next
-    nuxt-link(to='/register/registername')
+    div(@click='next')
       .title 下一步
 
 </template>
@@ -55,6 +55,18 @@ export default {
       this.$store.dispatch('selectGender', gender)
     },
     async next() {
+      if (this.$store.state.authUser.aboutMe && this.$store.state.authUser.aboutOther) {
+        var data = await this.$store.dispatch('selectAbout', {
+          'aboutMe':this.$store.state.authUser.aboutMe,
+          'aboutOther':this.$store.state.authUser.aboutOther
+        })
+        if (data.success) {
+          const visit = '/register/registername'
+          this.$router.replace(visit)
+        }
+      } else {
+        this.$store.dispatch('showToast', {duration: 2000, str:'请填写', toastType:'icon-warn'})
+      }
     }
   },
 

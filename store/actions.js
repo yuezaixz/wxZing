@@ -146,6 +146,11 @@ export default {
     return postUserInfo(state, commit)
   },
 
+  async selectCareer({state, commit}, career) {
+    state.authUser.career = career
+    return postUserInfo(state, commit)
+  },
+
   async selectHouseType({state, commit}, houseType) {
     state.authUser.houseType = houseType
     return postUserInfo(state, commit)
@@ -153,6 +158,22 @@ export default {
 
   async selectIncome({state, commit}, income) {
     state.authUser.income = income
+    return postUserInfo(state, commit)
+  },
+
+  async selectPhoto({state, commit}, photos) {
+    state.authUser.photos = photos
+    return postUserInfo(state, commit)
+  },
+
+  async selectAbout({state, commit}, {aboutOther, aboutMe}) {
+    state.authUser.aboutMe = aboutMe
+    state.authUser.aboutOther = aboutOther
+    return postUserInfo(state, commit)
+  },
+
+  async selectName({state, commit}, nickname) {
+    state.authUser.nickname = nickname
     return postUserInfo(state, commit)
   },
 

@@ -91,7 +91,7 @@ export default {
       if ((await this.$store.dispatch('sendSmscode', {tel: this.$store.state.registerInfo.tel})).success ) {
         this.startCountRetry()
       } else {
-        this.$store.dispatch('showToast', {duration: 2000, str:'无法发送验证码', toastType:'icon-warn'})
+        this.$store.dispatch('showToast', {duration: 2000, str:'无法发送', toastType:'icon-warn'})
       }
     },
     async next() {
@@ -104,7 +104,7 @@ export default {
           this.$store.dispatch('showToast', {duration: 2000, str:data.msg, toastType:'icon-warn'})
         }
       } else {
-        this.$store.dispatch('showToast', {duration: 2000, str:'请填写验证码', toastType:'icon-warn'})
+        this.$store.dispatch('showToast', {duration: 2000, str:'请填写', toastType:'icon-warn'})
       }
     }
     
@@ -119,7 +119,7 @@ export default {
       if (responseData.success ) {
         this.startCountRetry()
       } else {
-        this.$store.dispatch('showToast', {duration: 2000, str:'无法发送验证码', toastType:'icon-warn'})
+        this.$store.dispatch('showToast', {duration: 2000, str:'无法发送', toastType:'icon-warn'})
       }
     } else {
       const visit = '/register/registertel'

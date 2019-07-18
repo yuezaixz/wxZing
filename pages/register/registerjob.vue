@@ -40,7 +40,7 @@
 
     .card-footer
   .next
-    nuxt-link(to='/register/registercareer')
+    div(@click='next')
       .title 下一步
 
 </template>
@@ -66,9 +66,15 @@ export default {
 
   methods: {
     async selectJobType(jobType) {
-      this.$store.dispatch('selectJobType', jobType)
+      await this.$store.dispatch('selectJobType', jobType)
     },
     async next() {
+      if (this.$store.state.authUser.jobType) {
+        const visit = '/register/registercareer'
+        this.$router.replace(visit)
+      } else {
+        this.$store.dispatch('showToast', {duration: 2000, str:'请填写', toastType:'icon-warn'})
+      }
     }
   },
 

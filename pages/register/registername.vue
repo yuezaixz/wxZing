@@ -23,9 +23,7 @@
 
     .card-footer
   .next
-    //- nuxt-link(to='/register/registerdone')
-    //-   .title 下一步
-    div(@click='done')
+    div(@click='next')
       .title 下一步
 
 </template>
@@ -50,32 +48,15 @@ export default {
   },
 
   methods: {
-    async done() {
-      var registerInfo = this.$store.state.registerInfo
-      if (authUser.openid) {
-
+    async next() {
+      if (this.$store.state.authUser.nickname) {
+        var data = await this.$store.dispatch('selectName', this.$store.state.authUser.nickname)
+        if (data.success) {
+          const visit = '/register/registerdone'
+          this.$router.replace(visit)
+        }
       } else {
-        this.$store.dispatch('signin', {
-          openid,
-          unionid,
-          code,
-          nickname,
-          wxcode,
-          gender,
-          degree,
-          birthday,
-          city,
-          tel,
-          hometown,
-          career,
-          income,
-          jobType,
-          photos,
-          houseType,
-          aboutMe,
-          aboutOther,
-          smscode
-        })
+        this.$store.dispatch('showToast', {duration: 2000, str:'请填写', toastType:'icon-warn'})
       }
     }
   },
