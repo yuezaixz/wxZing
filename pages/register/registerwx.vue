@@ -56,8 +56,13 @@ export default {
       if (this.$store.state.authUser.wxcode) {
         var data = await this.$store.dispatch('selectWxcode', this.$store.state.authUser.wxcode)
         if (data.success) {
-          const visit = '/register/registertel'
-          this.$router.replace(visit)
+          if (!this.$store.state.authUser.tel) {
+            const visit = '/register/registertel'
+            this.$router.replace(visit)
+          } else {
+            const visit = '/register/registerjob'
+            this.$router.replace(visit)
+          }
         }
       } else {
         this.$store.dispatch('showToast', {duration: 2000, str:'请填写', toastType:'icon-warn'})

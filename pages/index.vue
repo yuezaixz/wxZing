@@ -1,18 +1,47 @@
-<template>
-  <section class="container">
-    <img src="../static/img/logo.png" alt="Nuxt.js Logo" class="logo" />
-    <h1 class="title">
-      Universal Vue.js Application Framework
-    </h1>
-    <nuxt-link class="button" to="/about">
-      About page
-    </nuxt-link>
-  </section>
+<template lang="pug">
+.container
+  .card
+    .card-header
+      img.card-left-circle(src='~static/img/banner_circle.png')
+      .card-flex-1
+      img.card-bgsjh(src='~static/img/banner_bgsjh.png')
+      img.card-op(src='~static/img/banner_office_planning.png')
+      img.card-close(src='~static/img/banner_close.png')
+
+    .card-body
+      div {{authUser.nickname}}
+
+    .card-footer
 </template>
 
-<style scoped>
-.title
-{
-  margin: 50px 0;
+<script>
+
+import { mapState } from 'vuex'
+import axios from 'axios'
+import randomToken from 'random-token'
+import Uploader from 'qiniu-web-uploader'
+
+export default {
+  middleware: 'wechat-info',
+  data() {
+    return {
+      user: {},
+      activeGender:0
+    }
+  },
+
+  computed: {
+    ...mapState([
+      'authUser'
+    ])
+  },
+
+  methods: {
+  },
+
+  components: {
+  }
 }
-</style>
+</script>
+
+<style scoped, lang="sass" src='~/static/css/index.sass'></style>
