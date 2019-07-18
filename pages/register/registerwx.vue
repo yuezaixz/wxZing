@@ -60,7 +60,7 @@ export default {
           this.$router.replace(visit)
         }
       } else {
-        alert('请填写微信号')
+        this.$store.dispatch('showToast', {duration: 2000, str:'请填写', toastType:'icon-warn'})
       }
     }
   },

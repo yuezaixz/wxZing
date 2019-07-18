@@ -55,7 +55,7 @@ export default {
           this.$router.replace(visit)
         }
       } else {
-        alert('请填写职业或领域')
+        this.$store.dispatch('showToast', {duration: 2000, str:'请填写', toastType:'icon-warn'})
       }
     }
   },

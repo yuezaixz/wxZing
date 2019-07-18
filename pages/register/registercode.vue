@@ -64,9 +64,9 @@ export default {
         // this.telDisabled = true
         console.log(newVal)
         this.$refs.vcode.blur()
-        setTimeout(() => {
-          alert(`vcode: ${this.code}`)
-        }, 500)
+        // setTimeout(() => {
+        //   alert(`vcode: ${this.code}`)
+        // }, 500)
       }
     }
   },

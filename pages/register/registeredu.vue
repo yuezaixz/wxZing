@@ -172,11 +172,7 @@ export default {
       // this.$store.dispatch('toggleLocal')
     },
     async next(){
-      if (this.$store.state.authUser.degree) {
-        alert('请选择出生日期')
-      } else {
-        alert('请选择学位')
-      }
+        this.$store.dispatch('showToast', {duration: 2000, str:'请选择', toastType:'icon-warn'})
     },
     close() {
       this.show = false

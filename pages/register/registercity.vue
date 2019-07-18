@@ -155,11 +155,7 @@ export default {
       // this.$store.dispatch('toggleLocal')
     },
     async next() {
-      if (!this.$store.state.authUser.hometown) {
-        alert('请选择故乡')
-      } else if (!this.$store.state.authUser.isLocal && this.$store.state.authUser.hometown) {
-        alert('请选择工作城市')
-      }
+        this.$store.dispatch('showToast', {duration: 2000, str:'请选择', toastType:'icon-warn'})
     },
     close() {
       this.show = false
