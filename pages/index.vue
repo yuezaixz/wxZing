@@ -9,7 +9,18 @@
       img.card-close(src='~static/img/banner_close.png')
 
     .card-body
-      div {{authUser.nickname}}
+      .card-column(style='height:25px;')
+      .card-column
+        .card-row(style='justify-content:center;')
+          .big_avatar_container
+            img.big_avatar(:src='authUser.avatarUrl')
+            .big_avatar_vip VIP
+      .card-column(style='height:20px;')
+        .card-row(style='justify-content:center;')
+          .title {{authUser.nickname}}
+        .card-row(style='justify-content:center;')
+          .sub-title 办公室编号:
+          .sub-title(style='text-decoration:underline;') {{displayUserId}}
 
     .card-footer
 </template>
@@ -31,6 +42,9 @@ export default {
   },
 
   computed: {
+    displayUserId() {
+      return (Array(6).join(0) + this.$store.state.authUser.userId).slice(-6)
+    },
     ...mapState([
       'authUser'
     ])

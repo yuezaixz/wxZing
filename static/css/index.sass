@@ -2,6 +2,21 @@
 @import '~static/sass/color'
 @import '~static/sass/mixin'
 
+.title
+  flex: 1
+  font-size: 18px
+  color: #171717
+  font-family: "Ping Fang SC"
+  font-weight: bold
+  text-align: center
+
+.sub-title
+  font-size: 12px
+  letter-spacing: 0px
+  color: #9b9b9b
+  font-family: "PingFang SC"
+  font-weight: 400
+
 .container
   width: 100vw
   height: 93vh
@@ -78,3 +93,43 @@
       justify-content: flex-start
       align-items: flex-start
       padding-top: $spacing
+
+      .card-column
+        flex: 1
+        width: 100%
+        flex-direction: column
+        justify-content: flex-start
+        align-items: flex-start
+      .card-row
+        flex: 1
+        display: flex
+        width: 100%
+        flex-direction: row
+        justify-content: flex-start
+        align-items: center
+
+      .big_avatar_container
+        position: relative
+
+        .big_avatar
+          border-radius: 50%
+          border: 1px solid #0e050a
+          width: 94px
+          height: 94px
+
+        .big_avatar_vip
+          position: absolute
+          right: -5px
+          top: 5px
+          width: 30px
+          height: 14px
+          border-radius: 2px
+          background-color: #6765ff
+          font-size: 12px
+          -webkit-transform-origin-x: 0
+          -webkit-transform: scale(0.75)
+          line-height: 14px
+          color: #ffffff
+          font-family: "PingFang SC"
+          font-weight: 400
+          text-align: center

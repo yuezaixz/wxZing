@@ -46,6 +46,7 @@ const UserSchema = new Schema({
   houseType: Number,
   aboutMe: String,
   aboutOther: String,
+  avatarUrl: String,
   interestId: [{
     type: ObjectId,
     ref: 'Interest'
