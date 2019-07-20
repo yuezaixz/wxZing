@@ -17,10 +17,47 @@
   font-family: "PingFang SC"
   font-weight: 400
 
+.flex-1
+  flex: 1
+
+.index-item-sub-title
+  font-size: 12px
+  letter-spacing: 0px
+  color: #9b9b9b
+  font-family: "PingFang SC"
+  font-weight: 400
+  position: relative
+  left: 10px
+  -webkit-transform-origin-x: 0
+  -webkit-transform: scale(0.75)
+
+.index-item-title
+  font-size: 12px
+  position: relative
+  left: 0px
+  color: #171717
+  font-family: "Ping Fang SC"
+  font-weight: bold
+  -webkit-transform-origin-x: 0
+  -webkit-transform: scale(0.75)
+
+.v-divider
+  width: 1px
+  height: 100%
+  background-color: #a0a0a0
+
+.h-divider
+  height: 1px
+  width: 100%
+  background-color: #a0a0a0
+
+.dash-line
+  border: 1px dash #000000
+
 .container
   width: 100vw
-  height: 93vh
-  margin-top: 7vh
+  height: calc(100%-40px) !important
+  margin-top: 40px
   flex-direction: column
   display: flex
   justify-content: flex-start
@@ -34,11 +71,13 @@
 
   .card
     width: 340px !important
-    height: 417px
-    display: flex
+    // height: 417px
+    height: calc(100% - 60px)
+    display: inline-table
     flex-direction: column
     align-items: center
     margin-top: 20px
+    margin-bottom: 40px
     // box-shadow: $shadow-1db
 
     .card-header
@@ -70,8 +109,6 @@
         height: 12px
         margin-right: 28px
 
-      .card-flex-1
-        flex: 1
     .card-footer
       background-repeat:no-repeat
       background-size: 100% 100%
@@ -88,25 +125,61 @@
       -moz-background-size: 100% 100%
       background-image: url("~static/img/document_bg_body.png")
       flex: 1
+      display: flex
       width: 100%
+      height: calc(100% - 37px)
       flex-direction: column
-      justify-content: flex-start
-      align-items: flex-start
+      justify-content: center
+      align-items: center
       padding-top: $spacing
 
       .card-column
-        flex: 1
-        width: 100%
         flex-direction: column
-        justify-content: flex-start
-        align-items: flex-start
-      .card-row
-        flex: 1
-        display: flex
-        width: 100%
-        flex-direction: row
-        justify-content: flex-start
+        justify-content: center
         align-items: center
+      .card-row
+        display: flex
+        flex-direction: row
+        justify-content: center
+        align-items: center
+
+      .card-item-container
+        flex-direction: column
+        justify-content: center
+        align-items: center
+        border-bottom: 1px dashed #a0a0a0
+        width: calc(100% - 50px)
+        margin: 20px 0 30px 0
+
+      .index_item_img
+        height: 35px
+        width: 35px
+
+      .index-bottom
+        margin-bottom: 40px
+
+      .signup-btn
+        width: 135px
+        height: 28px
+        border-radius: 14px
+        background-color: #ffffff
+        border: 1px solid #97aef1
+        font-size: 15px
+        letter-spacing: 0px
+        line-height: 28px
+        color: #97aef1
+        font-family: "Ping Fang SC"
+        font-weight: bold
+        text-align: center
+        margin-top: 20px
+        
+      .index-signup-success
+        font-size: 15px
+        letter-spacing: 0px
+        color: #97aef1
+        font-family: "Ping Fang SC"
+        font-weight: bold
+        text-align: center
 
       .big_avatar_container
         position: relative
@@ -114,13 +187,13 @@
         .big_avatar
           border-radius: 50%
           border: 1px solid #0e050a
-          width: 94px
-          height: 94px
+          width: 64px
+          height: 64px
 
         .big_avatar_vip
           position: absolute
-          right: -5px
-          top: 5px
+          right: -15px
+          top: 0px
           width: 30px
           height: 14px
           border-radius: 2px

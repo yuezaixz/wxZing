@@ -41,7 +41,8 @@ export default {
       return this.$route.name
     },
     navVisible () {
-      return ['index', 'shopping', 'user'].indexOf(this.activeRoute) > -1
+      return false
+      // return ['index', 'shopping', 'user'].indexOf(this.activeRoute) > -1
     }
   }
 }
