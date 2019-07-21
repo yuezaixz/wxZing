@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
+// 互赞
 const ZingSchema = new Schema({
   zingId: { type: Number, default: 0 },
   userId: String,

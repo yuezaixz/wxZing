@@ -79,7 +79,7 @@ export default {
   components: {
   },
 
-  beforeCreate () {
+  beforeCreate() {
     this.$store.dispatch('queryActivityState')
     this.$store.dispatch('queryLovers')
     this.$store.dispatch('queryFollowers')

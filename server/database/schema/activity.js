@@ -7,7 +7,7 @@ const ActivitySchema = new Schema({
   activityName: String,
   activityNo: String,
   memo: String,
-  interestId: [{
+  interest: [{
     type: ObjectId,
     ref: 'Interest'
   }],

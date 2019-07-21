@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
+// 进入相关微信群
 const LookforSchema = new Schema({
   tookforId: { type: Number, default: 0 },
   userId: String,

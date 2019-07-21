@@ -6,7 +6,12 @@ import sms from '../libs/sms'
 import { dayTimeStr , getXingzuo} from '../wechat-lib/util'
 
 const User = mongoose.model('User')
+const Zing = mongoose.model('Zing')
+const Lookfor = mongoose.model('Lookfor')
 const SmsCode = mongoose.model('SmsCode')
+const Activity = mongoose.model('Activity')
+const ActivityApply = mongoose.model('ActivityApply')
+const Interest = mongoose.model('Interest')
 
 @controller('/api')
 export class DatabaseController {
@@ -40,13 +45,12 @@ export class DatabaseController {
   async lovers(ctx, next) {
     const session = ctx.session
     let userId = session.user.userId
+    const lovers = await Zing.find({targetId: userId}).sort('-createAt').exec()
 
     return (ctx.body = {
       success: true,
-      count: 17,
-      data: [
-
-      ]
+      count: lovers.length,
+      data: lovers
     })
   }
 
@@ -54,13 +58,12 @@ export class DatabaseController {
   async followers(ctx, next) {
     const session = ctx.session
     let userId = session.user.userId
+    const lookfors = await Lookfor.find({targetId: userId}).sort('-createAt').exec()
 
     return (ctx.body = {
       success: true,
-      count: 17,
-      data: [
-
-      ]
+      count: lookfors.length,
+      data: lookfors
     })
   }
 
@@ -69,10 +72,203 @@ export class DatabaseController {
     const session = ctx.session
     let userId = session.user.userId
 
+    let activitApplys = await ActivityApply.find({userId}).sort('-createAt').exec()
+    for (const activitApply in activitApplys) {
+      if (!activitApply.activity.isOver) {
+        return (ctx.body = {
+          success: true,
+          state: !activitApply ? 0 : (!activitApply.isHandle ? 2 : (activitApply.isSuccess ? 1 : 3) ) // 0未报名 1 已报名 2 审核中 3审核失败
+        })
+      }
+    }
     return (ctx.body = {
       success: true,
-      state: 1 // 0未报名 1 已报名 2 审核中 3审核失败
+      state: 0
     })
+  }
+
+  @get('interest')
+  async query_interest(ctx, next) {
+    const session = ctx.session
+    let userId = session.user.userId
+    
+    if (userId != 4) {
+      return (ctx.body = {
+        success: false,
+        msg: '没有权限进行该操作'
+      })
+    }
+
+    const data = await Interest.find({}).exec()
+
+    return (ctx.body = {
+      success: true,
+      data
+    })
+  }
+
+  @get('interest/:interestId')
+  async query_interests(ctx, next) {
+    const session = ctx.session
+    let userId = session.user.userId
+    
+    if (userId != 4) {
+      return (ctx.body = {
+        success: false,
+        msg: '没有权限进行该操作'
+      })
+    }
+
+    const { interestId } = ctx.params
+
+    if (!interestId) {
+      return (ctx.body = {
+        success: false,
+        msg: 'interestId不能为空'
+      })
+    }
+
+    const data = await Interest.findOne({interestId}).exec()
+
+    return (ctx.body = {
+      success: true,
+      data
+    })
+  }
+
+  @post('interest')
+  @required({body: ['name', 'aboutInterest']})
+  async create_interest(ctx, next) {
+    const session = ctx.session
+    let userId = session.user.userId
+    
+    if (userId != 4) {
+      return (ctx.body = {
+        success: false,
+        msg: '没有权限进行该操作'
+      })
+    }
+
+    const { name, aboutInterest } = ctx.request.body
+    var interest = new Interest({
+      name,
+      aboutInterest
+    })
+    try {
+      interest = await interest.save()
+      return (ctx.body = {
+        success: true,
+        data: interest
+      })
+    } catch (e) {
+      return (ctx.body = {
+        success: false,
+        msg: '保存出错'
+      })
+    }
+  }
+
+  @get('activity')
+  async query_activitys(ctx, next) {
+    const session = ctx.session
+    let userId = session.user.userId
+    
+    if (userId != 4) {
+      return (ctx.body = {
+        success: false,
+        msg: '没有权限进行该操作'
+      })
+    }
+
+    const data = await Activity.find({}).exec()
+
+    return (ctx.body = {
+      success: true,
+      data
+    })
+  }
+
+  @get('activity/:activityId')
+  async query_activity(ctx, next) {
+    const session = ctx.session
+    let userId = session.user.userId
+    
+    if (userId != 4) {
+      return (ctx.body = {
+        success: false,
+        msg: '没有权限进行该操作'
+      })
+    }
+
+    const { activityId } = ctx.params
+
+    if (!activityId) {
+      return (ctx.body = {
+        success: false,
+        msg: 'activityId不能为空'
+      })
+    }
+
+    const data = await Activity.find({activityId}).exec()
+
+    return (ctx.body = {
+      success: true,
+      data
+    })
+  }
+
+  @post('activity')
+  @required({body: ['activityName', 'memo', 'interestId']})
+  async create_activity(ctx, next) {
+    const session = ctx.session
+    let userId = session.user.userId
+    
+    if (userId != 4) {
+      return (ctx.body = {
+        success: false,
+        msg: '没有权限进行该操作'
+      })
+    }
+    const { activityName, memo, interestId} = ctx.request.body
+    const interest = await Interest.findOne({interestId}).exec()
+    if (!interest) {
+      return (ctx.body = {
+        success: false,
+        msg: '兴趣编号找不到对应兴趣'
+      })
+    }
+    var activity = new Activity({activityName, memo, interest})
+    try {
+      activity = await activity.save()
+      return (ctx.body = {
+        success: true,
+        data: activity
+      })
+    } catch (e) {
+      return (ctx.body = {
+        success: false,
+        msg: '保存出错'
+      })
+    }
+  }
+
+  @post('activity/over')
+  @required({body: ['activityId']})
+  async over_activity(ctx, next) {
+    const { activityId } = ctx.request.body
+    let currentActivity = await Activity.findOne({activityId}).exec()
+    currentActivity.isOver = true
+    try {
+      await currentActivity.save()
+      return (ctx.body = {
+        success: true
+      })
+    } catch (e) {
+      return (ctx.body = {
+        success: false,
+        msg: '保存出错'
+      })
+    }
   }
 
   @post('logout')
