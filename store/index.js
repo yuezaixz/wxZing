@@ -28,6 +28,11 @@ const createStore = () => {
       toastType: 'weui-loading',
       payments: [],
       authUser: null,
+      followersCount: 0,
+      followers: [],
+      loversCount: 0,
+      lovers: [],
+      activityState: 0,
       qiniuOptions: qiniuOptions,
       registerInfo: {
         tel: ''

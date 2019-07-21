@@ -187,13 +187,29 @@ export default {
     return data
   },
 
-  async fetchFollowers({ state }) {
-    // TODO 先用层次5
-    console.log('fetchFollowers', state.authUser.userId)
-    const res = await Services.followers(state.authUser.userId, 5)
+  async queryLovers({ state }) {
+    const {data} = await Services.queryLovers()
+    if (data.success) {
+      state.loversCount = data.count
+      state.lovers = data.data
+    }
+    return data
+  },
 
-    state.currentFollowers = res.data
-    console.log(state.currentFollowers)
-    return res
+  async queryFollowers({ state }) {
+    const {data} = await Services.queryFollowers()
+    if (data.success) {
+      state.followersCount = data.count
+      state.followers = data.data
+    }
+    return data
+  },
+
+  async queryActivityState({ state }) {
+    const {data} = await Services.queryActivityState()
+    if (data.success) {
+      state.activityState = data.state
+    }
+    return data
   }
 }

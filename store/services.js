@@ -60,11 +60,23 @@ class Services {
     }
   }
 
-  followers(userId, depeth) {
+  queryLovers() {
+    return axios.get('api/lovers', {
+      params: {
+      }
+    })
+  }
+
+  queryFollowers() {
     return axios.get('api/followers', {
       params: {
-        userId: userId,
-        depeth: depeth
+      }
+    })
+  }
+
+  queryActivityState() {
+    return axios.get('api/activity_state', {
+      params: {
       }
     })
   }

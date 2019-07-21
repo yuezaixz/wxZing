@@ -36,14 +36,43 @@ export class DatabaseController {
     ctx.body = res
   }
 
+  @get('lovers')
+  async lovers(ctx, next) {
+    const session = ctx.session
+    let userId = session.user.userId
+
+    return (ctx.body = {
+      success: true,
+      count: 17,
+      data: [
+
+      ]
+    })
+  }
+
   @get('followers')
   async followers(ctx, next) {
-    let userId = ctx.query.userId
-    let depth = ctx.query.depth
+    const session = ctx.session
+    let userId = session.user.userId
 
-    const followers = await User.getFollower(userId, depth)
+    return (ctx.body = {
+      success: true,
+      count: 17,
+      data: [
 
-    ctx.body = followers
+      ]
+    })
+  }
+
+  @get('activity_state')
+  async activity_state(ctx, next) {
+    const session = ctx.session
+    let userId = session.user.userId
+
+    return (ctx.body = {
+      success: true,
+      state: 1 // 0未报名 1 已报名 2 审核中 3审核失败
+    })
   }
 
   @post('logout')
@@ -204,45 +233,46 @@ export class DatabaseController {
   @post('smscode/:tel')
   async sendSmscode(ctx, next) {
     // TODO 暂时不真的发送，直接给成功
-    return (ctx.body = {success:true})
-    // const tel = ctx.params.tel
-    // const ip = ctx.ip.replace('::ffff:','')
-    // var todayDate = dayTimeStr(new Date())
-    // const res = await SmsCode.findOne({tel: tel,}).exec()
+    // return (ctx.body = {success:true})
 
-    // if (res) {
-    //   // 如果发送不到60秒，直接提示过于频繁
-    //   if (new Date().getTime() - res.meta.updateAt.getTime() < 60000) {
-    //     ctx.body = {success:false, msg:'发送过于频繁'}
-    //   } else if (res.sendCount >= 10) {
-    //     ctx.body = {success:false, msg:'发送次数超过限制'}
-    //   } else {// 如果超过60秒，重新发送二维码
-    //     var secode = await sms.sendSmsCode(tel)
-    //     //保存二维码，更新发送次数
-    //     res.sendCount += 1
-    //     res.secode = secode
-    //     res.recordDate = todayDate
-    //     res.meta.updateAt = new Date()
-    //     await res.save()
+    const tel = ctx.params.tel
+    const ip = ctx.ip.replace('::ffff:','')
+    var todayDate = dayTimeStr(new Date())
+    const res = await SmsCode.findOne({tel: tel,}).exec()
 
-    //     ctx.body = {success:true}
-    //   }
+    if (res) {
+      // 如果发送不到60秒，直接提示过于频繁
+      if (new Date().getTime() - res.meta.updateAt.getTime() < 60000) {
+        ctx.body = {success:false, msg:'发送过于频繁'}
+      } else if (res.sendCount >= 10) {
+        ctx.body = {success:false, msg:'发送次数超过限制'}
+      } else {// 如果超过60秒，重新发送二维码
+        var secode = await sms.sendSmsCode(tel)
+        //保存二维码，更新发送次数
+        res.sendCount += 1
+        res.secode = secode
+        res.recordDate = todayDate
+        res.meta.updateAt = new Date()
+        await res.save()
 
-    // } else {
-    //   var secode = await sms.sendSmsCode(tel)
-    //   //保存二维码，更新发送次数
-    //   var smsCode = SmsCode({
-    //     tel:tel,
-    //     secode:secode,
-    //     ip:ip,
-    //     recordDate:todayDate,
-    //     sendCount:1,
-    //     // expiresIn:300
-    //     expiresIn:3000000
-    //   })
-    //   smsCode.save()
-    //   ctx.body = {success:true}
-    // }
+        ctx.body = {success:true}
+      }
+
+    } else {
+      var secode = await sms.sendSmsCode(tel)
+      //保存二维码，更新发送次数
+      var smsCode = SmsCode({
+        tel:tel,
+        secode:secode,
+        ip:ip,
+        recordDate:todayDate,
+        sendCount:1,
+        // expiresIn:300
+        expiresIn:3000000
+      })
+      smsCode.save()
+      ctx.body = {success:true}
+    }
     
   }
 
