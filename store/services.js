@@ -62,22 +62,32 @@ class Services {
 
   queryLovers() {
     return axios.get('api/lovers', {
-      params: {
-      }
     })
   }
 
   queryFollowers() {
     return axios.get('api/followers', {
-      params: {
-      }
+    })
+  }
+
+  queryInterest() {
+    return axios.get('api/interests', {
+    })
+  }
+
+  queryActivity() {
+    return axios.get('api/activitys', {
+    })
+  }
+
+  applyActivity(activityId) {
+    return axios.post('api/activity/apply', {
+      activityId
     })
   }
 
   queryActivityState() {
     return axios.get('api/activity_state', {
-      params: {
-      }
     })
   }
 }

@@ -48,7 +48,7 @@ export default {
       if (data.success) {
         await this.$store.dispatch('showToast', {duration: 3000, str:`操作成功`, toastType:'icon-success-no-circle'})
         this.activity = {}
-        let {data} = await axios.get('/api/activity')
+        let {data} = await axios.get('/api/activitys')
         if (data && data.success) {
           this.activitys = data.data
         }
@@ -61,7 +61,7 @@ export default {
   components: {
   },
   async beforeCreate(){
-    let {data} = await axios.get('/api/activity')
+    let {data} = await axios.get('/api/activitys')
     if (data && data.success) {
       this.activitys = data.data
     }

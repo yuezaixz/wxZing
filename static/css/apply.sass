@@ -2,6 +2,9 @@
 @import '~static/sass/color'
 @import '~static/sass/mixin'
 
+.flex-1
+  flex: 1
+
 .container
   width: 100vw
   height: calc(100%-40px) !important
@@ -14,7 +17,111 @@
   background-size: 100% 100%
   -moz-background-size: 100% 100%
   background-image: url("~static/img/activity_background.png")
-  
+
+  .apply-modal
+    top: 0
+    left: 0
+    position: absolute
+    height: 100%
+    width: 100%
+    .bottom-astronauts
+      width: 280px
+      height: 273px
+      position: fixed
+      bottom: 130px
+      right: -10px
+      z-index: 1002
+
+
+    .bottom-apply-container, .bottom-apply-bg
+      position: fixed
+      bottom: 0
+      height: 300px
+      width: 100%
+      z-index: 1001
+      background-color: white
+      border-top-left-radius: 5px
+      border-top-right-radius: 5px
+      display: flex
+      flex-direction: column
+      justify-content: flex-start
+      align-items: flex-start
+
+    .bottom-apply-container
+      z-index: 1005
+      background-color: rgba(0, 0, 0, 0)
+      .apply-bottom-button
+        height: 49px
+        width: 100%
+        background-color: #486ace
+        text-align: center
+        line-height: 49px
+        font-size: 15px
+        color: #ffffff
+        font-family: "PingFang SC"
+        font-weight: 400
+
+
+
+    .apply-row
+      display: flex
+      flex-direction: row
+      justify-content: center
+      align-items: center
+
+    .apply-wrap
+      width: calc(100%-70px)
+      display: flex
+      flex-direction: row
+      justify-content: flex-start
+      align-items: flex-start
+      flex-wrap: wrap
+
+    .apply-container-title
+      font-size: 14px
+      letter-spacing: 0px
+      line-height: 23px
+      color: #171717
+      font-family: "Ping Fang SC"
+      font-weight: bold
+
+    .apply-container-sub-title
+      font-size: 12px
+      letter-spacing: 0px
+      line-height: 15px
+      color: #9b9b9b
+      font-family: "Ping Fang SC"
+      font-weight: bold
+      -webkit-transform-origin-x: 0
+      -webkit-transform: scale(0.75)
+
+    .apply-container-title-img
+      height: 3px
+      width: 6px
+      margin-left: 5px
+
+    .apply-select
+      margin-left: 13px
+      margin-right: 13px
+      margin-top: 16px
+      height: 28px
+      padding-left: 4px
+      border: 1px solid #171717
+      display: flex
+      align-items: center
+      justify-content: center
+
+      .apply-select-title
+        padding: 0 16px
+        font-size: 10px
+        letter-spacing: 0px
+        line-height: 10px
+        color: #171717
+        font-family: "Ping Fang SC"
+
+
+    .apply-select-chose
+      background-color: #97aef1
 
   .next
     background-repeat:no-repeat

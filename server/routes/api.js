@@ -87,18 +87,8 @@ export class DatabaseController {
     })
   }
 
-  @get('interest')
-  async query_interest(ctx, next) {
-    const session = ctx.session
-    let userId = session.user.userId
-    
-    if (userId != 4) {
-      return (ctx.body = {
-        success: false,
-        msg: '没有权限进行该操作'
-      })
-    }
-
+  @get('interests')
+  async query_interests(ctx, next) {
     const data = await Interest.find({}).exec()
 
     return (ctx.body = {
@@ -108,7 +98,7 @@ export class DatabaseController {
   }
 
   @get('interest/:interestId')
-  async query_interests(ctx, next) {
+  async query_interest(ctx, next) {
     const session = ctx.session
     let userId = session.user.userId
     
@@ -168,7 +158,7 @@ export class DatabaseController {
     }
   }
 
-  @get('activity')
+  @get('activitys')
   async query_activitys(ctx, next) {
     const session = ctx.session
     let userId = session.user.userId
@@ -262,6 +252,44 @@ export class DatabaseController {
       await currentActivity.save()
       return (ctx.body = {
         success: true
+      })
+    } catch (e) {
+      return (ctx.body = {
+        success: false,
+        msg: '保存出错'
+      })
+    }
+  }
+
+  @post('activity/apply')
+  @required({body: ['activityId']})
+  async create_activity(ctx, next) {
+    const session = ctx.session
+    let userId = session.user.userId
+    const { activityId } = ctx.request.body
+
+    const activity = await Activity.findOne({activityId}).exec()
+    if (!activity) {
+      return (ctx.body = {
+        success: false,
+        msg: '找不到相应群聊'
+      })
+    }
+
+    const check = await ActivityApply.findOne({activity, userId}).exec()
+    if (check) {
+      return (ctx.body = {
+        success: true,
+        data: check
+      })
+    }
+
+    var activityApply = new ActivityApply({activity, userId})
+    try {
+      activityApply = await activityApply.save()
+      return (ctx.body = {
+        success: true,
+        data: activityApply
       })
     } catch (e) {
       return (ctx.body = {

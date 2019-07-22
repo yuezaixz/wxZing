@@ -180,6 +180,14 @@ export default {
   next({ state }) {
   },
 
+  async applyActivity({state}, {activityId}) {
+    const {data} = await Services.applyActivity(activityId)
+    if (data.success) {
+      return data.data
+    }
+    return null
+  },
+
   async fetchPayments({ state }) {
     let { data } = await Services.getPayments()
     console.log(data)
@@ -211,5 +219,21 @@ export default {
       state.activityState = data.state
     }
     return data
+  },
+
+  async queryInterest() {
+    const {data} = await Services.queryInterest()
+    if (data.success) {
+      return data.data
+    }
+    return []
+  },
+
+  async queryActivity() {
+    const {data} = await Services.queryActivity()
+    if (data.success) {
+      return data.data
+    }
+    return []
   }
 }

@@ -9,8 +9,14 @@ const ActivityApplySchema = new Schema({
     ref: 'Activity'
   },
   userId: Number,
-  isSuccess: Boolean,
-  isHandle: Boolean,
+  isSuccess: {
+    tyle: Boolean,
+    default: false
+  },
+  isHandle: {
+    tyle: Boolean,
+    default: false
+  },
   memo: String,
   meta: {
     createAt: {
