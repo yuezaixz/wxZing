@@ -261,6 +261,37 @@ export class DatabaseController {
     }
   }
 
+  @post('activity/apply_cancel')
+  @required({body: ['activityId']})
+  async cancel_activity(ctx, next) {
+    const session = ctx.session
+    let userId = session.user.userId
+    const { activityId } = ctx.request.body
+
+    const activityApply = await ActivityApply.findOne({activityApplyId:activityId}).exec()
+
+    if (!activityApply) {
+      return (ctx.body = {
+        success: false,
+        msg: '找不到相应报名'
+      })
+    }
+
+    activityApply.isCancel = true
+
+    try {
+      await activityApply.save()
+      return (ctx.body = {
+        success: true
+      })
+    } catch (e) {
+      return (ctx.body = {
+        success: false,
+        msg: '保存出错'
+      })
+    }
+  }
+
   @post('activity/apply')
   @required({body: ['activityId']})
   async create_activity(ctx, next) {
@@ -275,8 +306,7 @@ export class DatabaseController {
         msg: '找不到相应群聊'
       })
     }
-
-    const check = await ActivityApply.findOne({activity, userId}).exec()
+    const check = await ActivityApply.findOne({activity, userId, isCancel:false }).exec()
     if (check) {
       return (ctx.body = {
         success: true,
@@ -284,7 +314,7 @@ export class DatabaseController {
       })
     }
 
-    var activityApply = new ActivityApply({activity, userId})
+    var activityApply = new ActivityApply({activity, userId, isCancel: false})
     try {
       activityApply = await activityApply.save()
       return (ctx.body = {

@@ -188,6 +188,14 @@ export default {
     return null
   },
 
+  async cancelApply({state}, {activityId}) {
+    const {data} = await Services.cancelApply(activityId)
+    if (data.success) {
+      return data
+    }
+    return null
+  },
+
   async fetchPayments({ state }) {
     let { data } = await Services.getPayments()
     console.log(data)

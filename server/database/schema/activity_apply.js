@@ -10,11 +10,15 @@ const ActivityApplySchema = new Schema({
   },
   userId: Number,
   isSuccess: {
-    tyle: Boolean,
+    type: Boolean,
     default: false
   },
   isHandle: {
-    tyle: Boolean,
+    type: Boolean,
+    default: false
+  },
+  isCancel: {
+    type: Boolean,
     default: false
   },
   memo: String,

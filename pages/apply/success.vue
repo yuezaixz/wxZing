@@ -11,7 +11,7 @@
 
     .card-body
       .apply-success-title 报名成功
-      .apply-success-sub-title 已报名活动：表情包与段子手
+      .apply-success-sub-title 已报名活动：{{activityName}}
       div(style="height:34px;")
       .card-row(style="justify-content:center;")
         .apply-cancel-button 
@@ -39,8 +39,8 @@ export default {
   middleware: 'wechat-auth',
   data() {
     return {
-      user: {},
-      activeGender:0
+      activityName:null,
+      activityId:null
     }
   },
 
@@ -55,13 +55,47 @@ export default {
 
   methods: {
     async cancel_apply() {
-
+      console.log(this.activityId)
+      if (!this.activityId) {
+        this.$store.dispatch('showToast', {duration: 2000, str:"activityId不存在", toastType:'icon-warn'})
+      } else {
+        let data = await this.$store.dispatch('cancelApply', {activityId: this.activityId})
+        if (data.success) {
+          this.$store.dispatch('showToast', {duration: 2000, str:"取消成功", toastType:'icon-success-no-circle'})
+          setTimeout(()=>this.$router.push({
+            path: '/apply'
+          }), 1600)
+        } else {
+          this.$store.dispatch('showToast', {duration: 2000, str:data.msg || "取消失败", toastType:'icon-warn'})
+        }
+      }
     },
     async next() {
+      this.$router.push({
+        path: '/apply'
+      })
     }
   },
 
   components: {
+  },
+
+  beforeCreate () {
+    
+  },
+  mounted() {
+    this.activityId = this.$route.query.activityId
+    this.activityName = this.$route.query.activityName
+    console.log(this.activityId , this.activityName)
+    if (!this.activityName) {
+      // this.$route.
+      this.$store.dispatch('showToast', {duration: 2000, str:"非法访问", toastType:'icon-warn'})
+      setTimeout(()=>this.$router.push({
+        path: '/apply'
+      }), 1600)
+      
+      return;
+    }
   }
 }
 </script>

@@ -13,7 +13,7 @@
         img.apply-container-title-img(src='~static/img/arrow_down.png')
       .apply-container-sub-title(style="margin-left:23px;margin-bottom:14px;") 选择你感兴趣的话题，进行一段奇妙的探索之旅
       .apply-wrap(style="margin-left:10px;-webkit-transform-origin-x: 0;-webkit-transform: scale(0.85);")
-        .apply-select(v-for='(item, index) in activitys' @click="choseActivity(item.activityId)" :class="item.activityId === activityId ? 'apply-select-chose':''")
+        .apply-select(v-for='(item, index) in activitys' @click="choseActivity(item.activityId, item.activityName)" :class="item.activityId === activityId ? 'apply-select-chose':''")
           .apply-select-title  {{item.activityName}}
       .flex-1
       .apply-bottom-button(@click="submit") 确定
@@ -24,6 +24,7 @@
 <script>
 
 import { mapState } from 'vuex'
+import { setTimeout } from 'timers';
 
 export default {
   middleware: 'wechat-info',
@@ -31,6 +32,7 @@ export default {
     return {
       showApply: false,
       activityId: null,
+      activityName: null,
       activitys: []
     }
   },
@@ -48,16 +50,22 @@ export default {
     hideApply() {
       this.showApply = false
     },
-    choseActivity(activityId) {
+    choseActivity(activityId, activityName) {
       this.activityId = activityId
-      console.log(this.activityId)
+      this.activityName = activityName
     },
     async submit() {
       if (this.activityId) {
         let data = await this.$store.dispatch('applyActivity', {activityId:this.activityId})
         if (data) {
-          //TODO 
-          console.log('报名成功')
+          this.$store.dispatch('showToast', {duration: 2000, str:"报名成功", toastType:'icon-success-no-circle'})
+          setTimeout(()=>this.$router.push({
+            path: '/apply/success',
+            query: {
+              activityId: data.activityApplyId,
+              activityName: this.activityName
+            }
+          }), 1600)
         }
       } else {
         this.$store.dispatch('showToast', {duration: 2000, str:'请选择群聊', toastType:'icon-warn'})
