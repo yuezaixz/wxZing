@@ -22,7 +22,7 @@
     .card-footer
   img.astronauts(src='~static/img/astronauts.png')
   .next
-    nuxt-link(to='/')
+    nuxt-link(to='/user')
       .title 查看会员
 
 </template>

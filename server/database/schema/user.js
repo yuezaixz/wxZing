@@ -57,6 +57,15 @@ const UserSchema = new Schema({
   lockUntil: {
     type: Number
   },
+  // 0 未知 1男 2女 3与性别取反
+  filterGender: {
+    type: Number,
+    default: 3
+  },
+  onlyCurrActivity: {
+    type: Boolean,
+    default: false
+  },
   meta: {
     createdAt: {
       type: Date,

@@ -3,23 +3,7 @@ import Services from './services'
 
 async function postUserInfo(state, commit) {
   let { data } = await Services.changeUser({
-    openid: state.authUser.unionid,
-    nickname: state.authUser.nickname,
-    phoneNumber: state.authUser.phoneNumber,
-    wxcode: state.authUser.wxcode,
-    gender: state.authUser.gender,
-    degree: state.authUser.degree,
-    birthday: state.authUser.birthday,
-    xingzuo: state.authUser.xingzuo,
-    city: state.authUser.city,
-    hometown: state.authUser.hometown,
-    career: state.authUser.career,
-    income: state.authUser.income,
-    jobType: state.authUser.jobType,
-    photos: state.authUser.photos,
-    houseType: state.authUser.houseType,
-    aboutMe: state.authUser.aboutMe,
-    aboutOther: state.authUser.aboutOther
+    ...state.authUser
   })
   if (data.success) {
     let user = data.user
@@ -104,6 +88,18 @@ export default {
   async logout({ commit }) {
     await axios.post('/api/logout')
     commit('SET_USER', null)
+  },
+
+  async selectFilter({state, commit}, {filterGender, onlyCurrActivity}) {
+    state.authUser.filterGender = filterGender
+    state.authUser.onlyCurrActivity = onlyCurrActivity
+    console.log(state.authUser.filterGender, state.authUser.onlyCurrActivity)
+    return postUserInfo(state, commit)
+  },
+
+  async randomZing() {
+    let { data } = Services.randomZing()
+    return data
   },
 
   async selectGender({state, commit}, gender) {

@@ -72,7 +72,7 @@ export class DatabaseController {
     const session = ctx.session
     let userId = session.user.userId
 
-    let activitApplys = await ActivityApply.find({userId}).sort('-createAt').exec()
+    let activitApplys = await this.queryUserSuccessActivityApplys(userId)
     for (const activitApply in activitApplys) {
       if (!activitApply.activity.isOver) {
         return (ctx.body = {
@@ -85,6 +85,14 @@ export class DatabaseController {
       success: true,
       state: 0
     })
+  }
+
+  async queryUserSuccessActivityApplys(userId) {
+    return await ActivityApply.find({userId, isCancel: false, isSuccess: true}).sort('-createAt').exec()
+  }
+
+  async queryWorkActivitys() {
+    return await Activity.find({isOver:false}).sort('-createAt').exec()
   }
 
   @get('interests')
@@ -334,6 +342,48 @@ export class DatabaseController {
 
   }
 
+  @get('zing/random')
+  async random_zing(ctx, next) {
+    const session = ctx.session
+    let userId = session.user.userId
+    if (!userId) {
+      return (ctx.body = {
+        success: false,
+        msg: '未登录'
+      })
+    }
+    let workActivitys = await queryWorkActivitys()
+    let workActivityIds = workActivitys.map((item)=>item.activityId)
+    let workActivityApplys = await ActivityApply.find({'activityId': { $in: workActivityIds }}).exec()
+    let workActivityApplyUserIds = workActivityApplys.map((item)=>item.userId)
+    let userQueryDict = {}
+    if (session.user.filterGender) {
+      let filterGender = session.user.filterGender
+      if (filterGender == 3) {
+        filterGender = [0, 2, 1][session.user.gender]
+        if (filterGender) {
+          userQueryDict['gender'] = filterGender
+        }
+      }
+    }
+    if (session.user.onlyCurrActivity) {
+      userQueryDict[userId] = { $in: workActivityApplyUserIds }
+    }
+    let users = await User.find(userQueryDict).exec()
+    let user = users ? users[parseInt(Math.random()*users.length)]:null
+    if (user) {
+      return (ctx.body = {
+        success: true,
+        data: user
+      })
+    } else {
+      return (ctx.body = {
+        success: false,
+        msg: '无符合条件用户'
+      })
+    }
+  }
+
   @post('change_user')
   async change_user(ctx, next) {
     let {
@@ -354,6 +404,8 @@ export class DatabaseController {
       houseType,
       aboutMe,
       aboutOther,
+      filterGender,
+      onlyCurrActivity,
     } = ctx.request.body
     if (openid) {
       const findUser = await User.findOne({unionid: openid,}).exec()
@@ -374,6 +426,8 @@ export class DatabaseController {
         findUser.houseType = houseType
         findUser.aboutMe = aboutMe
         findUser.aboutOther = aboutOther
+        findUser.filterGender = filterGender
+        findUser.onlyCurrActivity = onlyCurrActivity
         findUser.save()
         ctx.session = {
           openid: findUser.openid,
@@ -447,6 +501,8 @@ export class DatabaseController {
     var houseType = ctx.request.body.houseType
     var aboutMe = ctx.request.body.aboutMe
     var aboutOther = ctx.request.body.aboutOther
+    var filterGender = ctx.request.body.filterGender
+    var onlyCurrActivity = ctx.request.body.onlyCurrActivity
 
     //TODO 获取token
     var token = 'aaaa'
@@ -471,7 +527,9 @@ export class DatabaseController {
       houseType,
       aboutMe,
       aboutOther,
-      token
+      token,
+      onlyCurrActivity,
+      filterGender
     })
     console.log(user)
     await user.save()

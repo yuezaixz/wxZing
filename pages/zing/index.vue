@@ -24,6 +24,7 @@ export default {
   middleware: 'wechat-info',
   data() {
     return {
+      zingUser: null
     }
   },
 
@@ -38,15 +39,22 @@ export default {
       return (Array(6).join(0) + userId).slice(-6)
     },
     filter() {
-
+      this.$router.push({
+        path: '/zing/filter'
+      })
     }
   },
 
   components: {
   },
 
-  beforeCreate() {
-    // this.$store.dispatch('queryActivityState')
+  async beforeCreate() {
+    let data = await this.$store.dispatch('randomZing')
+    if (data.success) {
+      this.zingUser = data.data
+    } else {
+      this.$store.dispatch('showToast', {duration: 2000, str:data.msg, toastType:'icon-warn'})
+    }
   }
 }
 </script>

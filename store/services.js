@@ -60,6 +60,11 @@ class Services {
     }
   }
 
+  randomZing() {
+    return axios.get('/api/zing/random', {
+    })
+  }
+
   queryLovers() {
     return axios.get('/api/lovers', {
     })
