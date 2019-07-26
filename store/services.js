@@ -50,6 +50,16 @@ class Services {
     })
   }
 
+  queryUserById(userId) {
+    return axios.get('/api/user/' + userId)
+  }
+
+  zingUserAction(zingUserId) {
+    return axios.post('/api/zing/user', {
+      zingUserId
+    })
+  }
+
   changeUser(user) {
     try {
       return axios.post('/api/change_user', (user || {}))
@@ -60,8 +70,10 @@ class Services {
     }
   }
 
-  randomZing() {
-    return axios.get('/api/zing/random', {
+  randomZing(filterGender, onlyCurrActivity, execludeUserIds) {
+    console.log(execludeUserIds)
+    return axios.post('/api/zing/random', {
+      filterGender, onlyCurrActivity, execludeUserIds
     })
   }
 

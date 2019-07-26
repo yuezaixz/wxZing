@@ -97,8 +97,18 @@ export default {
     return postUserInfo(state, commit)
   },
 
-  async randomZing() {
-    let { data } = Services.randomZing()
+  async queryUserByUserId({state}, userId) {
+    let { data } = await Services.queryUserById(userId)
+    return data
+  },
+
+  async zingUserAction({state}, {zingUserId}) {
+    let { data } = await Services.zingUserAction(zingUserId)
+    return data
+  },
+
+  async randomZing({state}, execludeUserIds) {
+    let { data } = await Services.randomZing(state.authUser.filterGender, state.authUser.onlyCurrActivity, execludeUserIds)
     return data
   },
 

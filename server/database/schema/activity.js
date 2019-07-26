@@ -12,7 +12,10 @@ const ActivitySchema = new Schema({
     ref: 'Interest'
   }],
   photoUrl: String,
-  isOver: Boolean,
+  isOver: {
+    type: Boolean,
+    default: false
+  },
   meta: {
     createAt: {
       type: Date,

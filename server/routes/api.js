@@ -72,7 +72,7 @@ export class DatabaseController {
     const session = ctx.session
     let userId = session.user.userId
 
-    let activitApplys = await this.queryUserSuccessActivityApplys(userId)
+    let activitApplys = await ActivityApply.find({userId, isCancel: false, isSuccess: true}).sort('-createAt').exec()
     for (const activitApply in activitApplys) {
       if (!activitApply.activity.isOver) {
         return (ctx.body = {
@@ -85,14 +85,6 @@ export class DatabaseController {
       success: true,
       state: 0
     })
-  }
-
-  async queryUserSuccessActivityApplys(userId) {
-    return await ActivityApply.find({userId, isCancel: false, isSuccess: true}).sort('-createAt').exec()
-  }
-
-  async queryWorkActivitys() {
-    return await Activity.find({isOver:false}).sort('-createAt').exec()
   }
 
   @get('interests')
@@ -342,20 +334,17 @@ export class DatabaseController {
 
   }
 
-  @get('zing/random')
+  @post('zing/random')
   async random_zing(ctx, next) {
     const session = ctx.session
     let userId = session.user.userId
+    let {execludeUserIds} = ctx.request.body
     if (!userId) {
       return (ctx.body = {
         success: false,
         msg: '未登录'
       })
     }
-    let workActivitys = await queryWorkActivitys()
-    let workActivityIds = workActivitys.map((item)=>item.activityId)
-    let workActivityApplys = await ActivityApply.find({'activityId': { $in: workActivityIds }}).exec()
-    let workActivityApplyUserIds = workActivityApplys.map((item)=>item.userId)
     let userQueryDict = {}
     if (session.user.filterGender) {
       let filterGender = session.user.filterGender
@@ -367,7 +356,18 @@ export class DatabaseController {
       }
     }
     if (session.user.onlyCurrActivity) {
-      userQueryDict[userId] = { $in: workActivityApplyUserIds }
+      let workActivitys = await Activity.find({isOver:false}).sort('-createAt').exec()
+      let workActivityIds = workActivitys.map((item)=>item._id)
+      let workActivityApplys = await ActivityApply.find({'activity': { $in: workActivityIds }}).exec()
+      let workActivityApplyUserIds = workActivityApplys.map((item)=>item.userId)
+      if (execludeUserIds) {
+        for (var k = 0; k < execludeUserIds.length; k++) {
+          let execludeUserId = execludeUserIds[k]
+          var execludeUserIdIndex = workActivityApplyUserIds.indexOf(execludeUserId);
+          if (execludeUserIdIndex !== -1) workActivityApplyUserIds.splice(execludeUserIdIndex, 1);
+        }
+      }
+      userQueryDict['userId'] = { $in: workActivityApplyUserIds, $ne: userId }
     }
     let users = await User.find(userQueryDict).exec()
     let user = users ? users[parseInt(Math.random()*users.length)]:null
@@ -596,6 +596,39 @@ export class DatabaseController {
       return (ctx.body = {success:false, msg: '用户已存在'})
     } else {
       return (ctx.body = {success:true})
+    }
+  }
+
+  @get('user/:userId')
+  async query_user_by_id(ctx, next) {
+    const userId = ctx.params.userId
+    const res = await User.findOne({userId: userId}).exec()
+    if (!res) {
+      return (ctx.body = {success:false, msg: '用户不存在'})
+    } else {
+      return (ctx.body = {success:true, data:res})
+    }
+  }
+
+  @post('zing/user')
+  async zingUser(ctx, next) {
+    var targetId = ctx.request.body.zingUserId
+    const session = ctx.session
+    let userId = session.user.userId
+    let zing;
+    zing = await Zing.findOne({userId, targetId}).exec()
+    if (!zing) {
+      zing = Zing({userId, targetId})
+      zing = await zing.save()
+    }
+    
+    if (zing) {
+      return (ctx.body = {
+        success: true,
+        data: zing
+      })
+    } else {
+      return (ctx.body = {success:false, msg: '操作出错'})
     }
   }
 

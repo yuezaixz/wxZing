@@ -2,13 +2,11 @@
 .container
   .card
     .card-header
-      img.card-close(src='~static/img/banner_close.png' style="margin-left:10px;margin-right:5px;")
+      img.card-left-circle(src='~static/img/banner_circle.png')
+      .flex-1
       img.card-bgsjh(src='~static/img/banner_bgsjh.png')
       img.card-op(src='~static/img/banner_office_planning.png')
-      .flex-1
-      .card-header-filter(@click="filter" style="padding-right:20px;" )
-        .card-header-filter-title 筛选
-        img.card-arrow-down(src='~static/img/arrow_down.png')
+      img.card-close(src='~static/img/banner_close.png')
 
     .card-body(v-if="zingUser")
       .whole-card-photo-container
@@ -24,9 +22,9 @@
             .info-info-item-title {{['未知', '10w内', '10-20W', '20-50W', '50W以上'][authUser.income]}}
 
       .index-oper-block
-        img.index-oper-avator(@click="zingDetail" :src='"http://wxzing.podoon.cn/"+zingUser.photos[0]+"?imageView2/3/w/90/h/90/q/75|imageslim"')
-        img.index-oper-item(@click="zingUserAction" src='~static/img/good.png')
-        img.index-oper-item(@click="rechose" src='~static/img/cancel.png')
+        img.index-oper-avator(:src='"http://wxzing.podoon.cn/"+zingUser.photos[0]+"?imageView2/3/w/90/h/90/q/75|imageslim"')
+        img.index-oper-item(src='~static/img/good.png')
+        img.index-oper-item(src='~static/img/cancel.png')
 
 
     .card-body(v-else)
@@ -43,8 +41,7 @@ export default {
   middleware: 'wechat-info',
   data() {
     return {
-      zingUser: null,
-      execludeUserIds: []
+      zingUser: null
     }
   },
 
@@ -128,19 +125,6 @@ export default {
     displayUserId(userId) {
       return (Array(6).join(0) + userId).slice(-6)
     },
-    filter() {
-      this.$router.push({
-        path: '/zing/filter'
-      })
-    },
-    async zingDetail() {
-      this.$router.push({
-        path: '/zing/detail',
-        query: {
-          zingUserId: this.zingUser.userId
-        }
-      })
-    },
     async zingUserAction() {
       let data = await this.$store.dispatch('zingUserAction', {'zingUserId': this.zingUser.userId})
       if (data.success) {
@@ -150,13 +134,21 @@ export default {
         this.$store.dispatch('showToast', {duration: 2000, str:data.msg || "点赞失败", toastType:'icon-warn'})
       }
     },
-    async rechose() {
-      let data = await this.$store.dispatch('randomZing', [...this.execludeUserIds, this.zingUser.userId])
+    async fellowUserActivity() {
+      let data = await this.$store.dispatch('fellowUserActivity', {'userId': zingUser.userId})
       if (data.success) {
-        this.zingUser = data.data
+        
+        this.$store.dispatch('showToast', {duration: 2000, str:"加入成功", toastType:'icon-success-no-circle'})
+
+        setTimeout(()=>this.$router.push({
+          path: '/apply/success',
+          query: {
+            activityId: data.activityApplyId,
+            activityName: data.activityName
+          }
+        }), 1600)
       } else {
-        this.zingUser = null
-        this.$store.dispatch('showToast', {duration: 2000, str:'没有合适的了', toastType:'icon-warn'})
+        this.$store.dispatch('showToast', {duration: 2000, str:data.msg, toastType:'icon-warn'})
       }
     },
   },
@@ -165,7 +157,8 @@ export default {
   },
 
   async beforeCreate() {
-    let data = await this.$store.dispatch('randomZing')
+    let zingUserId = this.$route.query.zingUserId
+    let data = await this.$store.dispatch('queryUserByUserId', zingUserId)
     if (data.success) {
       this.zingUser = data.data
     } else {

@@ -1,6 +1,6 @@
 <template lang="pug">
 .container
-  .card
+  .card(style="height: calc(100% - 144px)")
     .card-header
       img.card-close(src='~static/img/banner_close.png' style="margin-left:10px;margin-right:5px;")
       img.card-bgsjh(src='~static/img/banner_bgsjh.png')
@@ -41,6 +41,9 @@
           img.card-gender-img-unknow(src='~static/img/unknow_gender_mini_icon.png')
           .card-gender-title 不限
     .card-footer
+  .next
+    div(@click='next')
+      .title 确定
 </template>
 
 <script>
@@ -70,6 +73,11 @@ export default {
     }, 
     async toggleFilterGender(filterGender) {
       await this.$store.dispatch('selectFilter', {onlyCurrActivity: this.$store.state.authUser.onlyCurrActivity, filterGender})
+    },
+    async next() {
+      this.$router.push({
+        path: '/zing'
+      })
     }
   },
 
