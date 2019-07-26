@@ -31,13 +31,13 @@
       .card-row(style='margin-bottom:17px;')
         .sub-title-9 请选择资料展示的性别
       .card-row
-        .card-gender-item(@click="toggleFilterGender(1)" :class="authUser.filterGender === 1?card-gender-item-select:''")
+        .card-gender-item(@click="toggleFilterGender(1)" :class="authUser.filterGender === 1?'card-gender-item-select':''")
           img.card-gender-img(src='~static/img/male_mini_icon.png')
           .card-gender-title 男性
-        .card-gender-item(@click="toggleFilterGender(2)" :class="authUser.filterGender === 2?card-gender-item-select:''")
+        .card-gender-item(@click="toggleFilterGender(2)" :class="authUser.filterGender === 2?'card-gender-item-select':''")
           img.card-gender-img-female(src='~static/img/female_mini_icon.png')
           .card-gender-title 女性
-        .card-gender-item(@click="toggleFilterGender(0)" :class="authUser.filterGender === 0?card-gender-item-select:''")
+        .card-gender-item(@click="toggleFilterGender(0)" :class="authUser.filterGender === 0?'card-gender-item-select':''")
           img.card-gender-img-unknow(src='~static/img/unknow_gender_mini_icon.png')
           .card-gender-title 不限
     .card-footer
