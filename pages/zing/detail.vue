@@ -1,5 +1,12 @@
 <template lang="pug">
 .container
+  .top-swiper
+    .swiper(v-swiper='swiperConfig')
+      .swiper-wrapper
+        .swiper-slide(v-for='item in authUser.photos')
+          img.top-swiper-img(:src='imageCDN + item + "?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100"')
+      .swiper-pagination(slot="pagination")
+
   .card
     .card-header
       img.card-left-circle(src='~static/img/banner_circle.png')
@@ -41,6 +48,14 @@ export default {
   middleware: 'wechat-info',
   data() {
     return {
+      swiperConfig: {
+        autoplay: 4000,
+        direction: 'horizontal',
+        loop: true,
+        pagination: {
+          el: '.swiper-pagination'
+        }
+      },
       zingUser: null
     }
   },
@@ -118,6 +133,7 @@ export default {
     },
     ...mapState([
       'authUser',
+      'imageCDN'
     ])
   },
 
@@ -168,4 +184,4 @@ export default {
 }
 </script>
 
-<style scoped, lang="sass" src='~/static/css/zing.sass'></style>
+<style scoped, lang="sass" src='~/static/css/zing_detail.sass'></style>

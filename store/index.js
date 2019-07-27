@@ -15,7 +15,7 @@ const createStore = () => {
 
   return new Vuex.Store({
     state: {
-      imageCDN: 'pb8e92vqk.bkt.clouddn.com',
+      imageCDN: 'http://wxzing.podoon.cn/',
       homePageScroll: {
         'home': 0,
         'house': 0
