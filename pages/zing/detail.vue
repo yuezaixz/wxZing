@@ -16,28 +16,33 @@
       img.card-close(src='~static/img/banner_close.png')
 
     .card-body(v-if="zingUser")
-      .whole-card-photo-container
-        img.whole-card-photo(:src='"http://wxzing.podoon.cn/"+zingUser.photos[0]+"?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100"')
-      .index-info-block
-        .index-info-title {{authUser.nickname}}
-        .index-info-sub-title(style="margin:10px 0 14px 0;") {{['未知','男','女'][authUser.gender]}} / {{displayAge}} / {{displayXingzuo }} / {{authUser.career}}
-        .card-row(style="justify-content: flex-start; align-items: flex-start;margin:0 0;width:100%;display: flex;")
-          .info-info-item-career
-            .info-info-item-title {{['其他', '国企', '外企', '私企', '事业单位', '自由职业', '创业'][authUser.jobType]}}
-          div(style="width:10px;")
-          .info-info-item-income
-            .info-info-item-title {{['未知', '10w内', '10-20W', '20-50W', '50W以上'][authUser.income]}}
-
-      .index-oper-block
-        img.index-oper-avator(:src='"http://wxzing.podoon.cn/"+zingUser.photos[0]+"?imageView2/3/w/90/h/90/q/75|imageslim"')
-        img.index-oper-item(src='~static/img/good.png')
-        img.index-oper-item(src='~static/img/cancel.png')
-
+      .card-row(style="margin-bottom:8px;margin-top:20px;")
+        .title {{authUser.nickname}}
+        .gender-block
+          img.gender-block-icon(v-if="authUser.gender === 1" src="~static/img/male_mini_icon.png")
+          img.gender-block-icon(v-else src="~static/img/female_mini_icon.png")
+          .gender-block-title {{displayAge}}岁
+      .card-row(style="margin-bottom:10px;")
+        .sub-title {{authUser.provinceName}},{{authUser.cityName}}
+      .card-row(style="margin-bottom:4px;")
+        .content {{displayDegree}},{{displayJobType}},{{authUser.career}},{{displayIncome}}
+      .card-row(style="margin-bottom:4px;")
+        .content 来自：{{authUser.provinceName}},{{authUser.cityName}}
+      .card-row(style="margin-bottom:4px;")
+        .content 关于房产：{{displayHouseType}}
+      .card-row(style="margin-bottom:20px;")
+        .content 互赞即可显示
+      .card-row(style="margin-bottom:15px;")
+        .apply-activity
+         .apply-activity-title 已报名本期活动
 
     .card-body(v-else)
       
 
     .card-footer
+  .about-block
+    .title {{authUser.aboutMe}}
+    .title {{authUser.aboutOther}}
 </template>
 
 <script>
@@ -61,6 +66,21 @@ export default {
   },
 
   computed: {
+    displayDegree() {
+      return ['保密', '博士及以上', '研究生', '本科', '专科', '专科以下'][this.$store.state.authUser.degree]
+    },
+    displayGender() {
+      return ['未知','男','女'][this.$store.state.authUser.gender]
+    },
+    displayJobType() {
+      return ['其他', '国企', '外企', '私企', '事业单位', '自由职业', '创业'][this.$store.state.authUser.jobType]
+    },
+    displayIncome() {
+      return ['未知', '10w内', '10-20W', '20-50W', '50W以上'][this.$store.state.authUser.income]
+    },
+    displayHouseType() {
+      return ['我想保密', '无房产，仍在奋斗', '和家人住', '已购房产'][this.$store.state.authUser.houseType]
+    },
     displayXingzuo() {
       var returnXingzuoIndex;
 
@@ -75,7 +95,7 @@ export default {
         var result = m - (d < '102223444433'.charAt(m - 1) - -19)
         result += 1
         result %= 12
-        returnXingzuoIndex = result
+        XingzuoIndex = result
       }
       return ['未知','魔羯座','水瓶座','双鱼座','白羊座','金牛座','双子座','巨蟹座',
         '狮子座','处女座','天秤座','天蝎座','射手座'][returnXingzuoIndex]
