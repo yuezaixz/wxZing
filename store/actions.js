@@ -107,6 +107,11 @@ export default {
     return data
   },
 
+  async fellowUserActivity({state}, {userId}) {
+    let { data } = await Services.fellowUserActivity(userId)
+    return data
+  },
+
   async randomZing({state}, execludeUserIds) {
     let { data } = await Services.randomZing(state.authUser.filterGender, state.authUser.onlyCurrActivity, execludeUserIds)
     return data

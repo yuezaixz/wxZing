@@ -40,9 +40,24 @@
       
 
     .card-footer
-  .about-block
-    .title {{authUser.aboutMe}}
-    .title {{authUser.aboutOther}}
+  .card(v-if="zingUser" style="margin-top:26px;")
+    .card2-header
+    .card2-body
+      .card-row(style='margin-top:34px;')
+        .title 关于我
+      .card-row
+        .content {{authUser.aboutMe}}
+      .card-row(style='margin-top:50px;')
+        .title 关于理想型
+      .card-row(style='margin-bottom:50px;')
+        .content {{authUser.aboutOther}}
+    .card2-footer
+  .next(@click="zingUserAction")
+      .title 赞
+  .next(@click="fellowUserActivity")
+      .title 进ta的群
+      .vip-block
+        .vip-title VIP
 </template>
 
 <script>
@@ -171,7 +186,7 @@ export default {
       }
     },
     async fellowUserActivity() {
-      let data = await this.$store.dispatch('fellowUserActivity', {'userId': zingUser.userId})
+      let data = await this.$store.dispatch('fellowUserActivity', {'userId': this.zingUser.userId})
       if (data.success) {
         
         this.$store.dispatch('showToast', {duration: 2000, str:"加入成功", toastType:'icon-success-no-circle'})
@@ -184,7 +199,11 @@ export default {
           }
         }), 1600)
       } else {
-        this.$store.dispatch('showToast', {duration: 2000, str:data.msg, toastType:'icon-warn'})
+        if (data.code === 101) {
+          //TODO 跳转VIP页面
+        } else {
+          this.$store.dispatch('showToast', {duration: 2000, str:data.msg, toastType:'icon-warn'})
+        }
       }
     },
   },

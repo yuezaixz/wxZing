@@ -294,7 +294,7 @@ export class DatabaseController {
 
   @post('activity/apply')
   @required({body: ['activityId']})
-  async create_activity(ctx, next) {
+  async apply_activity(ctx, next) {
     const session = ctx.session
     let userId = session.user.userId
     const { activityId } = ctx.request.body
@@ -609,6 +609,54 @@ export class DatabaseController {
       return (ctx.body = {success:true, data:res})
     }
   }
+
+  @post('fellow/user')
+  async fellowUser(ctx, next) {
+    var targetId = ctx.request.body.fellowUserId
+    const session = ctx.session
+    let userId = session.user.userId
+    let lookfor;
+    lookfor = await Lookfor.findOne({userId, targetId}).exec()
+    if (!lookfor) {
+      lookfor = Lookfor({userId, targetId})
+    } else {
+      lookfor.count += 1
+    }
+    lookfor = await lookfor.save()
+
+    // if (session.user.role !== 'vip') {
+    if (false) { // 暂时不验证VIP
+      return (ctx.body = {
+        success:false,
+        code: 101, 
+        data: lookfor,
+        msg: '无权限'
+      })
+    } else {
+      let apply = await ActivityApply.findOne({userId, isSuccess: true, 'activity.isOver': false}).sort('-createAt').exec()
+
+      if (apply) {
+        let newApply = await ActivityApply.findOne({'userId': targetId, 'activity.activityId': apply.activity.activityId}).exec()
+        if (!newApply) {
+          newApply = new ActivityApply({'activity': apply.activity, 'userId': targetId, isCancel: false})
+          newApply = await newApply.save()
+        }
+        return (ctx.body = {
+          success: true,
+          data: newApply
+        })
+      } else {
+        return (ctx.body = {
+          success:false,
+          code: 105, 
+          msg: '未找到群'
+        })
+      }
+
+    }
+
+  }
+
 
   @post('zing/user')
   async zingUser(ctx, next) {

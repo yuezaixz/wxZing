@@ -60,6 +60,12 @@ class Services {
     })
   }
 
+  fellowUserActivity(fellowUserId) {
+    return axios.post('/api/fellow/user', {
+      fellowUserId
+    })
+  }
+
   changeUser(user) {
     try {
       return axios.post('/api/change_user', (user || {}))
