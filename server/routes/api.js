@@ -36,8 +36,21 @@ export class DatabaseController {
   @get('users/:id')
   async dbUser(ctx, next) {
     const id = ctx.params.id
-    const res = await User.findOne({_id: id}).exec()
+    const res = await User.findOne({'userId': id}).exec()
 
+    let applys = await ActivityApply.find({'userId': id, isSuccess: true})
+        .populate({
+          path: 'activity',
+          select: '_id activityId activityName isOver'
+        }).sort('-createAt').exec()
+    for (var k = 0; k < applys.length; k++) {
+      let applyItem = applys[k]
+      if (!applyItem.activity.isOver) {
+        res.apply = applyItem
+        break
+      }
+    }
+    
     ctx.body = res
   }
 
@@ -603,10 +616,25 @@ export class DatabaseController {
   async query_user_by_id(ctx, next) {
     const userId = ctx.params.userId
     const res = await User.findOne({userId: userId}).exec()
+
+    let applys = await ActivityApply.find({userId, isSuccess: true})
+        .populate({
+          path: 'activity',
+          select: '_id activityId activityName isOver'
+        }).sort('-createAt').exec()
+    let apply = null
+    for (var k = 0; k < applys.length; k++) {
+      let applyItem = applys[k]
+      if (!applyItem.activity.isOver) {
+        apply = applyItem
+        break
+      }
+    }
+
     if (!res) {
       return (ctx.body = {success:false, msg: '用户不存在'})
     } else {
-      return (ctx.body = {success:true, data:res})
+      return (ctx.body = {success:true, data:res, apply})
     }
   }
 
@@ -620,7 +648,7 @@ export class DatabaseController {
     if (!lookfor) {
       lookfor = Lookfor({userId, targetId})
     } else {
-      lookfor.count += 1
+      lookfor.lookforCount += 1
     }
     lookfor = await lookfor.save()
 
@@ -633,12 +661,28 @@ export class DatabaseController {
         msg: '无权限'
       })
     } else {
-      let apply = await ActivityApply.findOne({userId, isSuccess: true, 'activity.isOver': false}).sort('-createAt').exec()
+      let applys = await ActivityApply.find({'userId': targetId, isSuccess: true})
+        .populate({
+          path: 'activity',
+          select: '_id isOver'
+        }).sort('-createAt').exec()
+      let apply = null
+      for (var k = 0; k < applys.length; k++) {
+        let applyItem = applys[k]
+        if (!applyItem.activity.isOver) {
+          apply = applyItem
+          break
+        }
+      }
 
       if (apply) {
-        let newApply = await ActivityApply.findOne({'userId': targetId, 'activity.activityId': apply.activity.activityId}).exec()
+        let newApply = await ActivityApply.findOne({userId, 'activity': apply.activity._id})
+          .populate({
+            path: 'activity',
+            select: '_id isOver activityName'
+          }).exec()
         if (!newApply) {
-          newApply = new ActivityApply({'activity': apply.activity, 'userId': targetId, isCancel: false})
+          newApply = new ActivityApply({'activity': apply.activity, userId, isCancel: false})
           newApply = await newApply.save()
         }
         return (ctx.body = {
