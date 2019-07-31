@@ -7,6 +7,8 @@ import { dayTimeStr , getXingzuo} from '../wechat-lib/util'
 
 const User = mongoose.model('User')
 const Zing = mongoose.model('Zing')
+const Report = mongoose.model('Report')
+const Black = mongoose.model('Black')
 const Lookfor = mongoose.model('Lookfor')
 const SmsCode = mongoose.model('SmsCode')
 const Activity = mongoose.model('Activity')
@@ -169,6 +171,19 @@ export class DatabaseController {
         msg: '保存出错'
       })
     }
+  }
+
+  @get('activityings')
+  async query_activityings(ctx, next) {
+    const session = ctx.session
+    let userId = session.user.userId
+
+    const data = await Activity.find({isOver: false}).exec()
+
+    return (ctx.body = {
+      success: true,
+      data
+    })
   }
 
   @get('activitys')
@@ -699,6 +714,50 @@ export class DatabaseController {
 
     }
 
+  }
+
+  @post('black/user')
+  async blackUser(ctx, next) {
+    var targetId = ctx.request.body.userId
+    const session = ctx.session
+    let userId = session.user.userId
+    let black;
+    black = await Black.findOne({userId, targetId}).exec()
+    if (!black) {
+      black = Black({userId, targetId})
+      black = await black.save()
+    }
+    
+    if (black) {
+      return (ctx.body = {
+        success: true,
+        data: black
+      })
+    } else {
+      return (ctx.body = {success:false, msg: '操作出错'})
+    }
+  }
+
+  @post('report/user')
+  async reportUser(ctx, next) {
+    var targetId = ctx.request.body.userId
+    const session = ctx.session
+    let userId = session.user.userId
+    let report;
+    report = await Report.findOne({userId, targetId}).exec()
+    if (!report) {
+      report = Report({userId, targetId})
+      report = await report.save()
+    }
+    
+    if (report) {
+      return (ctx.body = {
+        success: true,
+        data: report
+      })
+    } else {
+      return (ctx.body = {success:false, msg: '操作出错'})
+    }
   }
 
 

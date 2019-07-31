@@ -59,6 +59,21 @@
       .title 进ta的群
       .vip-block
         .vip-title VIP
+  
+  img.more(src='~static/img/more.png' @click="displayApply")
+
+  div.apply-modal(v-if="zingUser" :style="showApply?'':'display:none;'")
+    div.weui-mask(@click="hideApply")
+    div.bottom-apply-container
+      .apply-row(@click="reportUser(zingUser.userId)")
+        .apply-container-title 举报
+      .apply-line
+      .apply-row(@click="blackUser(zingUser.userId)")
+        .apply-container-title 拉黑
+      .apply-line
+      .apply-row(@click="hideApply")
+        .apply-container-title 取消
+      
 </template>
 
 <script>
@@ -78,7 +93,8 @@ export default {
         }
       },
       zingUser: null,
-      apply: null
+      apply: null,
+      showApply: false,
     }
   },
 
@@ -175,8 +191,31 @@ export default {
   },
 
   methods: {
-    displayUserId(userId) {
-      return (Array(6).join(0) + userId).slice(-6)
+    displayApply() {
+      this.showApply = true
+    },
+    hideApply() {
+      this.showApply = false
+    },
+    async reportUser(userId) {
+      let data = await this.$store.dispatch('reportUserAction', {'userId': userId})
+      this.showApply = false
+      if (data.success) {
+        this.zingUser.zing = data.data
+        this.$store.dispatch('showToast', {duration: 2000, str:"举报成功", toastType:'icon-success-no-circle'})
+      } else {
+        this.$store.dispatch('showToast', {duration: 2000, str:data.msg || "举报失败", toastType:'icon-warn'})
+      }
+    },
+    async blackUser(userId) {
+      let data = await this.$store.dispatch('blackUserAction', {'userId': userId})
+      this.showApply = false
+      if (data.success) {
+        this.zingUser.zing = data.data
+        this.$store.dispatch('showToast', {duration: 2000, str:"拉黑成功", toastType:'icon-success-no-circle'})
+      } else {
+        this.$store.dispatch('showToast', {duration: 2000, str:data.msg || "拉黑失败", toastType:'icon-warn'})
+      }
     },
     async zingUserAction() {
       let data = await this.$store.dispatch('zingUserAction', {'zingUserId': this.zingUser.userId})

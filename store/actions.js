@@ -107,6 +107,16 @@ export default {
     return data
   },
 
+  async reportUserAction({state}, {userId}) {
+    let { data } = await Services.reportUserAction(userId)
+    return data
+  },
+
+  async blackUserAction({state}, {userId}) {
+    let { data } = await Services.blackUserAction(userId)
+    return data
+  },
+
   async fellowUserActivity({state}, {userId}) {
     let { data } = await Services.fellowUserActivity(userId)
     return data
@@ -250,6 +260,14 @@ export default {
 
   async queryActivity() {
     const {data} = await Services.queryActivity()
+    if (data.success) {
+      return data.data
+    }
+    return []
+  },
+
+  async queryActivityings() {
+    const {data} = await Services.queryActivityings()
     if (data.success) {
       return data.data
     }

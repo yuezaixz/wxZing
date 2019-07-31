@@ -77,7 +77,7 @@ export default {
   },
 
   async beforeCreate() {
-    this.activitys = await this.$store.dispatch('queryActivity')
+    this.activitys = await this.$store.dispatch('queryActivityings')
     // this.$store.dispatch('queryActivityState')
     // this.$store.dispatch('queryLovers')
     // this.$store.dispatch('queryFollowers')

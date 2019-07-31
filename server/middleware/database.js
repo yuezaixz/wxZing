@@ -71,6 +71,20 @@ export const database = app => {
     }
 
     {
+      let blackCounter = await Counter.findOne({_id: 'blackId'}).exec()
+      if (!blackCounter) {
+        await new Counter({_id: 'blackId'}).save()
+      }
+    }
+
+    {
+      let reportCounter = await Counter.findOne({_id: 'reportId'}).exec()
+      if (!reportCounter) {
+        await new Counter({_id: 'reportId'}).save()
+      }
+    }
+
+    {
       let tookforCounter = await Counter.findOne({_id: 'tookforId'}).exec()
       if (!tookforCounter) {
         await new Counter({_id: 'tookforId'}).save()

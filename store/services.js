@@ -60,6 +60,18 @@ class Services {
     })
   }
 
+  blackUserAction(userId) {
+    return axios.post('/api/black/user', {
+      userId
+    })
+  }
+
+  reportUserAction(userId) {
+    return axios.post('/api/report/user', {
+      userId
+    })
+  }
+
   fellowUserActivity(fellowUserId) {
     return axios.post('/api/fellow/user', {
       fellowUserId
@@ -100,6 +112,11 @@ class Services {
 
   queryActivity() {
     return axios.get('/api/activitys', {
+    })
+  }
+
+  queryActivityings() {
+    return axios.get('/api/activityings', {
     })
   }
 
