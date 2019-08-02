@@ -72,7 +72,7 @@
       
 
     .card-footer
-  .next
+  .next(@click="lookOther")
     .title 查看其他会员资料
 </template>
 
@@ -84,7 +84,7 @@ export default {
   middleware: 'wechat-info',
   data() {
     return {
-      user: {},
+      userGroups: [],
       activeGender:0,
       isSignup: true
     }
@@ -97,9 +97,30 @@ export default {
   },
 
   methods: {
+    lookOther() {
+      this.$router.push({
+        path: '/zing'
+      })
+    }
   },
 
   components: {
+  },
+
+  async beforeCreate() {
+    let isFollow = this.$route.query.isFollow
+    let data
+    if (isFollow) {
+      data = await this.$store.dispatch('queryFollowUsers', zingUserId)
+    } else {
+      data = await this.$store.dispatch('queryZingUsers', zingUserId)
+    }
+    
+    if (data.success) {
+      this.userGroups = data.data
+    } else {
+      this.$store.dispatch('showToast', {duration: 2000, str:data.msg, toastType:'icon-warn'})
+    }
   }
 }
 </script>

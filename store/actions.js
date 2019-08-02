@@ -117,6 +117,16 @@ export default {
     return data
   },
 
+  async queryZingUsers({state}) {
+    let { data } = await Services.queryZingUsers()
+    return data
+  },
+
+  async queryFollowUsers({state}) {
+    let { data } = await Services.queryFollowUsers()
+    return data
+  },
+
   async fellowUserActivity({state}, {userId}) {
     let { data } = await Services.fellowUserActivity(userId)
     return data

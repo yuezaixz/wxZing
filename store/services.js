@@ -66,6 +66,18 @@ class Services {
     })
   }
 
+  queryZingUsers(userId) {
+    return axios.post('/api/userlist/zing', {
+      userId
+    })
+  }
+
+  queryFollowUsers(userId) {
+    return axios.post('/api/userlist/follow', {
+      userId
+    })
+  }
+
   reportUserAction(userId) {
     return axios.post('/api/report/user', {
       userId

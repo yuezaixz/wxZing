@@ -69,6 +69,31 @@ export class DatabaseController {
     })
   }
 
+  @get('userlist/zing')
+  async zing_user_list(ctx, next) {
+    const session = ctx.session
+    let userId = session.user.userId
+    const lovers = await Zing.find({targetId: userId}).sort('-createAt').exec()
+    //TODO 根据日期分组下
+    return (ctx.body = {
+      success: true,
+      data: lovers
+    })
+  }
+
+  @get('userlist/follow')
+  async follow_user_list(ctx, next) {
+    const session = ctx.session
+    let userId = session.user.userId
+    const followers = await ActivityApply.find({targetId: userId}).sort('-createAt').exec()
+    //TODO 根据日期分组下
+
+    return (ctx.body = {
+      success: true,
+      data: followers
+    })
+  }
+
   @get('followers')
   async followers(ctx, next) {
     const session = ctx.session
