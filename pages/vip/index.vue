@@ -9,30 +9,52 @@
       img.card-close(src='~static/img/banner_close.png')
 
     .card-body
-      .card-row
+      .card-row-left23
         .title 关于会员的权限
-      .card-row
+      .card-row-left23
         .sub-title 关于购买VIP会员权限的一些说明与功能
-      div(style="height:38px;")
-      .card-row
+      div(style="height:20px;")
+      .card-row-left23
         img.body-item-img(src='~static/img/Love.png')
         .card-column(style="flex:1;")
           .body-item-title 精准加群
           .body-item-sub-title 精准加入心仪对象微信群，和ta一起参与活动
       .dash-line
-      .card-row
+      .card-row-left23
         img.body-item-img(src='~static/img/Shopping Bag.png')
         .card-column(style="flex:1;")
           .body-item-title 无限看资料库
           .body-item-sub-title 非会员每天有限制看30个资料
       .dash-line
-      .card-row
+      .card-row-left23
         img.body-item-img(src='~static/img/Gift.png')
         .card-column(style="flex:1;")
           .body-item-title 8倍展示机会
           .body-item-sub-title 得到普通会员8倍的曝光率
       .dash-line
-      .sub-title(style="-webkit-transform-origin-x: 50%;-webkit-transform: scale(0.75);") 如果选择购买订阅，费用将从你的账户收取。当前缴费期结束前，系统会提前24小时从你的账户扣费。点击购买即表示你同意我们的《隐私政策》以及《服务条款》
+      .sub-mini-title 如果选择购买订阅，费用将从你的账户收取。当前缴费期结束前，系统会提前24小时从你的账户扣费。点击购买即表示你同意我们的《隐私政策》以及《服务条款》
+      .flex-1
+      .card-body-bottom
+        .card-body-bottom-block-left(@click="selectAction(1)" :class="selectIndex === 1 ?'card-body-bottom-selected':''")
+          .card-row
+            .card-body-bottom-digital 1
+            .card-body-bottom-digital-follow 个月
+          .card-body-bottom-price ¥60/月
+          .card-body-bottom-total ¥60
+
+        .card-body-bottom-block(@click="selectAction(2)" :class="selectIndex === 2 ?'card-body-bottom-selected':''")
+          .card-row
+            .card-body-bottom-digital 3
+            .card-body-bottom-digital-follow 个月
+          .card-body-bottom-price ¥46/月
+          .card-body-bottom-total ¥138
+
+        .card-body-bottom-block-right(@click="selectAction(3)" :class="selectIndex === 3 ?'card-body-bottom-selected':''")
+          .card-row
+            .card-body-bottom-digital 12
+            .card-body-bottom-digital-follow 个月
+          .card-body-bottom-price ¥34.9/月
+          .card-body-bottom-total ¥418
 
 
     .card-footer
@@ -48,6 +70,7 @@ export default {
   middleware: 'wechat-info',
   data() {
     return {
+      selectIndex: 2,
       user: {},
     }
   },
@@ -62,6 +85,9 @@ export default {
   },
 
   methods: {
+    selectAction(selectIndex) {
+      this.selectIndex = selectIndex
+    }
   },
 
   components: {
