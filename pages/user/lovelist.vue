@@ -1,6 +1,6 @@
 <template lang="pug">
 .container
-  .card
+  .card(class="card-mini")
     .card-header
       img.card-left-circle(src='~static/img/banner_circle.png')
       .flex-1
@@ -8,11 +8,72 @@
       img.card-op(src='~static/img/banner_office_planning.png')
       img.card-close(src='~static/img/banner_close.png')
 
-    .card-body
-      .card-column(style='height:30px;')
+    .card-body(style="align-items: flex-start; justify-content: flex-start;")
+      .day-user-list
+        .day-title-row
+          .day-dd 09
+          .day-mm /5月
+          .flex-1
+          .day-all-user 全部 >
+        .user-list-row
+          .user-block
+            img.user-cover(src='http://wxzing.podoon.cn/products/7t86ys2dkitxvsdgpztw55et6vmw5ysk?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100')
+            .user-title 用户的名称
+            .user-sub-title 23岁
+            .user-sub-title 平面设计师
+            .user-sub-title 10万以内
+          .user-block
+            img.user-cover(src='http://wxzing.podoon.cn/products/7t86ys2dkitxvsdgpztw55et6vmw5ysk?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100')
+            .user-title 用户的名称
+            .user-sub-title 23岁
+            .user-sub-title 平面设计师
+            .user-sub-title 10万以内
+          .user-block
+            img.user-cover(src='http://wxzing.podoon.cn/products/7t86ys2dkitxvsdgpztw55et6vmw5ysk?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100')
+            .user-title 用户的名称
+            .user-sub-title 23岁
+            .user-sub-title 平面设计师
+            .user-sub-title 10万以内
+          .user-block
+            img.user-cover(src='http://wxzing.podoon.cn/products/7t86ys2dkitxvsdgpztw55et6vmw5ysk?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100')
+            .user-title 用户的名称
+            .user-sub-title 23岁
+            .user-sub-title 平面设计师
+            .user-sub-title 10万以内
+          .user-block
+            img.user-cover(src='http://wxzing.podoon.cn/products/7t86ys2dkitxvsdgpztw55et6vmw5ysk?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100')
+            .user-title 用户的名称
+            .user-sub-title 23岁
+            .user-sub-title 平面设计师
+            .user-sub-title 10万以内
+
+          .user-block
+      .day-user-list
+        .day-title-row
+          .day-dd 09
+          .day-mm /5月
+          .flex-1
+          .day-all-user 全部 >
+        .user-list-row
+          .user-block
+            img.user-cover(src='http://wxzing.podoon.cn/products/7t86ys2dkitxvsdgpztw55et6vmw5ysk?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100')
+            .user-title 用户的名称
+            .user-sub-title 23岁
+            .user-sub-title 平面设计师
+            .user-sub-title 10万以内
+          .user-block
+            img.user-cover(src='http://wxzing.podoon.cn/products/7t86ys2dkitxvsdgpztw55et6vmw5ysk?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100')
+            .user-title 用户的名称
+            .user-sub-title 23岁
+            .user-sub-title 平面设计师
+            .user-sub-title 10万以内
+          .user-block
+
       
 
     .card-footer
+  .next
+    .title 查看其他会员资料
 </template>
 
 <script>
