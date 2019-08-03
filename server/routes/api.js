@@ -73,11 +73,40 @@ export class DatabaseController {
   async zing_user_list(ctx, next) {
     const session = ctx.session
     let userId = session.user.userId
-    const lovers = await Zing.find({targetId: userId}).sort('-createAt').exec()
+    const lovers = await Zing.find({targetId: userId}).sort('-updateAt').exec()
+
+    let loverGroups = []
+
+    let lastItemDateStr
+    for (const lover in lovers) {
+      let userItem = await User.findOne({userId: lover.userId}).exec()
+      
+      const year = lover.updateAt.getFullYear()
+      const month = lover.updateAt.getMonth()
+      const day = lover.updateAt.getDate()
+
+      let dateStr = `${year}-${month}-${day}`
+      if (lastItemDateStr && lastItemDateStr === dateStr) {
+        loverGroups[loverGroups.length-1]['items'].push({
+          year, month, day, userItem
+        })
+      } else {
+        loverGroups.push({
+          'dateStr': `${(Array(2).join(0) + day).slice(-2)}/${month}月`,
+          'items': [
+            {
+              year, month, day, userItem
+            }
+          ]
+        })
+      }
+      lastItemDateStr = dateStr
+    }
+
     //TODO 根据日期分组下
     return (ctx.body = {
       success: true,
-      data: lovers
+      data: loverGroups
     })
   }
 
@@ -85,7 +114,7 @@ export class DatabaseController {
   async follow_user_list(ctx, next) {
     const session = ctx.session
     let userId = session.user.userId
-    const followers = await ActivityApply.find({targetId: userId}).sort('-createAt').exec()
+    const followers = await ActivityApply.find({targetId: userId}).sort('-updateAt').exec()
     //TODO 根据日期分组下
 
     return (ctx.body = {
