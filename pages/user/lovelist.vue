@@ -9,65 +9,81 @@
       img.card-close(src='~static/img/banner_close.png')
 
     .card-body(style="align-items: flex-start; justify-content: flex-start;")
-      .day-user-list
+      .day-user-list(v-for='groupItem in userGroups')
         .day-title-row
-          .day-dd 09
-          .day-mm /5月
+          .day-dd {{groupItem.dateStr.substring(0,2)}}
+          .day-mm {{groupItem.dateStr.substring(2)}}
           .flex-1
           .day-all-user 全部 >
-        .user-list-row
-          .user-block
-            img.user-cover(src='http://wxzing.podoon.cn/products/7t86ys2dkitxvsdgpztw55et6vmw5ysk?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100')
-            .user-title 用户的名称
-            .user-sub-title 23岁
-            .user-sub-title 平面设计师
-            .user-sub-title 10万以内
-          .user-block
-            img.user-cover(src='http://wxzing.podoon.cn/products/7t86ys2dkitxvsdgpztw55et6vmw5ysk?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100')
-            .user-title 用户的名称
-            .user-sub-title 23岁
-            .user-sub-title 平面设计师
-            .user-sub-title 10万以内
-          .user-block
-            img.user-cover(src='http://wxzing.podoon.cn/products/7t86ys2dkitxvsdgpztw55et6vmw5ysk?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100')
-            .user-title 用户的名称
-            .user-sub-title 23岁
-            .user-sub-title 平面设计师
-            .user-sub-title 10万以内
-          .user-block
-            img.user-cover(src='http://wxzing.podoon.cn/products/7t86ys2dkitxvsdgpztw55et6vmw5ysk?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100')
-            .user-title 用户的名称
-            .user-sub-title 23岁
-            .user-sub-title 平面设计师
-            .user-sub-title 10万以内
-          .user-block
-            img.user-cover(src='http://wxzing.podoon.cn/products/7t86ys2dkitxvsdgpztw55et6vmw5ysk?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100')
-            .user-title 用户的名称
-            .user-sub-title 23岁
-            .user-sub-title 平面设计师
-            .user-sub-title 10万以内
+        .user-list-row(v-for='item in groupItem.items')
+          .user-block(v-if='item.year > 0')
+            img.user-cover(:src='"http://wxzing.podoon.cn/"+item.userItem.photos[0]+"?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100"')
+            .user-title {{item.userItem.nickname}}
+            .user-sub-title {{displayAge(item.userItem)}}岁
+            .user-sub-title {{item.userItem.career}}
+            .user-sub-title {{displayIncome(item.userItem)}}
+          .user-block(v-else)
 
-          .user-block
-      .day-user-list
-        .day-title-row
-          .day-dd 09
-          .day-mm /5月
-          .flex-1
-          .day-all-user 全部 >
-        .user-list-row
-          .user-block
-            img.user-cover(src='http://wxzing.podoon.cn/products/7t86ys2dkitxvsdgpztw55et6vmw5ysk?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100')
-            .user-title 用户的名称
-            .user-sub-title 23岁
-            .user-sub-title 平面设计师
-            .user-sub-title 10万以内
-          .user-block
-            img.user-cover(src='http://wxzing.podoon.cn/products/7t86ys2dkitxvsdgpztw55et6vmw5ysk?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100')
-            .user-title 用户的名称
-            .user-sub-title 23岁
-            .user-sub-title 平面设计师
-            .user-sub-title 10万以内
-          .user-block
+
+      //- .day-user-list
+      //-   .day-title-row
+      //-     .day-dd 09
+      //-     .day-mm /5月
+      //-     .flex-1
+      //-     .day-all-user 全部 >
+      //-   .user-list-row
+      //-     .user-block
+      //-       img.user-cover(src='http://wxzing.podoon.cn/products/7t86ys2dkitxvsdgpztw55et6vmw5ysk?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100')
+      //-       .user-title 用户的名称
+      //-       .user-sub-title 23岁
+      //-       .user-sub-title 平面设计师
+      //-       .user-sub-title 10万以内
+      //-     .user-block
+      //-       img.user-cover(src='http://wxzing.podoon.cn/products/7t86ys2dkitxvsdgpztw55et6vmw5ysk?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100')
+      //-       .user-title 用户的名称
+      //-       .user-sub-title 23岁
+      //-       .user-sub-title 平面设计师
+      //-       .user-sub-title 10万以内
+      //-     .user-block
+      //-       img.user-cover(src='http://wxzing.podoon.cn/products/7t86ys2dkitxvsdgpztw55et6vmw5ysk?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100')
+      //-       .user-title 用户的名称
+      //-       .user-sub-title 23岁
+      //-       .user-sub-title 平面设计师
+      //-       .user-sub-title 10万以内
+      //-     .user-block
+      //-       img.user-cover(src='http://wxzing.podoon.cn/products/7t86ys2dkitxvsdgpztw55et6vmw5ysk?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100')
+      //-       .user-title 用户的名称
+      //-       .user-sub-title 23岁
+      //-       .user-sub-title 平面设计师
+      //-       .user-sub-title 10万以内
+      //-     .user-block
+      //-       img.user-cover(src='http://wxzing.podoon.cn/products/7t86ys2dkitxvsdgpztw55et6vmw5ysk?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100')
+      //-       .user-title 用户的名称
+      //-       .user-sub-title 23岁
+      //-       .user-sub-title 平面设计师
+      //-       .user-sub-title 10万以内
+
+      //-     .user-block
+      //- .day-user-list
+      //-   .day-title-row
+      //-     .day-dd 09
+      //-     .day-mm /5月
+      //-     .flex-1
+      //-     .day-all-user 全部 >
+      //-   .user-list-row
+      //-     .user-block
+      //-       img.user-cover(src='http://wxzing.podoon.cn/products/7t86ys2dkitxvsdgpztw55et6vmw5ysk?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100')
+      //-       .user-title 用户的名称
+      //-       .user-sub-title 23岁
+      //-       .user-sub-title 平面设计师
+      //-       .user-sub-title 10万以内
+      //-     .user-block
+      //-       img.user-cover(src='http://wxzing.podoon.cn/products/7t86ys2dkitxvsdgpztw55et6vmw5ysk?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100')
+      //-       .user-title 用户的名称
+      //-       .user-sub-title 23岁
+      //-       .user-sub-title 平面设计师
+      //-       .user-sub-title 10万以内
+      //-     .user-block
 
       
 
@@ -101,7 +117,61 @@ export default {
       this.$router.push({
         path: '/zing'
       })
-    }
+    },
+    displayIncome(userItem) {
+      return ['未知', '10w内', '10-20W', '20-50W', '50W以上'][userItem.income]
+    },
+    displayAge(userItem) {
+      var birthday = userItem.birthday
+      var returnAge;
+      var strBirthdayArr=birthday.split("-");
+      var birthYear = strBirthdayArr[0];
+      var birthMonth = strBirthdayArr[1];
+      var birthDay = strBirthdayArr[2];
+      
+      let d = new Date();
+      var nowYear = d.getFullYear();
+      var nowMonth = d.getMonth() + 1;
+      var nowDay = d.getDate();
+    
+      if(nowYear == birthYear){
+          returnAge = 0;//同年 则为0岁
+      }
+      else{
+        var ageDiff = nowYear - birthYear ; //年之差
+        if(ageDiff > 0){
+            if(nowMonth == birthMonth) {
+                var dayDiff = nowDay - birthDay;//日之差
+                if(dayDiff < 0)
+                {
+                    returnAge = ageDiff - 1;
+                }
+                else
+                {
+                    returnAge = ageDiff ;
+                }
+            }
+            else
+            {
+                var monthDiff = nowMonth - birthMonth;//月之差
+                if(monthDiff < 0)
+                {
+                    returnAge = ageDiff - 1;
+                }
+                else
+                {
+                    returnAge = ageDiff ;
+                }
+            }
+        }
+        else
+        {
+            returnAge = -1;//返回-1 表示出生日期输入错误 晚于今天
+        }
+      }
+      return returnAge
+    
+    },
   },
 
   components: {
@@ -111,10 +181,11 @@ export default {
     let isFollow = this.$route.query.isFollow
     let data
     if (isFollow) {
-      data = await this.$store.dispatch('queryFollowUsers', zingUserId)
+      data = await this.$store.dispatch('queryFollowUsers')
     } else {
-      data = await this.$store.dispatch('queryZingUsers', zingUserId)
+      data = await this.$store.dispatch('queryZingUsers')
     }
+    console.log(data)
     
     if (data.success) {
       this.userGroups = data.data

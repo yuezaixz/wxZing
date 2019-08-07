@@ -74,16 +74,16 @@ export class DatabaseController {
     const session = ctx.session
     let userId = session.user.userId
     const lovers = await Zing.find({targetId: userId}).sort('-updateAt').exec()
-
     let loverGroups = []
 
     let lastItemDateStr
-    for (const lover in lovers) {
+    for (var i = 0; i < lovers.length; i++) {
+      let lover = lovers[i]
       let userItem = await User.findOne({userId: lover.userId}).exec()
       
-      const year = lover.updateAt.getFullYear()
-      const month = lover.updateAt.getMonth()
-      const day = lover.updateAt.getDate()
+      const year = lover.meta.updateAt.getFullYear()
+      const month = lover.meta.updateAt.getMonth()
+      const day = lover.meta.updateAt.getDate()
 
       let dateStr = `${year}-${month}-${day}`
       if (lastItemDateStr && lastItemDateStr === dateStr) {
@@ -103,6 +103,19 @@ export class DatabaseController {
       lastItemDateStr = dateStr
     }
 
+    for (var i = 0; i < loverGroups.length; i++) {
+      let lover = loverGroups[i]
+      let repairCount = 3 - lover.items.length % 3
+      if (repairCount  == 3) {
+        continue
+      }
+      for (var j = 0; j < repairCount; j++) {
+        lover.items.push({
+          'year' : -1
+        })
+      }
+    }
+
     //TODO 根据日期分组下
     return (ctx.body = {
       success: true,
@@ -116,6 +129,48 @@ export class DatabaseController {
     let userId = session.user.userId
     const followers = await ActivityApply.find({targetId: userId}).sort('-updateAt').exec()
     //TODO 根据日期分组下
+
+    let loverGroups = []
+
+    let lastItemDateStr
+    for (var i = 0; i < followers.length; i++) {
+      let lover = followers[i]
+      let userItem = await User.findOne({userId: lover.userId}).exec()
+      
+      const year = lover.meta.updateAt.getFullYear()
+      const month = lover.meta.updateAt.getMonth()
+      const day = lover.meta.updateAt.getDate()
+
+      let dateStr = `${year}-${month}-${day}`
+      if (lastItemDateStr && lastItemDateStr === dateStr) {
+        loverGroups[loverGroups.length-1]['items'].push({
+          year, month, day, userItem
+        })
+      } else {
+        loverGroups.push({
+          'dateStr': `${(Array(2).join(0) + day).slice(-2)}/${month}月`,
+          'items': [
+            {
+              year, month, day, userItem
+            }
+          ]
+        })
+      }
+      lastItemDateStr = dateStr
+    }
+
+    for (var i = 0; i < loverGroups.length; i++) {
+      let lover = loverGroups[i]
+      let repairCount = 3 - lover.items.length % 3
+      if (repairCount  == 3) {
+        continue
+      }
+      for (var j = 0; j < repairCount; j++) {
+        lover.items.push({
+          'year' : -1
+        })
+      }
+    }
 
     return (ctx.body = {
       success: true,

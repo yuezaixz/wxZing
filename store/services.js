@@ -66,16 +66,12 @@ class Services {
     })
   }
 
-  queryZingUsers(userId) {
-    return axios.post('/api/userlist/zing', {
-      userId
-    })
+  queryZingUsers() {
+    return axios.get('/api/userlist/zing')
   }
 
-  queryFollowUsers(userId) {
-    return axios.post('/api/userlist/follow', {
-      userId
-    })
+  queryFollowUsers() {
+    return axios.get('/api/userlist/follow')
   }
 
   reportUserAction(userId) {
