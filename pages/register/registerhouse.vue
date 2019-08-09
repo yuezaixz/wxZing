@@ -26,7 +26,7 @@
           .card-select-row
             .city-select-flex1(@click='selectHouseType(3)', :style="{'background-color': authUser.houseType === 3 ? '#97aef1':''}")
               .city-title 已购房产
-            .city-select-flex1(@click='selectHouseType(0)', :style="{'background-color': authUser.houseType === 0 ? '#97aef1':''}")
+            .city-select-flex1(@click='selectHouseType(0)', :style="{'background-color': !authUser.houseType ? '#97aef1':''}")
               .city-title 我想保密
 
     .card-footer
@@ -57,6 +57,7 @@ export default {
 
   methods: {
     async selectHouseType(houseType) {
+      this.$forceUpdate();
       await this.$store.dispatch('selectHouseType', houseType)
     },
     async next() {

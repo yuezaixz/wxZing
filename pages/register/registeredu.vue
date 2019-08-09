@@ -17,7 +17,7 @@
         .card-column(style='height:10px;')
         .card-inner 学历是部分的实力
         .city-control(@click='showCityDialog(1)')
-          .city-title {{displayEduStr || '请选择'}}
+          .city-title {{displayEduStr(authUser) || '请选择'}}
           img.card-arrow-down(src='~static/img/arrow_down.png')
 
       .card-column(style='height:89px;')
@@ -28,7 +28,7 @@
         .card-column(style='height:10px;')
         .card-inner 从此记得你生日的人又多了一个
         .city-control(@click='showCityDialog(2)')
-          .city-title {{displayDateStr || '请选择'}}
+          .city-title {{displayDateStr(authUser) || '请选择'}}
 
     .card-footer
   .next
@@ -145,18 +145,18 @@ export default {
         ];
       }
     },
-    displayEduStr() {
-      return this.$store.state.authUser.degree ? ['请选择', '博士及以上', '研究生', '本科', '专科', '其他'][this.$store.state.authUser.degree] : this.$store.state.authUser.degree
-    },
-    displayDateStr() {
-      return this.$store.state.authUser.birthday
-    },
     ...mapState([
       'authUser'
     ])
   },
 
   methods: {
+    displayEduStr(authUser) {
+      return authUser.degree ? ['请选择', '博士及以上', '研究生', '本科', '专科', '其他'][this.$store.state.authUser.degree] : this.$store.state.authUser.degree
+    },
+    displayDateStr(authUser) {
+      return authUser.birthday
+    },
     async showCityDialog(type) {
       this.toShow()
       if (type === 1) {

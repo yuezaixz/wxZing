@@ -57,6 +57,7 @@ export default {
 
   methods: {
     async selectIncome(income) {
+      this.$forceUpdate();
       await this.$store.dispatch('selectIncome', income)
     },
     async next() {

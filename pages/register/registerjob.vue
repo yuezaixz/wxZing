@@ -66,6 +66,7 @@ export default {
 
   methods: {
     async selectJobType(jobType) {
+      this.$forceUpdate();
       await this.$store.dispatch('selectJobType', jobType)
     },
     async next() {
