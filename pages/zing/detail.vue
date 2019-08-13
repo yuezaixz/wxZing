@@ -1,5 +1,5 @@
 <template lang="pug">
-.container
+.detail-container
   .top-swiper
     .swiper(v-swiper='swiperConfig')
       .swiper-wrapper
@@ -53,9 +53,9 @@
       .card-row(style='margin-bottom:50px;')
         .content {{zingUser.aboutOther}}
     .card2-footer
-  .next(@click="zingUserAction")
+  .detail-next(@click="zingUserAction")
       .title 赞
-  .next(v-if="apply" @click="fellowUserActivity(apply.activity.activityId)")
+  .detail-next(v-if="apply" @click="fellowUserActivity(apply.activity.activityId)")
       .title 进ta的群
       .vip-block
         .vip-title VIP

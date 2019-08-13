@@ -19,7 +19,7 @@
       .card-column
         .card-row(style='justify-content:center;')
           .title {{authUser.nickname}}
-        .card-row(style='justify-content:center;-webkit-transform-origin-x: 40px;-webkit-transform: scale(0.75);')
+        .card-row(style='justify-content:center;-webkit-transform-origin-x: 50%;-webkit-transform: scale(0.75);')
           .sub-title 办公室编号：
           .sub-title(style='text-decoration:underline;') {{displayUserId}}
       .card-column(style='height:25px;')
@@ -43,7 +43,7 @@
           .sub-title(style='text-decoration:underline;margin-left:10px;') 工作人员微信号
       .index-bottom( v-if="!activityState")
         .index-item-sub-title(style="left:28px;") 您尚未报名任何活动
-        .signup-btn 立即报名
+        .signup-btn(@click='applyAction') 立即报名
     .card-footer
 </template>
 
@@ -74,6 +74,9 @@ export default {
   },
 
   methods: {
+    applyAction() {
+      this.$router.replace('/apply')
+    }
   },
 
   components: {

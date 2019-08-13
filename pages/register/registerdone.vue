@@ -13,10 +13,10 @@
       .card-column
         .card-column(style='height:20px;')
         .card-row(style='justify-content:center;')
-          .done-title 注册成功！
+          .done-title 注册成功
         .card-column(style='height:10px;')
         .card-inner(style='text-align:center;padding-left: 0px;') 欢迎加入办公室计划，编号{{displayUserId}}是您的专属号码
-        .card-inner(style='text-align:center;padding-left: 0px;') 由这串数字开始，
+        .card-inner(style='text-align:center;padding-left: 0px;') 由这串数字开始
         .card-inner(style='text-align:center;padding-left: 0px;') 让有趣的灵魂遇见好看的皮囊~
 
     .card-footer

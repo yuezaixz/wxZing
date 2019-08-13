@@ -9,7 +9,7 @@
       img.card-op(src='~static/img/banner_office_planning.png')
       img.card-close(src='~static/img/banner_close.png')
 
-    .card-body
+    .card-body(style="align-items:center;")
       .apply-success-title 报名成功
       .apply-success-sub-title 已报名活动：{{activityName}}
       div(style="height:34px;")

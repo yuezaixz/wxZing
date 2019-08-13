@@ -1,5 +1,5 @@
 <template lang="pug">
-.container
+.apply-container
   .next(@click="apply")
     .title 活动报名
   
@@ -55,7 +55,7 @@ export default {
       this.activityName = activityName
     },
     async submit() {
-      if (this.activityId) {
+      if (this.activityId || this.activityId === 0) {
         let data = await this.$store.dispatch('applyActivity', {activityId:this.activityId})
         if (data) {
           this.$store.dispatch('showToast', {duration: 2000, str:"报名成功", toastType:'icon-success-no-circle'})
@@ -65,7 +65,7 @@ export default {
               activityId: data.activityApplyId,
               activityName: this.activityName
             }
-          }), 1600)
+          }), 1000)
         }
       } else {
         this.$store.dispatch('showToast', {duration: 2000, str:'请选择群聊', toastType:'icon-warn'})
