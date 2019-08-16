@@ -226,7 +226,7 @@ export class DatabaseController {
     const session = ctx.session
     let userId = session.user.userId
     
-    if (userId != 4) {
+    if (session.user.role != 'admin') {
       return (ctx.body = {
         success: false,
         msg: '没有权限进行该操作'
@@ -256,7 +256,7 @@ export class DatabaseController {
     const session = ctx.session
     let userId = session.user.userId
     
-    if (userId != 4) {
+    if (session.user.role != 'admin') {
       return (ctx.body = {
         success: false,
         msg: '没有权限进行该操作'
@@ -300,7 +300,7 @@ export class DatabaseController {
     const session = ctx.session
     let userId = session.user.userId
     
-    if (userId != 4) {
+    if (session.user.role != 'admin') {
       return (ctx.body = {
         success: false,
         msg: '没有权限进行该操作'
@@ -320,7 +320,7 @@ export class DatabaseController {
     const session = ctx.session
     let userId = session.user.userId
     
-    if (userId != 4) {
+    if (session.user.role != 'admin') {
       return (ctx.body = {
         success: false,
         msg: '没有权限进行该操作'
@@ -350,7 +350,7 @@ export class DatabaseController {
     const session = ctx.session
     let userId = session.user.userId
     
-    if (userId != 4) {
+    if (session.user.role != 'admin') {
       return (ctx.body = {
         success: false,
         msg: '没有权限进行该操作'
