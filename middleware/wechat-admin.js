@@ -1,5 +1,5 @@
 export default function ({ store, route, redirect }) {
-  if (store.state.authUser.userId !== 4) {
+  if (store.state.authUser.role !== 'admin') {
     return redirect('/roleerror')
   }
 }
