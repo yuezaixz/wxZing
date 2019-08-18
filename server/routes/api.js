@@ -500,7 +500,7 @@ export class DatabaseController {
         msg: '未登录'
       })
     }
-    let userQueryDict = {}
+    let userQueryDict = {'aboutMe': {$ne:null}}
     if (session.user.filterGender) {
       let filterGender = session.user.filterGender
       if (filterGender == 3) {

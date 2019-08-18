@@ -151,10 +151,13 @@ export default {
       }
     },
     async rechose() {
-      let data = await this.$store.dispatch('randomZing', [...this.execludeUserIds, this.zingUser.userId])
+      this.$store.dispatch('showToast', {str:'查找中'})
+      this.execludeUserIds.push(this.zingUser.userId)
+      let data = await this.$store.dispatch('randomZing', [...this.execludeUserIds])
       console.log(data)
       if (data.success) {
         this.zingUser = data.data
+        this.$store.dispatch('showToast', {duration: 2000, str:'更新成功', toastType:'icon-success-no-circle'})
       } else {
         this.$store.dispatch('showToast', {duration: 2000, str:'没有合适的了', toastType:'icon-warn'})
       }
