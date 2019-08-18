@@ -211,6 +211,24 @@ export class DatabaseController {
     })
   }
 
+  @get('users')
+  async users(ctx, next) {
+    
+    if (session.user.role != 'admin') {
+      return (ctx.body = {
+        success: false,
+        msg: '没有权限进行该操作'
+      })
+    }
+
+    const data = await User.find({}).exec()
+
+    return (ctx.body = {
+      success: true,
+      data
+    })
+  }
+
   @get('interests')
   async query_interests(ctx, next) {
     const data = await Interest.find({}).exec()
