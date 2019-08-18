@@ -92,7 +92,9 @@ export default {
           el: '.swiper-pagination'
         }
       },
-      zingUser: null,
+      zingUser: {
+        photos: []
+      },
       apply: null,
       showApply: false,
     }
@@ -116,9 +118,12 @@ export default {
     },
     displayXingzuo() {
       var returnXingzuoIndex;
+      if (!this.zingUser.birthday) {
+        return '--';
+      }
 
       var birthday = this.zingUser.birthday
-      var strBirthdayArr=birthday.split("-");
+      var strBirthdayArr = birthday.split("-");
       if (strBirthdayArr.length < 3) {
         returnXingzuoIndex = 0
       } else {
@@ -134,6 +139,9 @@ export default {
         '狮子座','处女座','天秤座','天蝎座','射手座'][returnXingzuoIndex]
     },
     displayAge() {
+      if (!this.zingUser.birthday) {
+        return '--';
+      }
       var birthday = this.zingUser.birthday
       var returnAge;
       var strBirthdayArr=birthday.split("-");
