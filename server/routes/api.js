@@ -523,6 +523,8 @@ export class DatabaseController {
         }
       }
       userQueryDict['userId'] = { $in: workActivityApplyUserIds, $ne: userId }
+    } else {
+      userQueryDict['userId'] = { $nin: execludeUserIds, $ne: userId }
     }
     let users = await User.find(userQueryDict).exec()
     let user = users ? users[parseInt(Math.random()*users.length)]:null

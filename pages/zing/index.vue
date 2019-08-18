@@ -152,10 +152,10 @@ export default {
     },
     async rechose() {
       let data = await this.$store.dispatch('randomZing', [...this.execludeUserIds, this.zingUser.userId])
+      console.log(data)
       if (data.success) {
         this.zingUser = data.data
       } else {
-        this.zingUser = null
         this.$store.dispatch('showToast', {duration: 2000, str:'没有合适的了', toastType:'icon-warn'})
       }
     },
