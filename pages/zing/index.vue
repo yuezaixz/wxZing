@@ -14,14 +14,14 @@
       .whole-card-photo-container
         img.whole-card-photo(:src='"http://wxzing.podoon.cn/"+zingUser.photos[0]+"?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100"')
       .index-info-block
-        .index-info-title {{authUser.nickname}}
-        .index-info-sub-title(style="margin:10px 0 14px 0;") {{['未知','男','女'][authUser.gender]}} / {{displayAge}} / {{displayXingzuo }} / {{authUser.career}}
+        .index-info-title {{zingUser.nickname}}
+        .index-info-sub-title(style="margin:10px 0 14px 0;") {{['未知','男','女'][zingUser.gender]}} / {{displayAge}} / {{displayXingzuo }} / {{authUser.career}}
         .card-row(style="justify-content: flex-start; align-items: flex-start;margin:0 0;width:100%;display: flex;")
           .info-info-item-career
-            .info-info-item-title {{['其他', '国企', '外企', '私企', '事业单位', '自由职业', '创业'][authUser.jobType]}}
+            .info-info-item-title {{['其他', '国企', '外企', '私企', '事业单位', '自由职业', '创业'][zingUser.jobType]}}
           div(style="width:10px;")
           .info-info-item-income
-            .info-info-item-title {{['未知', '10w内', '10-20W', '20-50W', '50W以上'][authUser.income]}}
+            .info-info-item-title {{['未知', '10w内', '10-20W', '20-50W', '50W以上'][zingUser.income]}}
 
       .index-oper-block
         img.index-oper-avator(@click="zingDetail" :src='"http://wxzing.podoon.cn/"+zingUser.photos[0]+"?imageView2/3/w/90/h/90/q/75|imageslim"')
@@ -52,7 +52,7 @@ export default {
     displayXingzuo() {
       var returnXingzuoIndex;
 
-      var birthday = this.$store.state.authUser.birthday
+      var birthday = this.zingUser.birthday
       var strBirthdayArr=birthday.split("-");
       if (strBirthdayArr.length < 3) {
         returnXingzuoIndex = 0
@@ -69,7 +69,7 @@ export default {
         '狮子座','处女座','天秤座','天蝎座','射手座'][returnXingzuoIndex]
     },
     displayAge() {
-      var birthday = this.$store.state.authUser.birthday
+      var birthday = this.zingUser.birthday
       var returnAge;
       var strBirthdayArr=birthday.split("-");
       var birthYear = strBirthdayArr[0];
