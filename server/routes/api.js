@@ -28,13 +28,6 @@ export class DatabaseController {
     }
   }
 
-  @get('users')
-  async dbUsers(ctx, next) {
-    const res = await User.find({}).exec()
-
-    ctx.body = res
-  }
-
   @get('users/:id')
   async dbUser(ctx, next) {
     const id = ctx.params.id
@@ -213,6 +206,7 @@ export class DatabaseController {
 
   @get('users')
   async users(ctx, next) {
+    const session = ctx.session
     
     if (session.user.role != 'admin') {
       return (ctx.body = {
