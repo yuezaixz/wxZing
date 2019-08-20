@@ -61,12 +61,11 @@ export default {
       await this.$store.dispatch('selectHouseType', houseType)
     },
     async next() {
-      if (this.$store.state.authUser.houseType) {
-        const visit = '/register/registerphoto'
-        this.$router.replace(visit)
-      } else {
-        this.$store.dispatch('showToast', {duration: 2000, str:'请选择', toastType:'icon-warn'})
+      if (!this.$store.state.authUser.houseType) {
+        this.$store.state.authUser.houseType = 0
       }
+      const visit = '/register/registerphoto'
+      this.$router.replace(visit)
     }
   },
 
