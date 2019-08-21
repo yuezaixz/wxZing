@@ -16,7 +16,7 @@
           .flex-1
           .day-all-user 全部 >
         .user-list-row
-          .user-block(v-for='item in groupItem.items' v-if='item.year > 0')
+          .user-block(v-for='item in groupItem.items' @click="gotoDetail(item.userItem.userId)"  v-if='item.year > 0')
             img.user-cover(:src='"http://wxzing.podoon.cn/"+item.userItem.photos[0]+"?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100"')
             .user-title {{item.userItem.nickname}}
             .user-sub-title {{displayAge(item.userItem)}}岁
@@ -113,6 +113,16 @@ export default {
   },
 
   methods: {
+    gotoDetail(userId) {
+      if (userId) {
+        this.$router.push({
+          path: '/zing/detail',
+          query: {
+            zingUserId: userId
+          }
+        })
+      }
+    },
     lookOther() {
       this.$router.push({
         path: '/zing'
