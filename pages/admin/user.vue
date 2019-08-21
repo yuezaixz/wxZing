@@ -8,7 +8,11 @@
       img.card-close(src='~static/img/banner_close.png')
 
     .card-body
-      .card-row(v-for='(item, index) in users' @click="detailAction(item.userId)")
+      .card-row
+        input(v-model="searchName" style="width:90px;" value="searchName", placeholder='用户名')
+        input(v-model="searchId" style="width:90px;" value="searchId", placeholder='ID')
+        div(@click="search") 搜索
+      .card-row(v-for='(item, index) in displayUsers' @click="detailAction(item.userId)")
         div ID：{{item.userId}}
         div ||名：{{item.nickname}}
         div ||电话：{{item.phoneNumber}}
@@ -25,7 +29,10 @@ export default {
   data() {
     return {
       user: {},
-      users: []
+      users: [],
+      displayUsers:[],
+      searchId: null,
+      searchName: null
     }
   },
 
@@ -43,6 +50,9 @@ export default {
           zingUserId: userId
         }
       })
+    },
+    search() {
+      this.displayUsers = this.users.filter(user => (!this.searchName || ~user.nickname.indexOf(this.searchName)) && (!this.searchId || ~(''+user.userId).indexOf(this.searchId)) )
     }
   },
 
@@ -51,7 +61,10 @@ export default {
   async beforeCreate(){
     let {data} = await axios.get('/api/users')
     if (data && data.success) {
+      this.searchId = null
+      this.searchName = null
       this.users = data.data
+      this.displayUsers = this.users
     }
   }
 }
