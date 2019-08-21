@@ -278,9 +278,6 @@ export default {
 
   async queryActivityings() {
     const {data} = await Services.queryActivityings()
-    if (data.success) {
-      return data.data
-    }
-    return []
+    return data
   }
 }

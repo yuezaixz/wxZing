@@ -77,10 +77,20 @@ export default {
   },
 
   async beforeCreate() {
-    this.activitys = await this.$store.dispatch('queryActivityings')
-    // this.$store.dispatch('queryActivityState')
-    // this.$store.dispatch('queryLovers')
-    // this.$store.dispatch('queryFollowers')
+    let data = await this.$store.dispatch('queryActivityings')
+    if (data.success) {
+      this.activitys = data.data
+    } else if (data.code === 106) {
+      setTimeout(()=>this.$router.push({
+        path: '/apply/success',
+        query: {
+          activityId: data.data.activityId,
+          activityName: data.data.activityName
+        }
+      }), 1000)
+    } else {
+      this.$store.dispatch('showToast', {duration: 3000, str:data.msg || "数据错误", toastType:'icon-warn'})
+    }
   }
 }
 </script>

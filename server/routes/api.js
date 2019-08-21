@@ -189,7 +189,11 @@ export class DatabaseController {
     const session = ctx.session
     let userId = session.user.userId
 
-    let activitApplys = await ActivityApply.find({userId, isCancel: false, isSuccess: true}).sort('-createAt').exec()
+    let activitApplys = await ActivityApply.find({userId, isCancel: false, isSuccess: true})
+      .populate({
+        path: 'activity',
+        select: '_id activityId activityName isOver'
+      }).sort('-createAt').exec()
     for (const activitApply in activitApplys) {
       if (!activitApply.activity.isOver) {
         return (ctx.body = {
@@ -298,6 +302,23 @@ export class DatabaseController {
   async query_activityings(ctx, next) {
     const session = ctx.session
     let userId = session.user.userId
+
+    let activitApplys = await ActivityApply.find({userId, isCancel: false})
+      .populate({
+        path: 'activity',
+        select: '_id activityId activityName isOver'
+      }).sort('-createAt').exec()
+    for (const activitIndex in activitApplys) {
+      let activitApply = activitApplys[activitIndex]
+      if (!activitApply.activity.isOver) {
+        return (ctx.body = {
+          success: false,
+          code: 106,
+          msg: '已报名活动',
+          data: {activityId:activitApply.activityApplyId, activityName: activitApply.activity.activityName}
+        })
+      }
+    }
 
     const data = await Activity.find({isOver: false}).exec()
 
