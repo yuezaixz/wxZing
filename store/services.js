@@ -123,6 +123,10 @@ class Services {
     })
   }
 
+  queryActivityApply(activityApplyId) {
+    return axios.get('/api/activity_apply/' + activityApplyId)
+  }
+
   queryActivityings() {
     return axios.get('/api/activityings', {
     })

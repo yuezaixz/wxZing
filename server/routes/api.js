@@ -462,6 +462,23 @@ export class DatabaseController {
     }
   }
 
+  @get('activity_apply/:activityApplyId')
+  async queryActivityApplyById(ctx, next) {
+    const activityApplyId = ctx.params.activityApplyId
+    const activityApply = await ActivityApply.findOne({activityApplyId:activityApplyId}).exec()
+
+    if (!activityApply) {
+      return (ctx.body = {
+        success: false,
+        msg: '查找出错'
+      })
+    }
+    return (ctx.body = {
+      success: true,
+      data: activityApply
+    })
+  }
+
   @post('activity/apply')
   @required({body: ['activityId']})
   async apply_activity(ctx, next) {

@@ -10,7 +10,7 @@
       img.card-close(src='~static/img/banner_close.png')
 
     .card-body(style="align-items:center;")
-      .apply-success-title 报名成功
+      .apply-success-title {{!activityApply?'--':(!activityApply.isHandle?'审核中':(activityApply.isSuccess? '报名成功':'报名失败'))}}
       .apply-success-sub-title 已报名活动：{{activityName}}
       div(style="height:34px;")
       .card-row(style="justify-content:center;")
@@ -40,7 +40,8 @@ export default {
   data() {
     return {
       activityName:null,
-      activityId:null
+      activityId:null,
+      activityApply: null
     }
   },
 
@@ -55,7 +56,6 @@ export default {
 
   methods: {
     async cancel_apply() {
-      console.log(this.activityId)
       if (!this.activityId) {
         this.$store.dispatch('showToast', {duration: 2000, str:"activityId不存在", toastType:'icon-warn'})
       } else {
@@ -80,8 +80,14 @@ export default {
   components: {
   },
 
-  beforeCreate () {
-    
+  async beforeCreate () {
+    let activityApplyId = this.$route.query.activityId
+    let data = await this.$store.dispatch('queryActivityApply', {activityApplyId})
+    if (data.success) {
+      this.activityApply = data.data
+    }  else {
+      this.$store.dispatch('showToast', {duration: 3000, str:data.msg || "数据错误", toastType:'icon-warn'})
+    }
   },
   mounted() {
     this.activityId = this.$route.query.activityId

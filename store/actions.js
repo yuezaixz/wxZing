@@ -276,6 +276,11 @@ export default {
     return []
   },
 
+  async queryActivityApply({state}, {activityApplyId}) {
+    const {data} = await Services.queryActivityApply(activityApplyId)
+    return data
+  },
+
   async queryActivityings() {
     const {data} = await Services.queryActivityings()
     return data
