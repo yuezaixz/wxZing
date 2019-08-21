@@ -15,8 +15,8 @@
           .day-mm {{groupItem.dateStr.substring(2)}}
           .flex-1
           .day-all-user 全部 >
-        .user-list-row(v-for='item in groupItem.items')
-          .user-block(v-if='item.year > 0')
+        .user-list-row
+          .user-block(v-for='item in groupItem.items' v-if='item.year > 0')
             img.user-cover(:src='"http://wxzing.podoon.cn/"+item.userItem.photos[0]+"?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100"')
             .user-title {{item.userItem.nickname}}
             .user-sub-title {{displayAge(item.userItem)}}岁
@@ -123,6 +123,9 @@ export default {
     },
     displayAge(userItem) {
       var birthday = userItem.birthday
+      if (!birthday) {
+        return '--'
+      }
       var returnAge;
       var strBirthdayArr=birthday.split("-");
       var birthYear = strBirthdayArr[0];

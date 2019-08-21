@@ -25,12 +25,12 @@
       .card-column(style='height:25px;')
       .card-item-container
         .card-row(style='justify-content:center;')
-          .card-column(style='display:flex;align-items: center;flex:1;')
+          .card-column(@click="gotoLoveList" style='display:flex;align-items: center;flex:1;')
             img.index_item_img(src='~static/img/index_good_img.png')
             .index-item-sub-title 互赞即可显示微信号
             .index-item-title {{loversCount}}，赞我
           .v-divider(style="height:73px;")
-          .card-column(style='display:flex;align-items: center;flex:1;')
+          .card-column(@click="gotoFellowList" style='display:flex;align-items: center;flex:1;')
             img.index_item_img(src='~static/img/index_love_img.png')
             .index-item-sub-title 本期活动进入你的微信群
             .index-item-title {{followersCount}}，为我而来
@@ -76,6 +76,26 @@ export default {
   methods: {
     applyAction() {
       this.$router.replace('/apply')
+    },
+    gotoFellowList() {
+      if (this.$store.state.followersCount > 0) {
+        this.$router.push({
+          path: '/user/lovelist',
+          query: {
+            isFollow: true
+          }
+        })
+      }
+    },
+    gotoLoveList() {
+      if (this.$store.state.loversCount > 0) {
+        this.$router.push({
+          path: '/user/lovelist',
+          query: {
+            isFollow: false
+          }
+        })
+      }
     }
   },
 
