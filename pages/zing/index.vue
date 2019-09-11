@@ -10,7 +10,7 @@
         .card-header-filter-title 筛选
         img.card-arrow-down(src='~static/img/arrow_down.png')
 
-    .card-body(v-if="zingUser")
+    .zing-card-body(v-if="zingUser")
       .whole-card-photo-container
         img.whole-card-photo(:src='"http://wxzing.podoon.cn/"+zingUser.photos[0]+"?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100"')
       .index-info-block
@@ -29,7 +29,7 @@
         img.index-oper-item(@click="rechose" src='~static/img/cancel.png')
 
 
-    .card-body(v-else)
+    .zing-card-body(v-else style="height: calc(100% - 37px);")
       
 
     .card-footer

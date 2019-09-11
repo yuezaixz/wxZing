@@ -22,7 +22,7 @@
       .card-row(style="justify-content:center;")
         img.apply-office-qrcode(src='~static/img/office_qrcode.png')
       .apply-success-qrcode-title 请主动添加工作人员微信
-      div(style="height:20px;")
+      div(style="height:40px;")
 
     .card-footer
   .next

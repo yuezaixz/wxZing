@@ -195,7 +195,7 @@ export class DatabaseController {
         select: '_id activityId activityName isOver'
       }).sort('-createAt').exec()
     for (const activitApply in activitApplys) {
-      if (!activitApply.activity.isOver) {
+      if (activitApply.activity!= null && !activitApply.activity.isOver) {
         return (ctx.body = {
           success: true,
           state: !activitApply ? 0 : (!activitApply.isHandle ? 2 : (activitApply.isSuccess ? 1 : 3) ) // 0未报名 1 已报名 2 审核中 3审核失败

@@ -1,10 +1,8 @@
 // import config from '../config'
 
-const tip = 'Hello，关注Deeper睡眠\n' +
-   '我们正在研发一款枕头，让侧睡仰睡都舒服，\n' +
-   '侧睡和仰睡本来就不该使用同一个高度的枕头，\n' +
-   '可能睡前您是仰睡的，但调查发现睡着后都会翻身，一晚上10来次，\n' +
-   '那高度不适，一整晚受伤的就是您的脖子了，\n' +
+const tip = 'Hello，感谢关注OfflicePlay\n' +
+   '我们正在。。。。。。。。。。。，\n' +
+   '。。。。。。。。。。。。。。。，\n' +
    '我们已经在小规模测试中了，如果您很感兴趣，欢迎留下您的联系方式。'
   //  '回复 1，\n' +
   //  '回复 2，\n' +
@@ -25,6 +23,21 @@ export default async (ctx, next) => {
 
   if (message.MsgType === 'event') {
     if (message.Event === 'subscribe') {
+      const menu = require('./menu').default
+      try {
+        await client.handle('delMenu')
+      } catch (e) {
+        console.log('删除菜单失败')
+        console.log(e)
+      }
+
+      try {
+        const createResult = await client.handle('createMenu', menu)
+        console.log(createResult)
+      } catch (err) {
+        console.log('创建菜单失败')
+        console.log(err)
+      }
       ctx.body = tip
     } else if (message.Event === 'unsubscribe') {
       console.log('取关了')
