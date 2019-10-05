@@ -15,6 +15,9 @@ async function postUserInfo(state, commit) {
 export default {
   nuxtServerInit({ commit }, { req }) {
     if (req.session && req.session.openid) {
+      if (!req.session.user.city) {
+        req.session.user.city = '350200'
+      }
       commit('SET_AUTHUSER', req.session.user)
     }
   },

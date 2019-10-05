@@ -12,8 +12,8 @@
     "key": "key"
   },
   "wechat": {
-    "appID": "wxd8abea96f5088dcb",
-    "appSecret": "a9142aef522f15f5c6fdd4d17bc9501c",
+    "appID": "wxc787af5a595998d0",
+    "appSecret": "36770fadb53c647929e1b1751281282b",
     "baseUrl": "测试微信的接入地址",
     "token": "davidisAhandsomeyoungman"
   },

@@ -10,30 +10,30 @@
       img.card-close(src='~static/img/banner_close.png')
 
     .card-body
+      .card-column(style='height:45px;')
+        .page-title 第2页，共10页
+      .card-column(v-if='!authUser.isLocal')
+        .card-row(style='justify-content:flex-start;')
+          .card-title 你工作的城市
+          //- img.card-arrow-down(src='~static/img/arrow_down.png')
+        .card-column(style='height:5px;')
+        .card-inner 选择你所在的城市，找到和你相遇的人
+        .city-control(@click='showCityDialog(2)')
+          .city-title(:style="{'color': authUser.city ? '#313131':'#8e8e8e'}") {{displayCity(authUser)}}
+          .div(style="flex:1")
+          img.card-arrow-down(src='~static/img/arrow_down.png')
+        //- .tip-content tips：因为我们接下来主要做厦门城市， 所以这个工作城市可以是默认厦门，本段删除。
+
+      .card-column(style='height:49px;')
       .card-column
         .card-row(style='justify-content:flex-start;')
           .card-title 你的故乡
           img.card-arrow-down(src='~static/img/arrow_down.png')
-        .card-column(style='height:10px;')
-        .card-inner 选择籍贯，如果在老家工作，可勾选“土著”
+        .card-column(style='height:5px;')
+        .card-inner 我们会推荐一些和你相同故乡的人
         .city-control(@click='showCityDialog(1)')
-          .city-title {{displayHometown(authUser)}}
-          img.card-arrow-down(src='~static/img/arrow_down.png')
-        .card-column(style='height:29px;')
-        .card-row(@click='toggleLocal()')
-          .check-box(style='margin-left:20px;')
-            .check-box-select(v-if='authUser.isLocal')
-          .check-title(style='margin-left:5px;') 我是土著
-
-      .card-column(style='height:49px;')
-      .card-column(v-if='!authUser.isLocal')
-        .card-row(style='justify-content:flex-start;')
-          .card-title 你工作的城市
-          img.card-arrow-down(src='~static/img/arrow_down.png')
-        .card-column(style='height:10px;')
-        .card-inner 选择你的城市，找到留住你的人
-        .city-control(@click='showCityDialog(2)')
-          .city-title {{displayCity(authUser)}}
+          .city-title(:style="{'color': authUser.hometown ? '#313131':'#8e8e8e'}") {{displayHometown(authUser)}}
+          .div(style="flex:1")
           img.card-arrow-down(src='~static/img/arrow_down.png')
 
     .card-footer
@@ -135,6 +135,8 @@ export default {
           provName = element.text
         }
       }
+      provName = provName.replace('省', ' ')
+      cityName = cityName.replace('市', ' ')
       return cityName && provName ? (provName + cityName) : cityName;
     },
     async toggleLocal() {
