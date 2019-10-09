@@ -44,6 +44,7 @@
       .title 下一步
 
   vue-picker(
+    title="城市"
     :show="show"
     :columns="columns"
     :defaultData="defaultData"

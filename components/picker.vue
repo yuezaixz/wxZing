@@ -4,6 +4,7 @@
       <div class="area_ctrl" @click="prevent" v-if="isOpened > 0">
         <div class="area_btn_box">
           <div class="area_btn larea_cancel" @click="close">取消</div>
+          <div class="area_title">请选择{{title}}</div>
           <div class="area_btn larea_finish" @click="finish">确定</div>
         </div>
         <div class="area_roll_mask">
@@ -19,7 +20,7 @@
                   @touchstart="gearTouchStart"
                   @touchmove="gearTouchMove"
                   @touchend="gearTouchEnd">
-                <div class="tooth" v-for="(item,index) in pData1" :style="{'color': selects.select1 && item.value === selects.select1.value ? '#6765ff':''}" :key="index">{{item.text}}</div>
+                <div :class="selects.select1 && item.value === selects.select1.value ?'tooth tooth_select':'tooth'" v-for="(item,index) in pData1" :key="index">{{item.text}}</div>
               </div>
               <div class="area_grid">
               </div>
@@ -36,7 +37,7 @@
                   @touchmove="gearTouchMove"
                   @touchend="gearTouchEnd"
                   val="5">
-                <div class="tooth" v-for="(item,index) in pData2" :style="{'color': selects.select2 && item.value === selects.select2.value ? '#6765ff':''}" :key="index">{{item.text}}</div>
+                <div :class="selects.select2 && item.value === selects.select2.value ?'tooth tooth_select':'tooth'" v-for="(item,index) in pData2" :key="index">{{item.text}}</div>
               </div>
               <div class="area_grid">
               </div>
@@ -53,7 +54,7 @@
                   @touchmove="gearTouchMove"
                   @touchend="gearTouchEnd"
                   val="5">
-                <div class="tooth" v-for="(item,index) in pData3" :style="{'color': selects.select3 && item.value === selects.select3.value ? '#6765ff':''}" :key="index">{{item.text}}</div>
+                <div :class="selects.select3 && item.value === selects.select3.value ?'tooth tooth_select':'tooth'" v-for="(item,index) in pData3" :key="index">{{item.text}}</div>
               </div>
               <div class="area_grid">
               </div>
@@ -69,6 +70,10 @@
 <script>
   export default{
     props: {
+      title: {
+        type: String,
+        default: ''
+      },
       show: {
         type: Boolean,
         default: false
@@ -433,8 +438,8 @@
 .area_ctrl {
   font-size: 12px;
   vertical-align: middle;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+  /* border-top-left-radius: 10px;
+  border-top-right-radius: 10px; */
   background-color: #ffffff;
   color: #000;
   margin: 0;
@@ -476,6 +481,10 @@
 
 .area_roll>div {
   font-size: 13px;
+  line-height: 29px;
+  color: #8e8e8e;
+  font-family: "PingFang SC";
+  font-weight: 400;
   height: 10em;
   float: left;
   background-color: transparent;
@@ -485,6 +494,11 @@
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1
+}
+
+.tooth_select {
+  color: #313131;
+  font-size: 16px;
 }
 
 .area_roll>div .gear {
@@ -510,23 +524,33 @@
   margin: auto auto;
   box-sizing: border-box;
   z-index: 0;
-  border-top: 1px solid #6765ff;
-  border-bottom: 1px solid #6765ff;
+  /* border-top: 1px solid #6765ff;
+  border-bottom: 1px solid #6765ff; */
 }
 
 .area_roll>div:nth-child(3) .area_grid>div {
   left: 42%
 }
 
-.area_btn {
-  font-size: 13px;
-  letter-spacing: 1px;
-  line-height: 14px;
-  color: #6765ff;
+.area_title {
+  font-size: 16px;
+  letter-spacing: 0px;
+  color: #313131;
   font-family: "PingFang SC";
   font-weight: 400;
   text-align: center;
-  padding: 23px 23px
+  padding: 10px 10px;
+}
+
+.area_btn {
+  font-size: 13px;
+  letter-spacing: 0px;
+  line-height: 29px;
+  color: #313131;
+  font-family: "Ping Fang SC";
+  font-weight: bold;
+  text-align: center;
+  padding: 10px 30px;
 }
 
 .area_btn_box:before,
@@ -555,8 +579,9 @@
   -webkit-align-items: stretch;
   -ms-flex-align: stretch;
   align-items: stretch;
-  border-radius: 10px;
-  background-color: #ffffff;
+  /* border-radius: 10px; */
+  background-color: #f2f2f2;
+  border-bottom: 1px solid #d8d8d8;
   position: relative
 }
 
