@@ -10,21 +10,22 @@
       img.card-close(src='~static/img/banner_close.png')
 
     .card-body
+      .card-column(style='height:45px;')
+        .page-title 第5页，共12页
       .card-column
         .card-row(style='justify-content:flex-start;')
           .card-title 你的手机号
-          img.card-arrow-down(src='~static/img/arrow_down.png')
         .card-column(style='height:10px;')
         .card-inner 手机号码隐私保护，无任何营销电话骚扰
         .city-control
           .city-title +86
-          .city-title |
-          input.city-input(v-model="registerInfo.tel" value="registerInfo.tel")
+          .city-title(style="font-weight:bold; font-size:18px;") |
+          input.city-input(v-model="registerInfo.tel"  placeholder="在此输入" value="registerInfo.tel")
 
     .card-footer
   .next
     div(@click='next')
-      .title 下一步
+      .title 发送验证码
 
 </template>
 

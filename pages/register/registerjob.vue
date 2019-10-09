@@ -10,12 +10,13 @@
       img.card-close(src='~static/img/banner_close.png')
 
     .card-body
+      .card-column(style='height:45px;')
+        .page-title 第7页，共12页
       .card-column
         .card-row(style='justify-content:flex-start;')
           .card-title 你的工作性质
-          img.card-arrow-down(src='~static/img/arrow_down.png')
         .card-column(style='height:10px;')
-        .card-inner 一个人也是一个办公室
+        .card-inner 你目前所在单位的性质
         .card-column(style='height:40px;')
         .card-column
           .card-select-row

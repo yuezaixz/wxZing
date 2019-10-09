@@ -10,12 +10,13 @@
       img.card-close(src='~static/img/banner_close.png')
 
     .card-body
+      .card-column(style='height:45px;')
+        .page-title 第9页，共12页
       .card-column
         .card-row(style='justify-content:flex-start;')
           .card-title 你的年收入
-          img.card-arrow-down(src='~static/img/arrow_down.png')
         .card-column(style='height:10px;')
-        .card-inner 只有四个区间选择，贫穷限制了我的想象
+        .card-inner 请在以下区间选择
         .card-column(style='height:40px;')
         .card-column
           .card-select-row

@@ -11,7 +11,7 @@
 
     .card-body
       .card-column(style='height:45px;')
-        .page-title 第2页，共10页
+        .page-title 第2页，共12页
       .card-column(v-if='!authUser.isLocal')
         .card-row(style='justify-content:flex-start;')
           .card-title 你工作的城市

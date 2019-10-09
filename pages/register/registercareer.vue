@@ -10,15 +10,16 @@
       img.card-close(src='~static/img/banner_close.png')
 
     .card-body
+      .card-column(style='height:45px;')
+        .page-title 第8页，共12页
       .card-column
         .card-row(style='justify-content:flex-start;')
           .card-title 你的职业或领域
-          img.card-arrow-down(src='~static/img/arrow_down.png')
         .card-column(style='height:10px;')
-        .card-inner 请填写你的职业或专业领域
+        .card-inner 请填写你工作中的主要岗位
         .city-control
           //- .city-titl(v-if='!authUser.career') 请在此输入
-          input.city-input(v-model="authUser.career" value="authUser.career" , placeholder='请在此输入')
+          input.city-input(v-model="authUser.career" value="authUser.career" , placeholder='请在此填写')
 
     .card-footer
   .next

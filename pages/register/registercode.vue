@@ -10,16 +10,23 @@
       img.card-close(src='~static/img/banner_close.png')
 
     .card-body
+      .card-column(style='height:45px;')
+        .page-title 第6页，共12页
       .card-column
         .card-row(style='justify-content:flex-start;')
-          .card-title 请输入您的验证码
-          img.card-arrow-down(src='~static/img/arrow_down.png')
+          .card-title 验证码
         .card-column(style='height:10px;')
-        .card-inner 请填写您手机收到的验证码
+        .card-inner 请填写你收到的验证码
         .card-code-container(@click="foucusInput")
           input(type="tel" v-model="code" id='vcode' ref="vcode" maxlength="4" @focus="focused = true" @blur="focused = false" :disabled="telDisabled")
           label.border(v-for='(item, index) in 4' :class="{'animated': focused && cursorIndex === index}" :key='index' v-text="codeArr[index]")
-          label.retry-prompt(@click="sendSmsCode") {{retrySeconds > 0?''+retrySeconds+'s':'重发'}}
+
+      .card-column(style='height:20px;')
+      .card-column
+        .card-error {{errorMsg || ' '}}
+      .card-column(style='height:10px;')
+      .card-column
+        label.retry-prompt(@click="sendSmsCode") {{retrySeconds > 0?''+retrySeconds+'s':'重发'}}
 
     .card-footer
   .next
@@ -40,7 +47,8 @@ export default {
       telDisabled: false,
       focused: false,
       code:'',
-      retrySeconds: 0
+      retrySeconds: 0,
+      errorMsg: ' '
     }
   },
 
@@ -101,9 +109,11 @@ export default {
           const visit = '/register/registerjob'
           this.$router.replace(visit)
         } else {
+          this.errorMsg = data.msg
           this.$store.dispatch('showToast', {duration: 2000, str:data.msg, toastType:'icon-warn'})
         }
       } else {
+        this.errorMsg = ' '
         this.$store.dispatch('showToast', {duration: 2000, str:'请填写', toastType:'icon-warn'})
       }
     }
