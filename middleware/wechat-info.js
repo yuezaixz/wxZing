@@ -8,7 +8,7 @@ export default function ({ store, route, redirect }) {
     url = '/register'
   } else if (!store.state.authUser.city || !store.state.authUser.hometown) {
     url = '/register/registercity'
-  } else if (!store.state.authUser.degree || !store.state.authUser.birthday) {
+  } else if (!store.state.authUser.degree || !store.state.authUser.birthday || !store.state.authUser.height) {
     url = '/register/registeredu'
   } else if (!store.state.authUser.wxcode) {
     url = '/register/registerwx'

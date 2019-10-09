@@ -26,6 +26,7 @@ const UserSchema = new Schema({
   gender: Number,
   // 0 保密 1博士及以上 2研究生 3本科 4专科 5专科以下
   degree: Number,
+  height: Number,
   // 格式固定 1988-11-14
   birthday: String,
   // 0-12 未知,魔羯座,水瓶座,双鱼座,白羊座,金牛座,双子座,巨蟹座,狮子座,处女座,天秤座,天蝎座,射手座

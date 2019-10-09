@@ -33,6 +33,13 @@ for (var i = 1970; i <= currentDate.getFullYear(); i++) {
   monthsData[i] = monthsDataItem
 }
 
+var heightData = []
 
+for (var l = 140; l <= 200; l++) {
+  heightData.push({
+    text: '' + l + 'cm',
+    value: l
+  })
+}
 
-export { yearsData, monthsData, daysData }
+export { yearsData, monthsData, daysData, heightData }

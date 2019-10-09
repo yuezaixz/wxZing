@@ -473,7 +473,8 @@
   width: 100%;
   height: auto;
   overflow: hidden;
-  margin-bottom: 4em;
+  margin-top: 2em;
+  margin-bottom: 2em;
   background-color: transparent;
   -webkit-mask: -webkit-gradient(linear, 0% 50%, 0% 100%, from(#debb47), to(rgba(36, 142, 36, 0)));
   -webkit-mask: -webkit-linear-gradient(top, #debb47 50%, rgba(36, 142, 36, 0))

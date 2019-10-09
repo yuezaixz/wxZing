@@ -582,6 +582,7 @@ export class DatabaseController {
       wxcode,
       gender,
       degree,
+      height,
       birthday,
       xingzuo,
       city,
@@ -604,6 +605,7 @@ export class DatabaseController {
         findUser.wxcode = wxcode
         findUser.gender = gender
         findUser.degree = degree
+        findUser.height = height
         findUser.birthday = birthday
         findUser.xingzuo = xingzuo
         findUser.city = city

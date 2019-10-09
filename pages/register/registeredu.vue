@@ -10,25 +10,39 @@
       img.card-close(src='~static/img/banner_close.png')
 
     .card-body
+      .card-column(style='height:45px;')
+        .page-title 第3页，共10页
       .card-column
         .card-row(style='justify-content:flex-start;')
           .card-title 你的学历
-          img.card-arrow-down(src='~static/img/arrow_down.png')
         .card-column(style='height:10px;')
-        .card-inner 学历是部分的实力
-        .city-control(@click='showCityDialog(1)')
+        .card-inner 请选择你的最高学历
+        .city-control(@click='showCityDialog(1)' style="margin-top:10px;")
           .city-title {{displayEduStr(authUser) || '请选择'}}
+          .div(style="flex:1")
           img.card-arrow-down(src='~static/img/arrow_down.png')
 
-      .card-column(style='height:89px;')
-      .card-column(v-if='!authUser.isLocal')
+      .card-column(style='height:30px;')
+      .card-column
+        .card-row(style='justify-content:flex-start;')
+          .card-title 你的身高
+        .card-column(style='height:10px;')
+        .card-inner 请选择你身体成熟后的身高
+        .city-control(@click='showCityDialog(3)' style="margin-top:10px;")
+          .city-title {{displayHeightStr(authUser) || '请选择'}}
+          .div(style="flex:1")
+          img.card-arrow-down(src='~static/img/arrow_down.png')
+
+      .card-column(style='height:30px;')
+      .card-column
         .card-row(style='justify-content:flex-start;')
           .card-title 你的生日
-          img.card-arrow-down(src='~static/img/arrow_down.png')
         .card-column(style='height:10px;')
-        .card-inner 从此记得你生日的人又多了一个
-        .city-control(@click='showCityDialog(2)')
+        .card-inner 填写出生年月将为您匹配合适的对象
+        .city-control(@click='showCityDialog(2)' style="margin-top:10px;")
           .city-title {{displayDateStr(authUser) || '请选择'}}
+          .div(style="flex:1")
+          img.card-arrow-down(src='~static/img/arrow_down.png')
 
     .card-footer
   .next
@@ -42,7 +56,7 @@
     :columns="columns"
     :defaultData="defaultData"
     :selectData="pickData"
-    :link="selectDate"
+    :link="selectDate==2"
     @cancel="close"
     @confirm="confirmFn"
   )
@@ -51,7 +65,7 @@
 <script>
 
 import { mapState } from 'vuex'
-import { yearsData, monthsData, daysData } from '~/components/dateData.js'
+import { yearsData, monthsData, daysData, heightData } from '~/components/dateData.js'
 import vuePicker from '~/components/picker'
 
 export default {
@@ -61,7 +75,7 @@ export default {
       citySelectType: 0,
       info:{},
       show: false,
-      selectDate: false,
+      selectDate: 1,
       eduPickData: {
         data1:[
           {
@@ -91,19 +105,22 @@ export default {
         data1: yearsData,
         data2: monthsData,
         data3: daysData
+      },
+      heightPickData: {
+        data1: heightData
       }
     }
   },
 
   computed: {
     columns() {
-      return this.selectDate ? 3 : 1;
+      return this.selectDate == 2 ? 3 : 1;
     },
     pickData() {
-      return this.selectDate ? this.datePickData : this.eduPickData;
+      return [this.eduPickData, this.datePickData, this.heightPickData,][this.selectDate-1];
     },
     defaultData() {
-      if (this.selectDate) {
+      if (this.selectDate == 2) {
         if (this.$store.state.authUser.birthday) {
           var splits = this.$store.state.authUser.birthday.split('-')
           return [
@@ -136,11 +153,18 @@ export default {
             }
           ];
         }
-      } else {
+      } else if (this.selectDate == 1) {
         return [//0 保密 1博士及以上 2研究生 3本科 4专科 5专科以下
           {
             text: ['保密', '博士及以上', '研究生', '本科', '专科', '其他'][this.$store.state.degree],
             value: this.$store.state.authUser.degree
+          }
+        ];
+      } else {
+        return [//0 保密 1博士及以上 2研究生 3本科 4专科 5专科以下
+          {
+            text: this.$store.state.height || 180,
+            value: this.$store.state.authUser.height
           }
         ];
       }
@@ -157,13 +181,12 @@ export default {
     displayDateStr(authUser) {
       return authUser.birthday
     },
+    displayHeightStr(authUser) {
+      return authUser.height ? authUser.height+'cm' : authUser.height
+    },
     async showCityDialog(type) {
       this.toShow()
-      if (type === 1) {
-        this.selectDate = false;
-      } else {
-        this.selectDate = true;
-      }
+      this.selectDate = type
       // this.citySelectType = type
       // this.$store.dispatch('toggleLocal')
     },
@@ -179,10 +202,12 @@ export default {
     },
     confirmFn(val, val2, val3) {
       this.show = false
-      if (this.selectDate) {
+      if (this.selectDate == 2) {
         this.$store.dispatch('selectDate', `${val.select1.value}-${val.select2.value}-${val.select3.value}`)
-      } else {
+      } else if (this.selectDate == 1) {
         this.$store.dispatch('selectDegree', val.select1.value)
+      } else {
+        this.$store.dispatch('selectHeight', val.select1.value)
       }
     },
     toShow() {

@@ -160,6 +160,11 @@ export default {
     return postUserInfo(state, commit)
   },
 
+  async selectHeight({state, commit}, height) {
+    state.authUser.height = height
+    return postUserInfo(state, commit)
+  },
+
   async selectDegree({state, commit}, degree) {
     state.authUser.degree = degree
     return postUserInfo(state, commit)
