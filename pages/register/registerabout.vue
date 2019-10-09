@@ -10,14 +10,14 @@
       img.card-close(src='~static/img/banner_close.png')
 
     .card-body
+      .card-column(style='height:45px;')
+        .page-title(@click='next') 跳过
       .card-column
         .card-row(style='justify-content:flex-start;')
           .card-title 关于我，关于你
           img.card-arrow-down(src='~static/img/arrow_down.png')
         .card-column(style='height:10px;')
-        .card-inner 介绍下自己和你的理想型， 
-        .card-column(style='height:2px;')
-        .card-inner 优秀的介绍能让ta更快找到你
+        .card-inner(style="margin-right:25px;") 好的表达让人印象深刻，大大增加成功概率，填写完成后，我们会把您的资料重点推送给更多的用户。若当下不方便，可以跳过，随后再补充， 
         .city-control
           input.about-input(v-model="authUser.aboutMe" value="authUser.aboutMe", placeholder='关于我')
         .card-column(style='height:10px;')
@@ -61,7 +61,7 @@ export default {
           'aboutOther':this.$store.state.authUser.aboutOther
         })
         if (data.success) {
-          const visit = '/register/registername'
+          const visit = '/register/registerdone'
           this.$router.replace(visit)
         }
       } else {

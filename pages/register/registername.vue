@@ -10,14 +10,13 @@
       img.card-close(src='~static/img/banner_close.png')
 
     .card-body
+      .card-column(style='height:45px;')
+        .page-title 第12页，共12页
       .card-column
         .card-row(style='justify-content:flex-start;')
           .card-title 你的昵称
-          img.card-arrow-down(src='~static/img/arrow_down.png')
         .card-column(style='height:10px;')
-        .card-inner 美丽的人类， 
-        .card-column(style='height:2px;')
-        .card-inner 请给自己取一个好听的名字吧
+        .card-inner 建议和微信昵称一致
         .city-control
           input.about-input(v-model="authUser.nickname" value="authUser.nickname", placeholder='点击在此输入')
 
@@ -52,7 +51,7 @@ export default {
       if (this.$store.state.authUser.nickname) {
         var data = await this.$store.dispatch('selectName', this.$store.state.authUser.nickname)
         if (data.success) {
-          const visit = '/register/registerdone'
+          const visit = '/register/registerabout'
           this.$router.replace(visit)
         }
       } else {

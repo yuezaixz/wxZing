@@ -10,20 +10,22 @@
       img.card-close(src='~static/img/banner_close.png')
 
     .card-body
+      .card-column(style='height:45px;')
+        .page-title 第11页，共12页
       .card-column
         .card-row(style='justify-content:flex-start;')
-          .card-title 请添加你的照片
+          .card-title 请添加一些你的照片
           img.card-arrow-down(src='~static/img/arrow_down.png')
         .card-column(style='height:10px;')
-        .card-inner 上传一些生活照，首张将作为封面展示
+        .card-inner 首张作为封面展示，点击图片可重新上传
         .card-column(style='height:40px;')
         .card-select-row(style='flex-wrap: wrap; margin-right: 20px;')
           .city-photo-flex1(v-for='(item, index) in authUser.photos')
             img.card-photo(:src='"http://wxzing.podoon.cn/"+item')
             input(type='file', @change='uploadImg(index, $event)')
-          .city-photo-flex1(v-if='authUser.photos.length < 5')
-            img.add-photo(src='~static/img/add.png')
-            .add-title 点击添加照片
+          .city-photo-flex1(v-if='authUser.photos.length < 6')
+            .add-title(style="font-size:23px;") +
+            .add-title 添加照片
             input(type='file', @change='uploadImg(authUser.photos.length, $event)')
 
     .card-footer
@@ -107,7 +109,7 @@ export default {
       if (this.$store.state.authUser.photos) {
         var data = await this.$store.dispatch('selectPhoto', this.$store.state.authUser.photos)
         if (data.success) {
-          const visit = '/register/registerabout'
+          const visit = '/register/registername'
           this.$router.replace(visit)
         }
       } else {
