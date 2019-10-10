@@ -15,7 +15,6 @@
       .card-column
         .card-row(style='justify-content:flex-start;')
           .card-title 请添加一些你的照片
-          img.card-arrow-down(src='~static/img/arrow_down.png')
         .card-column(style='height:10px;')
         .card-inner 首张作为封面展示，点击图片可重新上传
         .card-column(style='height:40px;')

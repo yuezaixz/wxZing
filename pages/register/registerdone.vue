@@ -10,20 +10,24 @@
       img.card-close(src='~static/img/banner_close.png')
 
     .card-body
+      .card-column(style='height:60px;')
+      .card-column(style="display:flex;")
+        img.done-start(src='~static/img/done_start.png')
       .card-column
         .card-column(style='height:20px;')
         .card-row(style='justify-content:center;')
           .done-title 注册成功
-        .card-column(style='height:10px;')
-        .card-inner(style='text-align:center;padding-left: 0px;') 欢迎加入办公室计划，编号{{displayUserId}}是您的专属号码
-        .card-inner(style='text-align:center;padding-left: 0px;') 由这串数字开始
-        .card-inner(style='text-align:center;padding-left: 0px;') 让有趣的灵魂遇见好看的皮囊~
+        .card-column(style='height:55px;')
+        .card-done-inner(style='text-align:center;padding-left: 0px;') 办公室计划只计划偶遇，不计划爱情， 
+        .card-done-inner(style='text-align:center;padding-left: 0px;') 因为她会自然发生。
+      div(style="flex:1")
+      .card-column
+        .card-inner(style='text-align:left;padding-right: 5px;padding-bottom:15px;-webkit-transform-origin-x: 50%;-webkit-transform: scale(0.9)') 点击下一步代表你已同意我们的《隐私政策》以及《服务条款》。
 
     .card-footer
-  img.astronauts(src='~static/img/astronauts.png')
   .next
-    nuxt-link(to='/user')
-      .title 查看会员
+    nuxt-link(to='/register/registerzing')
+      .title 下一步
 
 </template>
 

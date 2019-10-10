@@ -28,6 +28,17 @@ export class DatabaseController {
     }
   }
 
+  @get('users/last9')
+  async last9User(ctx, next) {
+    const session = ctx.session
+    let userId = session.user.userId
+    let users = await User.find({'userId': {$ne:userId}}).limit(9).exec()
+    return (ctx.body = {
+      success: true,
+      data: users
+    })
+  }
+
   @get('users/:id')
   async dbUser(ctx, next) {
     const id = ctx.params.id

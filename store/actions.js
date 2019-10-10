@@ -242,6 +242,11 @@ export default {
     return data
   },
 
+  async queryLast9Users({state}) {
+    const {data} = await Services.queryLast9Users()
+    return data
+  },
+
   async queryLovers({ state }) {
     const {data} = await Services.queryLovers()
     if (data.success) {

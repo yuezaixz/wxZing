@@ -132,6 +132,11 @@ class Services {
     })
   }
 
+  queryLast9Users() {
+    return axios.get('/api/users/last9', {
+    })
+  }
+
   applyActivity(activityId) {
     return axios.post('/api/activity/apply', {
       activityId
