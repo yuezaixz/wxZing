@@ -20,12 +20,8 @@ export default function ({ store, route, redirect }) {
     url = '/register/registercareer'
   } else if (!store.state.authUser.income) {
     url = '/register/registerincome'
-  } else if (!store.state.authUser.houseType) {
-    url = '/register/registerhouse'
   } else if (!store.state.authUser.photos) {
     url = '/register/registerphoto'
-  } else if (!store.state.authUser.aboutMe || !store.state.authUser.aboutOther) {
-    url = '/register/registerabout'
   }
 
   if (url) {
