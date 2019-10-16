@@ -21,6 +21,7 @@ const ActivityApplySchema = new Schema({
     type: Boolean,
     default: false
   },
+  fellowUserId: Number,
   memo: String,
   meta: {
     createAt: {

@@ -33,6 +33,7 @@ const createStore = () => {
       loversCount: 0,
       lovers: [],
       activityState: 0,
+      activityFellowUser: null,
       qiniuOptions: qiniuOptions,
       registerInfo: {
         tel: ''

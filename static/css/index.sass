@@ -20,36 +20,48 @@
 .flex-1
   flex: 1
 
-.index-item-sub-title
+.bottom-sub-title
   font-size: 12px
-  letter-spacing: 0px
-  color: #9b9b9b
+  letter-spacing: 1px
+  line-height: 17px
+  color: #8e8e8e
   font-family: "PingFang SC"
   font-weight: 400
+
+.index-item-sub-title
+  font-size: 12px
+  line-height: 15px
+  letter-spacing: 1px
+  color: #8e8e8e
+  font-family: "PingFang SC"
+  font-weight: 300
   position: relative
   left: 10px
+  margin-top: 12px
+  margin-bottom: 8px
   -webkit-transform-origin-x: 0
-  -webkit-transform: scale(0.75)
+  -webkit-transform: scale(0.83)
 
 .index-item-title
-  font-size: 12px
-  position: relative
-  left: 0px
-  color: #171717
+  font-size: 13px
+  letter-spacing: 0px
+  line-height: 23px
+  color: #313131
   font-family: "Ping Fang SC"
   font-weight: bold
-  -webkit-transform-origin-x: 0
-  -webkit-transform: scale(0.75)
+  text-align: center
+  position: relative
+  left: 0px
 
 .v-divider
   width: 1px
   height: 100%
-  background-color: #a0a0a0
+  background-color: #e5e5e5
 
 .h-divider
   height: 1px
   width: 100%
-  background-color: #a0a0a0
+  background-color: #e5e5e5
 
 .container
   width: 100vw
@@ -133,11 +145,48 @@
         flex-direction: column
         justify-content: center
         align-items: center
+      .card-vip-top
+        width: calc(100%-22px)
+        display: flex
+        flex-direction: row
+        justify-content: center
+        align-items: center
+        height: 25px
+        padding-left: 7px
+        padding-right: 15px
+
+        .vip-eslap-time
+          font-size: 12px
+          letter-spacing: -1px
+          line-height: 23px
+          color: #8e8e8e
+          font-family: "PingFang SC"
+          font-weight: 400
+          -webkit-transform-origin-x: 0
+          -webkit-transform: scale(0.84)
+        .user-edit
+          height: 18px
+          width: 18px
       .card-row
         display: flex
         flex-direction: row
         justify-content: center
         align-items: center
+        .user-name-title
+          font-size: 18px
+          letter-spacing: 0px
+          line-height: 23px
+          color: #313131
+          font-family: "Ping Fang SC"
+          font-weight: bold
+        .user-name-sub-title
+          font-size: 10px
+          letter-spacing: 1px
+          line-height: 22px
+          color: #8e8e8e
+          font-family: "Ping Fang SC"
+          -webkit-transform-origin-x: 100%
+          -webkit-transform: scale(0.83)
 
       .day-user-list
         display: flex
@@ -229,26 +278,30 @@
         flex-direction: column
         justify-content: center
         align-items: center
-        border-bottom: 1px dashed #a0a0a0
+        border-bottom: 1px solid #e5e5e5
         width: calc(100% - 50px)
-        margin: 20px 0 30px 0
+        margin: 0px 0 10px 0
 
       .index_item_img
-        height: 35px
-        width: 35px
+        height: 40px
+        width: 40px
 
       .index-bottom
         margin-bottom: 40px
+        display: flex
+        align-items: center
+        justify-content: center
+        flex-direction: column
 
       .signup-btn
-        width: 135px
-        height: 28px
-        border-radius: 14px
+        width: 110px
+        height: 25px
+        border-radius: 12px
         background-color: #ffffff
         border: 1px solid #97aef1
-        font-size: 15px
+        font-size: 14px
         letter-spacing: 0px
-        line-height: 28px
+        line-height: 27px
         color: #97aef1
         font-family: "Ping Fang SC"
         font-weight: bold
@@ -256,12 +309,21 @@
         margin-top: 20px
         
       .index-signup-success
-        font-size: 15px
-        letter-spacing: 0px
+        font-size: 18px
+        letter-spacing: 1px
+        line-height: 18px
         color: #97aef1
         font-family: "Ping Fang SC"
         font-weight: bold
-        text-align: center
+      .index-signup-success-content
+        font-size: 12px
+        letter-spacing: 0px
+        line-height: 19px
+        color: #313131
+        font-family: "Ping Fang SC"
+        font-weight: 300
+        -webkit-transform-origin-x: 50%
+        -webkit-transform: scale(0.84)
 
       .big_avatar_container
         position: relative
@@ -269,21 +331,21 @@
         .big_avatar
           border-radius: 50%
           border: 1px solid #0e050a
-          width: 64px
-          height: 64px
+          width: 100px
+          height: 100px
 
         .big_avatar_vip
           position: absolute
-          right: -15px
-          top: 0px
-          width: 30px
-          height: 14px
-          border-radius: 2px
-          background-color: #6765ff
+          right: -3px
+          top: 5px
+          width: 26px
+          height: 16px
+          line-height: 16px
+          border-radius: 3px
+          background-color: #fb6248
           font-size: 12px
-          -webkit-transform-origin-x: 0
-          -webkit-transform: scale(0.75)
-          line-height: 14px
+          -webkit-transform-origin-x: 50%
+          -webkit-transform: scale(0.84)
           color: #ffffff
           font-family: "PingFang SC"
           font-weight: 400

@@ -200,15 +200,22 @@ export class DatabaseController {
     const session = ctx.session
     let userId = session.user.userId
 
+    let lookfors = await Lookfor.find({userId}).exec()
+
     let activitApplys = await ActivityApply.find({userId, isCancel: false, isSuccess: true})
       .populate({
         path: 'activity',
-        select: '_id activityId activityName isOver'
+        select: '_id activityId activityName` isOver'
       }).sort('-createAt').exec()
     for (const activitApply in activitApplys) {
       if (activitApply.activity!= null && !activitApply.activity.isOver) {
+        let fellowUser;
+        if (activitApply.fellowUserId) {
+          fellowUser = await User.findOne({userId: activitApply.fellowUserId,}).exec()
+        }
         return (ctx.body = {
           success: true,
+          fellowUser: fellowUser,
           state: !activitApply ? 0 : (!activitApply.isHandle ? 2 : (activitApply.isSuccess ? 1 : 3) ) // 0未报名 1 已报名 2 审核中 3审核失败
         })
       }

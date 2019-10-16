@@ -269,6 +269,7 @@ export default {
     const {data} = await Services.queryActivityState()
     if (data.success) {
       state.activityState = data.state
+      state.activityFellowUser = data.fellowUser
     }
     return data
   },
