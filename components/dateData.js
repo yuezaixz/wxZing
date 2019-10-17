@@ -34,12 +34,17 @@ for (var i = 1970; i <= currentDate.getFullYear(); i++) {
 }
 
 var heightData = []
+var heightDataWithZero = [0]
 
 for (var l = 140; l <= 200; l++) {
   heightData.push({
     text: '' + l + 'cm',
     value: l
   })
+  heightDataWithZero.push({
+    text: '' + l + 'cm',
+    value: l
+  })
 }
 
-export { yearsData, monthsData, daysData, heightData }
+export { yearsData, monthsData, daysData, heightData, heightDataWithZero }
