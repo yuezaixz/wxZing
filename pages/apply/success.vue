@@ -10,24 +10,30 @@
       img.card-close(src='~static/img/banner_close.png')
 
     .card-body(style="align-items:center;")
+      div(style="height:45px;")
+      img.apply-office-qrcode(src='~static/img/apply_success_top_img.png' style="height:58px;width:50px;")
       .apply-success-title {{!activityApply?'--':(!activityApply.isHandle?'审核中':(activityApply.isSuccess? '报名成功':'报名失败'))}}
-      .apply-success-sub-title 已报名活动：{{activityName}}
-      div(style="height:34px;")
-      .card-row(style="justify-content:center;")
-        .apply-cancel-button 
-          .apply-cancel-button-text(@click="cancel_apply") 取消报名
-      div(style="height:28px;")
-      .apply-success-sub-title 工作人员会将您拉入相应的活动群组，请主动添加工作人员微信号，请留意相关活动信息
-      div(style="height:8px;")
-      .card-row(style="justify-content:center;")
-        img.apply-office-qrcode(src='~static/img/office_qrcode.png')
-      .apply-success-qrcode-title 请主动添加工作人员微信
-      div(style="height:40px;")
+      .apply-success-sub-title( v-if="!activityApply || !activityApply.fellowUserId" style='white-space:pre;') 
+                                                        | 你已报名参加办公室计划第2期活动，请添加工作人员微信
+                                                        | 若已经添加，则无需重复添加
+                                                        | 工作人员将在2019/08/18日前把你加进
+      .apply-success-sub-title( v-else style='white-space:pre;') 
+                                                        | 你已申请与 <em style="text-decoration:underline" ><em style="font-weight: bold; font-size:15px;" >用户的ID</em>({{activityApply.fellowUserId}})</em>进入同一群聊，
+                                                        | 请添加工作人员微信，若已经添加，
+                                                        | 则无需重复添加
+                                                        | 工作人员将在2019/11/18前把你加进相关群聊
+      div(style="height:21px;")
+      img.apply-office-qrcode(src='~static/img/office_qrcode.png')
+      div(style="height:4px;")
+      .apply-success-qrcode-title 长按识别二维码，添加工作人员微信
+      div(style="height:20px;")
+      .apply-cancel-button 
+        .apply-cancel-button-text(@click="cancel_apply") 取消报名
 
     .card-footer
   .next
     div(@click='next')
-      .title 继续浏览
+      .title 查看更多会员
 </template>
 
 <script>
