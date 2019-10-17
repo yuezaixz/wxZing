@@ -2,8 +2,8 @@
 .container
   .card(style="height: calc(100% - 144px)")
     .card-header
-      img.card-close(src='~static/img/banner_close.png' style="margin-left:10px;margin-right:5px;")
-      img.card-bgsjh(src='~static/img/banner_bgsjh.png')
+      //- img.card-close(src='~static/img/banner_close.png' style="margin-left:10px;margin-right:5px;")
+      img.card-bgsjh(src='~static/img/banner_bgsjh.png' style="margin-left:10px;")
       img.card-op(src='~static/img/banner_office_planning.png')
       .flex-1
       .card-header-filter(style="padding-right:20px;" )

@@ -5,7 +5,7 @@
       img.card-left-circle(src='~static/img/banner_circle.png')
       .flex-1
       div 用户后台
-      img.card-close(src='~static/img/banner_close.png')
+      //- img.card-close(src='~static/img/banner_close.png')
 
     .card-body
       .card-row

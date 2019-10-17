@@ -7,7 +7,7 @@
       .card-flex-1
       img.card-bgsjh(src='~static/img/banner_bgsjh.png')
       img.card-op(src='~static/img/banner_office_planning.png')
-      img.card-close(src='~static/img/banner_close.png')
+      //- img.card-close(src='~static/img/banner_close.png')
 
     .card-body
       .card-column(style='height:15px;')
