@@ -106,5 +106,4 @@ export default {
 }
 </script>
 
-<style scoped, lang="sass" src='~/static/css/register.sass'></style>
 <style scoped, lang="sass" src='~/static/css/apply_success.sass'></style>

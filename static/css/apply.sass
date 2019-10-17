@@ -7,8 +7,7 @@
 
 .apply-container
   width: 100vw
-  height: calc(100%-40px) !important
-  margin-top: 40px
+  height: 100% !important
   flex-direction: column
   display: flex
   justify-content: center
@@ -16,7 +15,7 @@
   background-repeat:repeat
   background-size: 100% 100%
   -moz-background-size: 100% 100%
-  background-image: url("~static/img/activity_background.png")
+  background-image: url("~static/img/activity_background.jpg")
 
   .apply-modal
     top: 0
@@ -122,6 +121,36 @@
 
     .apply-select-chose
       background-color: #97aef1
+  .tip-title
+    font-size: 12px
+    letter-spacing: 0px
+    line-height: 11px
+    color: #313131
+    margin-left: 22px
+    font-family: "Helvetica Neue"
+    -webkit-transform-origin-x: 0
+    -webkit-transform: scale(0.84)
+    align-self: flex-start
+
+  .tip-container
+    width: calc(100%-44px)
+    height: 170px
+    margin: 0 22px 10px
+    border: 2px solid #313131
+    display: flex
+    align-items: center
+    justify-content: center
+    background-color: white
+
+  .tip-content
+    font-size: 10px
+    letter-spacing: 1px
+    line-height: 17px
+    color: #6b6b6b
+    font-family: "Ping Fang SC"
+    -webkit-transform-origin-x: 50%
+    -webkit-transform: scale(0.84)
+
 
   .next
     background-repeat:no-repeat
@@ -135,7 +164,7 @@
     display: flex
     flex-direction: column
     align-items: center
-    margin-bottom: 100px
+    margin-top: 190px
 
     .title
       flex: 1

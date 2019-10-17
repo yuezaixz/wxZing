@@ -2,6 +2,10 @@
 .apply-container
   .next(@click="apply")
     .title 活动报名
+  div(style="flex:1")
+  .tip-title TIPS：
+  .tip-container
+    .tip-content 办公室计划致力于让两个人自然的相遇，点击上方的立即报名，我们将把你随机加入到20人左右的群聊，建立群聊后，群员推选出一位队长，
   
   div.apply-modal(:style="showApply?'':'display:none;'")
     div.weui-mask(@click="hideApply")
@@ -44,8 +48,26 @@ export default {
   },
 
   methods: {
-    apply() {
-      this.showApply = true
+    async apply() {
+      if (this.activitys) {
+        let activity = this.activitys[0]
+        let data = await this.$store.dispatch('applyActivity', {activityId:activity.activityId})
+        if (data) {
+          this.$store.dispatch('showToast', {duration: 2000, str:"报名成功", toastType:'icon-success-no-circle'})
+          setTimeout(()=>this.$router.push({
+            path: '/apply/success',
+            query: {
+              activityId: data.activityApplyId,
+              activityName: activity.activityName
+            }
+          }), 1000)
+        }
+      } else {
+        this.$store.dispatch('showToast', {duration: 2000, str:'活动报名未开始', toastType:'icon-warn'})
+      }
+      
+
+      // this.showApply = true
     },
     hideApply() {
       this.showApply = false
