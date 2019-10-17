@@ -12,7 +12,7 @@
 
     .zing-card-body(v-if="zingUser")
       .whole-card-photo-container
-        img.whole-card-photo(:src='"http://wxzing.podoon.cn/"+zingUser.photos[0]+"?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100"')
+        img.whole-card-photo(@click="zingDetail" :src='"http://wxzing.podoon.cn/"+zingUser.photos[0]+"?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100"')
       .index-apply-block 已报名
       .index-info-block
         .index-info-title {{zingUser.nickname}}
