@@ -58,6 +58,13 @@ const UserSchema = new Schema({
   lockUntil: {
     type: Number
   },
+  vipUntil: {
+    type: Number,
+    default: 0
+  },
+  vipUntilStr: {
+    type: String
+  },
   // 0 未知 1男 2女 3与性别取反
   filterGender: {
     type: Number,
@@ -95,6 +102,10 @@ const UserSchema = new Schema({
 
 UserSchema.virtual('isLocked').get(function () {
   return !!(this.lockUntil && this.lockUntil > Date.now())
+})
+
+UserSchema.virtual('isVip').get(function () {
+  return !!(this.vipUntil && this.vipUntil > Date.now())
 })
 
 UserSchema.virtual('token').get(function () {
@@ -170,6 +181,38 @@ UserSchema.methods = {
     return new Promise((resolve, reject) => {
       bcrypt.compare(_password, password, function (err, isMatch) {
         if (!err) resolve(isMatch)
+        else reject(err)
+      })
+    })
+  },
+
+  incVipTime: function (vipTime) {
+    var that = this
+
+    return new Promise((resolve, reject) => {
+      var vipUntil = 0
+      if (that.vipUntil && that.vipUntil > Date.now()) {
+        vipUntil = that.vipUntil + vipTime
+      } else {
+        vipUntil = Date.now() + vipTime
+      }
+      var vipUntilDate = new Date(vipUntil)
+      var dd = vipUntilDate.getDate()
+      var mm = vipUntilDate.getMonth() + 1
+
+      var yyyy = vipUntilDate.getFullYear()
+      if (dd < 10) {
+        dd = '0' + dd
+      }
+      if (mm < 10) {
+        mm = '0' + mm
+      }
+      var vipUntilStr = dd + '/' + mm + '/' + yyyy
+      var updates = {
+        $set: {vipUntil, vipUntilStr}
+      }
+      that.update(updates, err => {
+        if (!err) resolve(true)
         else reject(err)
       })
     })
