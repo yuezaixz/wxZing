@@ -96,10 +96,10 @@ class Services {
     }
   }
 
-  randomZing(filterGender, onlyCurrActivity, execludeUserIds) {
+  randomZing(filterGender, filterDegree, filterHeight, execludeUserIds) {
     console.log(execludeUserIds)
     return axios.post('/api/zing/random', {
-      filterGender, onlyCurrActivity, execludeUserIds
+      filterGender, filterDegree, filterHeight, execludeUserIds
     })
   }
 

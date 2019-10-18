@@ -555,26 +555,16 @@ export class DatabaseController {
       let filterGender = session.user.filterGender
       if (filterGender == 3) {
         filterGender = [0, 2, 1][session.user.gender]
-        if (filterGender) {
-          userQueryDict['gender'] = filterGender
-        }
+      }
+      if (filterGender) {
+        userQueryDict['gender'] = filterGender
       }
     }
-    if (session.user.onlyCurrActivity) {
-      let workActivitys = await Activity.find({isOver:false}).sort('-createAt').exec()
-      let workActivityIds = workActivitys.map((item)=>item._id)
-      let workActivityApplys = await ActivityApply.find({'activity': { $in: workActivityIds }}).exec()
-      let workActivityApplyUserIds = workActivityApplys.map((item)=>item.userId)
-      if (execludeUserIds) {
-        for (var k = 0; k < execludeUserIds.length; k++) {
-          let execludeUserId = execludeUserIds[k]
-          var execludeUserIdIndex = workActivityApplyUserIds.indexOf(execludeUserId);
-          if (execludeUserIdIndex !== -1) workActivityApplyUserIds.splice(execludeUserIdIndex, 1);
-        }
-      }
-      userQueryDict['userId'] = { $in: workActivityApplyUserIds, $ne: userId }
-    } else {
-      userQueryDict['userId'] = { $nin: execludeUserIds, $ne: userId }
+    if (session.user.filterDegree) {
+      userQueryDict['degree'] = session.user.filterDegree
+    }
+    if (session.user.filterHeight) {
+      userQueryDict['height'] = {$gte:session.user.filterHeight}
     }
     let users = await User.find(userQueryDict).exec()
     let user = users ? users[parseInt(Math.random()*users.length)]:null
@@ -613,7 +603,8 @@ export class DatabaseController {
       aboutMe,
       aboutOther,
       filterGender,
-      onlyCurrActivity,
+      filterHeight,
+      filterDegree,
     } = ctx.request.body
     if (openid) {
       const findUser = await User.findOne({unionid: openid,}).exec()
@@ -636,7 +627,8 @@ export class DatabaseController {
         findUser.aboutMe = aboutMe
         findUser.aboutOther = aboutOther
         findUser.filterGender = filterGender
-        findUser.onlyCurrActivity = onlyCurrActivity
+        findUser.filterDegree = filterDegree
+        findUser.filterHeight = filterHeight
         findUser.save()
         ctx.session = {
           openid: findUser.openid,
@@ -711,7 +703,8 @@ export class DatabaseController {
     var aboutMe = ctx.request.body.aboutMe
     var aboutOther = ctx.request.body.aboutOther
     var filterGender = ctx.request.body.filterGender
-    var onlyCurrActivity = ctx.request.body.onlyCurrActivity
+    var filterDegree = ctx.request.body.filterDegree
+    var filterHeight = ctx.request.body.filterHeight
 
     //TODO 获取token
     var token = 'aaaa'
@@ -737,7 +730,8 @@ export class DatabaseController {
       aboutMe,
       aboutOther,
       token,
-      onlyCurrActivity,
+      filterHeight,
+      filterDegree,
       filterGender
     })
     console.log(user)

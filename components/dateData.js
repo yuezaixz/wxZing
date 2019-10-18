@@ -41,10 +41,12 @@ for (var l = 140; l <= 200; l++) {
     text: '' + l + 'cm',
     value: l
   })
-  heightDataWithZero.push({
-    text: '' + l + 'cm',
-    value: l
-  })
+  if (l % 5 === 0) {
+    heightDataWithZero.push({
+      text: '' + l + 'cm以上',
+      value: l
+    })
+  }
 }
 
 export { yearsData, monthsData, daysData, heightData, heightDataWithZero }

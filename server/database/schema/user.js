@@ -63,9 +63,13 @@ const UserSchema = new Schema({
     type: Number,
     default: 3
   },
-  onlyCurrActivity: {
-    type: Boolean,
-    default: false
+  filterDegree: {
+    type: Number,
+    default: 0
+  },
+  filterHeight: {
+    type: Number,
+    default: 0
   },
   meta: {
     createdAt: {

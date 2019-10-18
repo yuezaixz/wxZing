@@ -93,10 +93,10 @@ export default {
     commit('SET_USER', null)
   },
 
-  async selectFilter({state, commit}, {filterGender, onlyCurrActivity}) {
+  async selectFilter({state, commit}, {filterGender, filterDegree, filterHeight}) {
     state.authUser.filterGender = filterGender
-    state.authUser.onlyCurrActivity = onlyCurrActivity
-    console.log(state.authUser.filterGender, state.authUser.onlyCurrActivity)
+    state.authUser.filterHeight = filterHeight
+    state.authUser.filterDegree = filterDegree
     return postUserInfo(state, commit)
   },
 
@@ -136,7 +136,7 @@ export default {
   },
 
   async randomZing({state}, execludeUserIds) {
-    let { data } = await Services.randomZing(state.authUser.filterGender, state.authUser.onlyCurrActivity, execludeUserIds)
+    let { data } = await Services.randomZing(state.authUser.filterGender, state.authUser.filtterDegree, state.authUser.filtterHeight, execludeUserIds)
     return data
   },
 

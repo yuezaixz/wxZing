@@ -1,6 +1,6 @@
 <template lang="pug">
 .container
-  .card(style="height: calc(100% - 144px)")
+  .card(style="height: calc(100% - 144px) !important")
     .card-header
       //- img.card-close(src='~static/img/banner_close.png' style="margin-left:10px;margin-right:5px;")
       img.card-bgsjh(src='~static/img/banner_bgsjh.png' style="margin-left:10px;")
@@ -146,8 +146,12 @@ export default {
     confirmFn(val, val2, val3) {
       this.show = false
       if (this.selectDate == 1) {
+        this.height = val.select1.value
+        this.toggleFilterHeight(this.height)
         // this.$store.dispatch('selectHeight', val.select1.value)
       } else {
+        this.edu = val.select1.value
+        this.toggleFilterDegree(this.edu)
         // this.$store.dispatch('selectDegree', val.select1.value)
       }
     },
@@ -157,11 +161,14 @@ export default {
     commitFilter() {
       
     }, 
-    async toggleOnlyCurr(onlyCurrActivity) {
-      await this.$store.dispatch('selectFilter', {onlyCurrActivity, filterGender: this.$store.state.authUser.filterGender})
+    async toggleFilterDegree(degree) {
+      await this.$store.dispatch('selectFilter', {filterDegree:degree, filterHeight:this.$store.state.authUser.filterHeight, filterGender: this.$store.state.authUser.filterGender})
+    }, 
+    async toggleFilterHeight(height) {
+      await this.$store.dispatch('selectFilter', {filterDegree:this.$store.state.authUser.filterDegree, filterHeight:height, filterGender: this.$store.state.authUser.filterGender})
     }, 
     async toggleFilterGender(filterGender) {
-      await this.$store.dispatch('selectFilter', {onlyCurrActivity: this.$store.state.authUser.onlyCurrActivity, filterGender})
+      await this.$store.dispatch('selectFilter', {filterDegree:this.$store.state.authUser.filterDegree, filterHeight:this.$store.state.authUser.filterHeight, filterGender: filterGender})
     },
     async next() {
       this.$router.push({
