@@ -77,7 +77,7 @@ export default {
 
   methods: {
     displayUserId(userItem) {
-      if (!userItem || !userItem.userId) {displayUserId
+      if (!userItem || !userItem.userId) {
         return "--";
       }
       return (Array(6).join(0) + userItem.userId).slice(-6)

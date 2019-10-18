@@ -16,26 +16,37 @@
       //- img.card-close(src='~static/img/banner_close.png')
 
     .card-body(v-if="zingUser")
-      .card-row(style="margin-bottom:8px;margin-top:20px;")
-        .title {{zingUser.nickname}}
-        .gender-block
-          img.gender-block-icon(v-if="zingUser.gender === 1" src="~static/img/male_mini_icon.png")
-          img.gender-block-icon(v-else src="~static/img/female_mini_icon.png")
-          .gender-block-title {{displayAge}}岁
+      .card-row(style="margin-bottom:8px;margin-top:20px;align-items:flex-end;")
+        .name-title {{zingUser.nickname}}
+        .id-content {{displayUserId}}
+        div(style="flex:1")
+        .index-apply-block(v-if="apply") 已报名
+        //- .gender-block
+        //-   img.gender-block-icon(v-if="zingUser.gender === 1" src="~static/img/male_mini_icon.png")
+        //-   img.gender-block-icon(v-else src="~static/img/female_mini_icon.png")
+        //-   .gender-block-title {{displayAge}}岁
       .card-row(style="margin-bottom:10px;")
-        .sub-title {{zingUser.provinceName}},{{zingUser.cityName}}
-      .card-row(style="margin-bottom:4px;")
-        .content {{displayDegree}},{{displayJobType}},{{zingUser.career}},{{displayIncome}}
-      .card-row(style="margin-bottom:4px;")
-        .content 来自：{{zingUser.provinceName}},{{zingUser.cityName}}
+        .sub-title {{zingUser.provinceName}}，{{zingUser.cityName}}
+      .card-row(style="justify-content: flex-start; align-items: flex-start;display: flex;")
+        .info-info-item-career.yellow-item 
+          img.info-info-item-img-male( v-if="zingUser.gender==1" src='~static/img/male_mini_simple_white.png')
+          img.info-info-item-img-female( v-if="zingUser.gender==2" src='~static/img/female_mini_simple_white.png')
+          .info-info-item-title {{displayAge}}
+        div(style="width:10px;")
+        .info-info-item-career.purple-item 
+          .info-info-item-title {{displayXingzuo}}
+        div(style="width:10px;")
+        .info-info-item-career.cyan-item(v-if="zingUser.height")
+          .info-info-item-title {{zingUser.height}}cm
+      .card-row(style="margin-bottom:4px;margin-top:30px;")
+        .content {{displayDegree}}/{{displayJobType}}/{{zingUser.career}}/{{displayIncome}}
+      //- .card-row(style="margin-bottom:4px;")
+      //-   .content 来自 {{zingUser.provinceName}},{{zingUser.cityName}}
       .card-row(style="margin-bottom:4px;")
         .content 关于房产：{{displayHouseType}}
       .card-row(style="margin-bottom:20px;")
-        .content 互赞即可显示
-      .card-row(style="margin-bottom:15px;")
-        .apply-activity
-         .apply-activity-title(v-if="apply") 已报名本期活动
-         .apply-activity-title(v-else) 未报名本期活动
+        .content 微信号：
+        .wechat-content 互赞即可显示
 
     .card-body(v-else)
       
@@ -44,11 +55,11 @@
   .card(v-if="zingUser" style="margin-top:26px;")
     .card2-header
     .card2-body
-      .card-row(style='margin-top:34px;')
-        .title 关于我
       .card-row
+        .title 关于我
+      .card-row(style="margin-top:10px;")
         .content {{zingUser.aboutMe || '还没想好怎么表达自己，请再等我下'}}
-      .card-row(style='margin-top:50px;')
+      .card-row(style='margin-top:40px;margin-bottom:10px;')
         .title 关于理想型
       .card-row(style='margin-bottom:50px;')
         .content {{zingUser.aboutOther || '我喜欢的人轮廓还模糊，渐渐会清晰'}}
@@ -56,7 +67,7 @@
   .detail-next(@click="zingUserAction")
       .title 赞
   .detail-next(v-if="apply" @click="fellowUserActivity(apply.activity.activityId)")
-      .title 进ta的群
+      .title 进入共同群聊
       .vip-block
         .vip-title VIP
   
@@ -101,6 +112,12 @@ export default {
   },
 
   computed: {
+    displayUserId() {
+      if (!this.zingUser || !this.zingUser.userId) {
+        return "--";
+      }
+      return (Array(6).join(0) + this.zingUser.userId).slice(-6)
+    },
     displayDegree() {
       return ['保密', '博士及以上', '研究生', '本科', '专科', '专科以下'][this.zingUser.degree]
     },
@@ -133,7 +150,7 @@ export default {
         var result = m - (d < '102223444433'.charAt(m - 1) - -19)
         result += 1
         result %= 12
-        XingzuoIndex = result
+        returnXingzuoIndex = result
       }
       return ['未知','魔羯座','水瓶座','双鱼座','白羊座','金牛座','双子座','巨蟹座',
         '狮子座','处女座','天秤座','天蝎座','射手座'][returnXingzuoIndex]
