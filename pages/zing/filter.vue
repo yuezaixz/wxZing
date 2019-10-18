@@ -30,7 +30,7 @@
         .title-16 身高
       .card-row
         .city-control(@click='showCityDialog(1)' style="margin-top:10px;")
-          .city-title {{height ? (''+height+'cm') : '不限'}}
+          .city-title {{authUser.filterHeight ? (''+authUser.filterHeight+'cm以上') : '不限'}}
           .div(style="flex:1")
           img.card-arrow-down(src='~static/img/arrow_down.png')
       div(style='height:29px;')
@@ -41,7 +41,7 @@
         .title-16 学历
       .card-row
         .city-control(@click='showCityDialog(2)' style="margin-top:10px;")
-          .city-title {{edu ? ['不限', '博士及以上', '研究生', '本科', '专科'][edu] : '不限'}}
+          .city-title {{authUser.filterDegree ? ['不限', '博士及以上', '研究生', '本科', '专科'][authUser.filterDegree] : '不限'}}
           .div(style="flex:1")
           img.card-arrow-down(src='~static/img/arrow_down.png')
 
@@ -75,10 +75,12 @@ export default {
       selectDate: 1,
       columns: 1,
       show: false,
-      height: null,
-      edu: null,
       eduPickData: {
         data1:[
+          {
+            text:'不限',
+            value: 0
+          },
           {
             text:'博士及以上',
             value: 1
@@ -115,14 +117,14 @@ export default {
       if (this.selectDate == 2) {
         return [//0 保密 1博士及以上 2研究生 3本科 4专科 5专科以下
           {
-            text: ['不限', '博士及以上', '研究生', '本科', '专科'][this.$store.state.degree],
+            text: ['不限', '博士及以上', '研究生', '本科', '专科'][this.$store.state.authUser.degree],
             value: this.$store.state.authUser.degree
           }
         ];
       } else {
         return [//0 保密 1博士及以上 2研究生 3本科 4专科 5专科以下
           {
-            text: this.$store.state.height || '不限',
+            text: this.$store.state.height? (''+this.$store.state.height+'cm以上'): '不限',
             value: this.$store.state.authUser.height
           }
         ];
@@ -146,12 +148,10 @@ export default {
     confirmFn(val, val2, val3) {
       this.show = false
       if (this.selectDate == 1) {
-        this.height = val.select1.value
-        this.toggleFilterHeight(this.height)
+        this.toggleFilterHeight(val.select1.value)
         // this.$store.dispatch('selectHeight', val.select1.value)
       } else {
-        this.edu = val.select1.value
-        this.toggleFilterDegree(this.edu)
+        this.toggleFilterDegree(val.select1.value)
         // this.$store.dispatch('selectDegree', val.select1.value)
       }
     },

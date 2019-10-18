@@ -47,11 +47,11 @@
       .card-row(style='margin-top:34px;')
         .title 关于我
       .card-row
-        .content {{zingUser.aboutMe}}
+        .content {{zingUser.aboutMe || '还没想好怎么表达自己，请再等我下'}}
       .card-row(style='margin-top:50px;')
         .title 关于理想型
       .card-row(style='margin-bottom:50px;')
-        .content {{zingUser.aboutOther}}
+        .content {{zingUser.aboutOther || '我喜欢的人轮廓还模糊，渐渐会清晰'}}
     .card2-footer
   .detail-next(@click="zingUserAction")
       .title 赞

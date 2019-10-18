@@ -34,7 +34,10 @@ for (var i = 1970; i <= currentDate.getFullYear(); i++) {
 }
 
 var heightData = []
-var heightDataWithZero = [0]
+var heightDataWithZero = [{
+  text: '不限',
+  value: 0
+}]
 
 for (var l = 140; l <= 200; l++) {
   heightData.push({

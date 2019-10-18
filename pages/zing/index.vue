@@ -60,6 +60,9 @@ export default {
       var returnXingzuoIndex;
 
       var birthday = this.zingUser.birthday
+      if (!birthday) {
+        return '--';
+      }
       var strBirthdayArr=birthday.split("-");
       if (strBirthdayArr.length < 3) {
         returnXingzuoIndex = 0
@@ -78,6 +81,9 @@ export default {
     displayAge() {
       var birthday = this.zingUser.birthday
       var returnAge;
+      if (!birthday) {
+        return 0;
+      }
       var strBirthdayArr=birthday.split("-");
       var birthYear = strBirthdayArr[0];
       var birthMonth = strBirthdayArr[1];
