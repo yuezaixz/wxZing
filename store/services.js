@@ -96,6 +96,16 @@ class Services {
     }
   }
 
+  test7day(userId) {
+    try {
+      return axios.post('/api/vip/test7day', {userId})
+    } catch (e) {
+      if (e.response.status === 401) {
+        throw new Error('You can\'t do it')
+      }
+    }
+  }
+
   randomZing(filterGender, filterDegree, filterHeight, execludeUserIds) {
     console.log(execludeUserIds)
     return axios.post('/api/zing/random', {

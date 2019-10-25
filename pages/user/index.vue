@@ -10,14 +10,14 @@
 
     .card-body
       .card-vip-top
-        .vip-eslap-time 会员到期时间：2019-09-18
+        .vip-eslap-time(v-if='isVip(authUser)') 会员到期时间：{{authUser.vipUntilStr}}
         div(style="flex:1")
         img.user-edit(src='~static/img/icon_edit.png' @click='editUser')
       .card-column
         .card-row(style='justify-content:center;')
           .big_avatar_container
             img.big_avatar(:src='authUser.avatarUrl')
-            .big_avatar_vip VIP
+            .big_avatar_vip(v-if='isVip(authUser)') VIP
       .card-column(style='height:15px;')
       .card-column
         .card-row(style='justify-content:center;')
@@ -76,13 +76,22 @@ export default {
   },
 
   methods: {
+    isVip(userItem){
+      console.log('util:'+userItem.vipUntil+',now:'+Date.now());
+      return !!(userItem.vipUntil && userItem.vipUntil > Date.now())
+    },
     displayUserId(userItem) {
       if (!userItem || !userItem.userId) {
         return "--";
       }
       return (Array(6).join(0) + userItem.userId).slice(-6)
     },
-    applyAction() {
+    async applyAction() {
+      // if (await this.$store.dispatch('test7dayByUserId', this.$store.state.authUser.userId)) {
+      //   this.$store.dispatch('showToast', {duration: 2000, str:'VIP充值成功', toastType:'icon-success-no-circle'})
+      // } else {
+      //   this.$store.dispatch('showToast', {duration: 2000, str:'VIP充值失败', toastType:'icon-warn'})
+      // }
       this.$router.replace('/apply')
     },
     editUser() {

@@ -105,6 +105,16 @@ export default {
     return data
   },
 
+  async test7dayByUserId({state}, userId) {
+    let { data } = await Services.test7day(userId)
+    if (data.data) {
+      state.authUser = data.data
+      return true
+    } else {
+      return false
+    }
+  },
+
   async zingUserAction({state}, {zingUserId}) {
     let { data } = await Services.zingUserAction(zingUserId)
     return data

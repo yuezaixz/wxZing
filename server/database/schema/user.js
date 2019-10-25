@@ -208,6 +208,7 @@ UserSchema.methods = {
         mm = '0' + mm
       }
       var vipUntilStr = dd + '/' + mm + '/' + yyyy
+      console.log('vip时间增加至：' + vipUntilStr)
       var updates = {
         $set: {vipUntil, vipUntilStr}
       }

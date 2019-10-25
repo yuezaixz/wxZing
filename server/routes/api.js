@@ -828,6 +828,17 @@ export class DatabaseController {
     }
   }
 
+
+  @post('vip/test7day')
+  async test7day(ctx, next) {
+    const session = ctx.session
+    let userId = session.user.userId
+    const findUser = await User.findOne({userId: userId,}).exec()
+    findUser.incVipTime(604800*1000)
+    return (ctx.body = {success:true, data:findUser})
+  }
+  
+
   @post('fellow/user')
   async fellowUser(ctx, next) {
     var targetId = ctx.request.body.fellowUserId
