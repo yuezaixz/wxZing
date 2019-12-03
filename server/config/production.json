@@ -2,7 +2,7 @@
   "db":"mongodb://localhost/wxZing",
   "port": 3003,
   "base": "http://localhost:3003",
-  "SITE_ROOT_URL": "http://wxzing.davidandty.com",
+  "SITE_ROOT_URL": "http://wxzing.officeplan.cn",
   "WEBSITE_ROOT_URL": "http://www.paodong.cn",
   "ngrok": "110636128451",
   "shop": {
