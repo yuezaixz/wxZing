@@ -16,7 +16,7 @@
           .card-title 为你推荐
         .card-column(style='height:5px;')
         .card-inner 推荐给你一些优质用户，他们好看又活泼
-      .card-select-row(style='flex-wrap: wrap; margin-right: 20px;')
+      .card-select-row(style='flex-wrap: wrap; margin-right: 20px; margin-top: 20px; width:100%; align-items: flex-start; ')
         .zing-flex1(v-for='(item, index) in rUsers' :key='index' @click='love(item)')
           .zing-photo-container
             img.zing-photo(:src='"http://wxzing.podoon.cn/"+item.photos[0]+"?imageView2/3/w/90/h/90/q/75|imageslim"')
