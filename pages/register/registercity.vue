@@ -120,8 +120,8 @@ export default {
     },
     displayName(code) {
       var provCode = code && code.length == 6 ? (code.substr(0,2)+'0000'):null
-      var cityName
-      var provName
+      var cityName = ''
+      var provName = ''
       for (const key in citysData[provCode]) {
         if (citysData[provCode].hasOwnProperty(key)) {
           const element = citysData[provCode][key];
