@@ -10,7 +10,7 @@ var appkey = 'cc41cf1a874db93db58746f7429f826a'
 var templateId = 354847
 
 // 签名
-var smsSign = '跑动信息'
+var smsSign = '办公室计划'
 
 // 实例化 QcloudSms
 var qcloudsms = QcloudSms(appid, appkey)
