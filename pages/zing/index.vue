@@ -47,7 +47,7 @@
 import { mapState } from 'vuex'
 
 export default {
-  middleware: 'wechat-info',
+  // middleware: 'wechat-info',
   data() {
     return {
       zingUser: null,
@@ -133,7 +133,7 @@ export default {
     
     },
     ...mapState([
-      // 'authUser',
+      'authUser',
     ])
   },
 
@@ -145,7 +145,7 @@ export default {
       return (Array(6).join(0) + userId).slice(-6)
     },
     filter() {
-      if (!this.$store.state.authUser) {
+      if (!this.$store.state.authUser.phoneNumber || !this.$store.state.authUser.wxcode) {
         this.$store.dispatch('showToast', {duration: 2000, str:'未注册', toastType:'icon-warn'})
         return;
       }
@@ -154,7 +154,7 @@ export default {
       })
     },
     async zingDetail() {
-      if (!this.$store.state.authUser) {
+      if (!this.$store.state.authUser.phoneNumber || !this.$store.state.authUser.wxcode) {
         this.$store.dispatch('showToast', {duration: 2000, str:'未注册', toastType:'icon-warn'})
         return;
       }
@@ -166,7 +166,7 @@ export default {
       })
     },
     async zingUserAction() {
-      if (!this.$store.state.authUser) {
+      if (!this.$store.state.authUser.phoneNumber || !this.$store.state.authUser.wxcode) {
         this.$store.dispatch('showToast', {duration: 2000, str:'未注册', toastType:'icon-warn'})
         return;
       }
@@ -179,7 +179,7 @@ export default {
       }
     },
     async rechose() {
-      if (!this.$store.state.authUser) {
+      if (!this.$store.state.authUser.phoneNumber || !this.$store.state.authUser.wxcode) {
         this.$store.dispatch('showToast', {duration: 2000, str:'未注册', toastType:'icon-warn'})
         return;
       }
