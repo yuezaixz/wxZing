@@ -146,7 +146,7 @@ export default {
   },
 
   async randomZing({state}, execludeUserIds) {
-    let { data } = await Services.randomZing(state.authUser.filterGender, state.authUser.filtterDegree, state.authUser.filtterHeight, execludeUserIds)
+    let { data } = await Services.randomZing(execludeUserIds)
     return data
   },
 
