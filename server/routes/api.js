@@ -542,16 +542,16 @@ export class DatabaseController {
   @post('zing/random')
   async random_zing(ctx, next) {
     const session = ctx.session
-    let userId = session.user.userId
+    // let userId = session.user ? session.user.userId : null
     let {execludeUserIds} = ctx.request.body
-    if (!userId) {
-      return (ctx.body = {
-        success: false,
-        msg: '未登录'
-      })
-    }
+    // if (!userId) {
+    //   return (ctx.body = {
+    //     success: false,
+    //     msg: '未登录'
+    //   })
+    // }
     let userQueryDict = {}
-    if (session.user.filterGender) {
+    if (session.user && session.user.filterGender) {
       let filterGender = session.user.filterGender
       if (filterGender == 3) {
         filterGender = [0, 2, 1][session.user.gender]
@@ -560,10 +560,10 @@ export class DatabaseController {
         userQueryDict['gender'] = filterGender
       }
     }
-    if (session.user.filterDegree) {
+    if (session.user && session.user.filterDegree) {
       userQueryDict['degree'] = session.user.filterDegree
     }
-    if (session.user.filterHeight) {
+    if (session.user && session.user.filterHeight) {
       userQueryDict['height'] = {$gte:session.user.filterHeight}
     }
     let users = await User.find(userQueryDict).exec()

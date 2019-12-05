@@ -16,8 +16,7 @@
       .index-apply-block 已报名
       .index-info-block
         .index-info-title {{zingUser.nickname}}
-        .index-info-sub-title(style="margin:10px 0 14px 0;") {{displayEduStr(zingUser)}} / {{['其他', '国企', '外企', '私企', '事业单位', '自由职业', '创业'][zingUser.jobType]}} / {{authUser.career}} / {{['未知', '10w内', '10-20W', '20-50W', '50W以上'][zingUser.income]}}
-        //- .index-info-sub-title(style="margin:10px 0 14px 0;") {{['未知','男','女'][zingUser.gender]}} /  /  / {{authUser.career}}
+        .index-info-sub-title(style="margin:10px 0 14px 0;") {{displayEduStr(zingUser)}} / {{['其他', '国企', '外企', '私企', '事业单位', '自由职业', '创业'][zingUser.jobType]}} / {{zingUser.career}} / {{['未知', '10w内', '10-20W', '20-50W', '50W以上'][zingUser.income]}}
         .card-row(style="justify-content: flex-start; align-items: flex-start;margin:0 0;width:100%;display: flex;")
           .info-info-item-career 
             img.info-info-item-img-male( v-if="zingUser.gender==1" src='~static/img/male_mini_simple_white.png')
@@ -133,23 +132,31 @@ export default {
     
     },
     ...mapState([
-      'authUser',
+      // 'authUser',
     ])
   },
 
   methods: {
     displayEduStr(authUser) {
-      return authUser.degree ? ['请选择', '博士及以上', '研究生', '本科', '专科', '其他'][this.$store.state.authUser.degree] : this.$store.state.authUser.degree
+      return authUser.degree ? ['请选择', '博士及以上', '研究生', '本科', '专科', '其他'][authUser.degree] : ''
     },
     displayUserId(userId) {
       return (Array(6).join(0) + userId).slice(-6)
     },
     filter() {
+      if (!this.$store.state.authUser) {
+        this.$store.dispatch('showToast', {duration: 2000, str:'未注册', toastType:'icon-warn'})
+        return;
+      }
       this.$router.push({
         path: '/zing/filter'
       })
     },
     async zingDetail() {
+      if (!this.$store.state.authUser) {
+        this.$store.dispatch('showToast', {duration: 2000, str:'未注册', toastType:'icon-warn'})
+        return;
+      }
       this.$router.push({
         path: '/zing/detail',
         query: {
@@ -158,6 +165,10 @@ export default {
       })
     },
     async zingUserAction() {
+      if (!this.$store.state.authUser) {
+        this.$store.dispatch('showToast', {duration: 2000, str:'未注册', toastType:'icon-warn'})
+        return;
+      }
       let data = await this.$store.dispatch('zingUserAction', {'zingUserId': this.zingUser.userId})
       if (data.success) {
         this.zingUser.zing = data.data
@@ -167,6 +178,10 @@ export default {
       }
     },
     async rechose() {
+      if (!this.$store.state.authUser) {
+        this.$store.dispatch('showToast', {duration: 2000, str:'未注册', toastType:'icon-warn'})
+        return;
+      }
       this.$store.dispatch('showToast', {str:'查找中'})
       this.execludeUserIds.push(this.zingUser.userId)
       let data = await this.$store.dispatch('randomZing', [...this.execludeUserIds])

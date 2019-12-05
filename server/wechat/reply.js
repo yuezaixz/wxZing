@@ -1,6 +1,6 @@
 // import config from '../config'
 
-const tip = 'Hello，感谢关注OfflicePlay\n' +
+const tip = 'Hello，感谢关注OfflicePlan\n' +
    '我们正在。。。。。。。。。。。，\n' +
    '。。。。。。。。。。。。。。。，\n' +
    '我们已经在小规模测试中了，如果您很感兴趣，欢迎留下您的联系方式。'
@@ -42,7 +42,8 @@ export default async (ctx, next) => {
     } else if (message.Event === 'unsubscribe') {
       console.log('取关了')
     } else if (message.Event === 'LOCATION') {
-      ctx.body = message.Latitude + ' : ' + message.Longitude
+      console.log('定位' + message.Latitude + ' : ' + message.Longitude)
+      // ctx.body = message.Latitude + ' : ' + message.Longitude
     } else if (message.Event === 'view') {
       ctx.body = message.EventKey + message.MenuId
     } else if (message.Event === 'pic_sysphoto') {
