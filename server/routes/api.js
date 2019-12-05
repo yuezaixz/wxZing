@@ -566,6 +566,9 @@ export class DatabaseController {
     if (session.user && session.user.filterHeight) {
       userQueryDict['height'] = {$gte:session.user.filterHeight}
     }
+    if (execludeUserIds && execludeUserIds.length > 0) {
+      userQueryDict['userId'] = {$nin:execludeUserIds}
+    }
     let users = await User.find(userQueryDict).exec()
     let user = users ? users[parseInt(Math.random()*users.length)]:null
     if (user) {
