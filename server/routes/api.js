@@ -570,6 +570,7 @@ export class DatabaseController {
       userQueryDict['userId'] = {$nin:execludeUserIds}
     }
     userQueryDict['wxcode'] = {$ne: null}
+    userQueryDict['phoneNumber'] = {$ne: null}
     let users = await User.find(userQueryDict).exec()
     let user = users ? users[parseInt(Math.random()*users.length)]:null
     if (user) {
