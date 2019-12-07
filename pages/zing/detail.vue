@@ -92,7 +92,7 @@
 import { mapState } from 'vuex'
 
 export default {
-  middleware: 'wechat-info',
+  middleware: 'wechat-oauth',
   data() {
     return {
       swiperConfig: {
@@ -217,6 +217,9 @@ export default {
 
   methods: {
     displayApply() {
+      if (!this.$store.state.authUser || !this.$store.state.authUser.phoneNumber || !this.$store.state.authUser.wxcode) {
+        return;
+      }
       this.showApply = true
     },
     hideApply() {
@@ -243,6 +246,12 @@ export default {
       }
     },
     async zingUserAction() {
+      if (!this.$store.state.authUser || !this.$store.state.authUser.phoneNumber || !this.$store.state.authUser.wxcode) {
+        this.$router.push({
+          path: '/register'
+        })
+        return;
+      }
       let data = await this.$store.dispatch('zingUserAction', {'zingUserId': this.zingUser.userId})
       if (data.success) {
         this.zingUser.zing = data.data
@@ -252,6 +261,13 @@ export default {
       }
     },
     async fellowUserActivity(activityId) {
+      if (!this.$store.state.authUser || !this.$store.state.authUser.phoneNumber || !this.$store.state.authUser.wxcode) {
+        this.$router.push({
+          path: '/register'
+        })
+        // this.$store.dispatch('showToast', {duration: 2000, str:'未注册', toastType:'icon-warn'})
+        return;
+      }
       if (activityId) {
         let data = await this.$store.dispatch('applyActivity', {activityId})
         if (data) {
