@@ -511,6 +511,18 @@ export class DatabaseController {
         msg: '找不到相应群聊'
       })
     }
+
+    const activityApplyResults = await ActivityApply.find({activity, isCancel:false}).exec()
+    console.log(11122333)
+    console.log(activityApplyResults.length)
+    if (session.user.role !== 'vip' && activityApplyResults && activityApplyResults.length > 100) {
+      return (ctx.body = {
+        success: false,
+        code: 509,
+        msg: '人数已满'
+      })
+    }
+
     const check = await ActivityApply.findOne({activity, userId, isCancel:false }).exec()
     if (check) {
       return (ctx.body = {
@@ -529,7 +541,8 @@ export class DatabaseController {
     } catch (e) {
       return (ctx.body = {
         success: false,
-        msg: '保存出错'
+        msg: '保存出错',
+        code: 501
       })
     }
   }

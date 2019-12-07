@@ -52,15 +52,17 @@ export default {
       if (this.activitys) {
         let activity = this.activitys[0]
         let data = await this.$store.dispatch('applyActivity', {activityId:activity.activityId})
-        if (data) {
+        if (data.success) {
           this.$store.dispatch('showToast', {duration: 2000, str:"报名成功", toastType:'icon-success-no-circle'})
           setTimeout(()=>this.$router.push({
             path: '/apply/success',
             query: {
-              activityId: data.activityApplyId,
+              activityId: data.data.activityApplyId,
               activityName: activity.activityName
             }
           }), 1000)
+        } else {
+          this.$store.dispatch('showToast', {duration: 2000, str:data.msg, toastType:'icon-warn'})
         }
       } else {
         this.$store.dispatch('showToast', {duration: 2000, str:'活动报名未开始', toastType:'icon-warn'})
@@ -79,15 +81,17 @@ export default {
     async submit() {
       if (this.activityId || this.activityId === 0) {
         let data = await this.$store.dispatch('applyActivity', {activityId:this.activityId})
-        if (data) {
+        if (data.success) {
           this.$store.dispatch('showToast', {duration: 2000, str:"报名成功", toastType:'icon-success-no-circle'})
           setTimeout(()=>this.$router.push({
             path: '/apply/success',
             query: {
-              activityId: data.activityApplyId,
+              activityId: data.data.activityApplyId,
               activityName: this.activityName
             }
           }), 1000)
+        } else {
+          this.$store.dispatch('showToast', {duration: 2000, str:data.msg, toastType:'icon-warn'})
         }
       } else {
         this.$store.dispatch('showToast', {duration: 2000, str:'请选择群聊', toastType:'icon-warn'})

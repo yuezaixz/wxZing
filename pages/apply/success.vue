@@ -68,9 +68,7 @@ export default {
         let data = await this.$store.dispatch('cancelApply', {activityId: this.activityId})
         if (data.success) {
           this.$store.dispatch('showToast', {duration: 2000, str:"取消成功", toastType:'icon-success-no-circle'})
-          setTimeout(()=>this.$router.push({
-            path: '/apply'
-          }), 1600)
+          setTimeout(()=>this.$router.go(-1), 1600)
         } else {
           this.$store.dispatch('showToast', {duration: 2000, str:data.msg || "取消失败", toastType:'icon-warn'})
         }

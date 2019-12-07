@@ -231,10 +231,7 @@ export default {
 
   async applyActivity({state}, {activityId}) {
     const {data} = await Services.applyActivity(activityId)
-    if (data.success) {
-      return data.data
-    }
-    return null
+    return data
   },
 
   async cancelApply({state}, {activityId}) {

@@ -270,15 +270,17 @@ export default {
       }
       if (activityId) {
         let data = await this.$store.dispatch('applyActivity', {activityId})
-        if (data) {
+        if (data.success) {
           this.$store.dispatch('showToast', {duration: 2000, str:"报名成功", toastType:'icon-success-no-circle'})
           setTimeout(()=>this.$router.push({
             path: '/apply/success',
             query: {
-              activityId: data.activityApplyId,
+              activityId: data.data.activityApplyId,
               activityName: this.apply.activity.activityName
             }
           }), 1600)
+        } else {
+          this.$store.dispatch('showToast', {duration: 2000, str:data.msg, toastType:'icon-warn'})
         }
       } else {
         this.$store.dispatch('showToast', {duration: 2000, str:'群不存在', toastType:'icon-warn'})
