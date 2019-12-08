@@ -216,8 +216,12 @@ export default {
   },
 
   async selectAbout({state, commit}, {aboutOther, aboutMe}) {
-    state.authUser.aboutMe = aboutMe
-    state.authUser.aboutOther = aboutOther
+    if (aboutMe) {
+      state.authUser.aboutMe = aboutMe
+    }
+    if (aboutOther) {
+      state.authUser.aboutOther = aboutOther
+    }
     return postUserInfo(state, commit)
   },
 

@@ -17,16 +17,32 @@
           .card-title 关于我，关于你
         .card-column(style='height:10px;')
         .card-inner(style="margin-right:25px;") 好的表达让人印象深刻，大大增加成功概率，填写完成后，我们会把您的资料重点推送给更多的用户。若当下不方便，可以跳过，随后再补充， 
-        .city-control
-          input.about-input(v-model="authUser.aboutMe" value="authUser.aboutMe", placeholder='关于我')
-        .card-column(style='height:10px;')
-        .city-control
-          input.about-input(v-model="authUser.aboutOther" value="authUser.aboutOther", placeholder='理想型')
+        //- .city-control
+        div.about-btn(@click='showAbout(true)')
+          .title 关于我
+          //- input.about-input(v-model="authUser.aboutMe" value="authUser.aboutMe", placeholder='关于我')
+        //- .card-column(style='height:30px;')
+        //- .city-control
+        div.about-btn(@click='showAbout(false)')
+          .title 关于另一半
+          //- input.about-input(v-model="authUser.aboutOther" value="authUser.aboutOther", placeholder='理想型')
 
     .card-footer
   .next
     div(@click='next')
       .title 下一步
+  
+  .apply-modal(:style="showAboutInput?'':'display:none;'")
+    .card-row(style="height:60px;")
+      div.cancel(@click='cancelAboutInput') 取消
+      div(style="flex:1")
+      div.save(@click='saveAboutInput') 保存
+    .card-row(style="flex:1; overflow:auto;")
+      textarea.modal-about-input(
+        v-model="aboutInput"
+        value="aboutInput", 
+        :placeholder='isAboutMe?"我来自哪儿，或者我毕业于什么学校（用于面试）。此处小编以非面试类介绍为例，值得注意的是：是本市的就说小地方，外地来的就说大家熟知的地方，可以顺道邀请大家去玩。再接着说家乡特色，或者学校经历（用于面试）。此处小编以非面试类介绍为例。比如家乡有哪些玩的或者特产类的东西，相当于家乡的名片，当别人记住你的家乡，对你又会更加深刻。":"关于另一半"'
+      )
 
 </template>
 
@@ -39,7 +55,12 @@ export default {
   data() {
     return {
       user: {},
-      activeGender:0
+      activeGender:0,
+      showAboutInput: false,
+      isAboutMe: false,
+      aboutMe: null,
+      aboutOther: null,
+      aboutInput: null
     }
   },
 
@@ -50,14 +71,35 @@ export default {
   },
 
   methods: {
+    displayAboutContent() {
+      return this.isAboutMe?this.aboutMe:this.aboutOther
+    },
     async selectGender(gender) {
       this.$store.dispatch('selectGender', gender)
     },
+    async showAbout(isAboutMe) {
+      this.isAboutMe = isAboutMe
+      this.showAboutInput = true
+      this.aboutInput = isAboutMe? this.aboutMe: this.aboutOther
+      console.log(isAboutMe)
+    },
+    async cancelAboutInput() {
+      this.showAboutInput = false
+    },
+    async saveAboutInput() {
+      this.showAboutInput = false
+      if (this.isAboutMe) {
+        this.aboutMe = this.aboutInput
+      } else {
+        this.aboutOther = this.aboutInput
+      }
+      this.aboutInput = ''
+    },
     async next() {
-      if (this.$store.state.authUser.aboutMe && this.$store.state.authUser.aboutOther) {
+      if (this.aboutMe && this.aboutOther) {
         var data = await this.$store.dispatch('selectAbout', {
-          'aboutMe':this.$store.state.authUser.aboutMe,
-          'aboutOther':this.$store.state.authUser.aboutOther
+          'aboutMe':this.aboutMe,
+          'aboutOther':this.aboutOther
         })
         if (data.success) {
           const visit = '/register/registerdone'
