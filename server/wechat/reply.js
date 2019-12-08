@@ -1,4 +1,8 @@
 // import config from '../config'
+import mongoose from 'mongoose'
+
+const User = mongoose.model('User')
+const TmpMedia = mongoose.model('TmpMedia')
 
 const tip = 'Hello，感谢关注OfflicePlan\n' +
    '我们正在。。。。。。。。。。。，\n' +
@@ -152,9 +156,21 @@ export default async (ctx, next) => {
       }]
     }
   } else if (message.MsgType === 'image') {
-    ctx.body = {
-      type: 'image',
-      mediaId: message.MediaId
+    let dbUser = await User.findOne({openid: message.FromUserName}).exec()
+    var newMedia = TmpMedia({
+      userId: dbUser.userId,
+      tmpMediaId: message.MediaId
+    })
+    newMedia.save()
+    let count = await TmpMedia.count({userId: {$ne: dbUser.userId}, 'liveUntil': {$gte: Date.now() - 86400000}}).exec()
+    var random = Math.floor(Math.random() * count)
+    let tmpMedia = await TmpMedia.findOne({userId: {$ne: dbUser.userId}, 'liveUntil': {$gte: Date.now() - 86400000}}).skip(random).exec()
+    console.log(tmpMedia)
+    if (tmpMedia) {
+      ctx.body = {
+        type: 'image',
+        mediaId: tmpMedia.tmpMediaId
+      }
     }
   } else if (message.MsgType === 'voice') {
     ctx.body = {
