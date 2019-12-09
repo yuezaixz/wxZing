@@ -163,8 +163,8 @@ export default {
       } else {
         return [//0 保密 1博士及以上 2研究生 3本科 4专科 5专科以下
           {
-            text: this.$store.state.height || 180,
-            value: this.$store.state.authUser.height
+            text: this.$store.state.authUser.height || '160cm',
+            value: this.$store.state.authUser.height || 160
           }
         ];
       }
@@ -182,7 +182,7 @@ export default {
       return authUser.birthday
     },
     displayHeightStr(authUser) {
-      return authUser.height ? authUser.height+'cm' : authUser.height
+      return authUser.height ? authUser.height+'cm' : ''
     },
     async showCityDialog(type) {
       this.toShow()
