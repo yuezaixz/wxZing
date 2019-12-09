@@ -209,50 +209,74 @@ export default {
   mixins: [wechat],
 
   async beforeMount () {
-    const url = window.location.href
-    var count = 1
-    await this.wechatInit(url, ()=>{
-      wx.updateAppMessageShareData({
-        title: '测试', // 分享标题
-        desc: '测试描述', // 分享描述
-        link: url+'?sharedId=5', // 分享链接
-        imgUrl: 'https://oimagea7.ydstatic.com/image?id=8247010287781274395&product=adpublish&w=520&h=347', // 分享图标
-        success: function () {
-          console.log('update share success')
-          console.log(res)
-          this.test = 'update share success' + (count++)
-        }
+    if (this.$store.state.authUser && this.$store.state.authUser.userId) {
+      var url = window.location.href
+      var sharedUrl = url
+      var findIndex = url.indexOf('sharedId')
+      if (findIndex > 0) {
+        sharedUrl = url.substring(0, findIndex-1)
+      }
+      
+      var nickname = this.$store.state.authUser.nickname ? this.$store.state.authUser.nickname: ''
+
+      await this.wechatInit(url, ()=>{
+        wx.updateAppMessageShareData({
+          title: nickname+ '邀请你加入办公室计划', // 分享标题
+          desc: nickname+ '邀请你加入办公室计划，办公室计划致力于让两个人自然的相遇', // 分享描述
+          link: sharedUrl+'?sharedId='+this.$store.state.authUser.userId, // 分享链接
+          imgUrl: 'https://oimagea7.ydstatic.com/image?id=8247010287781274395&product=adpublish&w=520&h=347', // 分享图标
+          success: function () {
+            console.log('update share success')
+            console.log(res)
+          }
+        })
+        wx.updateTimelineShareData({ 
+          title: nickname+ '邀请你加入办公室计划', // 分享标题
+          desc: nickname+ '邀请你加入办公室计划，办公室计划致力于让两个人自然的相遇', // 分享描述
+          link: sharedUrl+'?sharedId='+this.$store.state.authUser.userId, // 分享链接
+          imgUrl: 'https://oimagea7.ydstatic.com/image?id=8247010287781274395&product=adpublish&w=520&h=347', // 分享图标
+          success: function () {
+            console.log('update time share success')
+            console.log(res)
+          }
+        })
+        wx.onMenuShareAppMessage({
+          title: nickname+ '邀请你加入办公室计划', // 分享标题
+          desc: nickname+ '邀请你加入办公室计划，办公室计划致力于让两个人自然的相遇', // 分享描述
+          link: sharedUrl+'?sharedId='+this.$store.state.authUser.userId, // 分享链接
+          imgUrl: 'https://oimagea7.ydstatic.com/image?id=8247010287781274395&product=adpublish&w=520&h=347', // 分享图标
+          type: 'link', // 分享类型,music、video或link，不填默认为link
+          dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+          success: function (res) { 
+            console.log('on share success')
+            console.log(res)
+              // 用户确认分享后执行的回调函数
+          },
+          cancel: function () { 
+            console.log('share cancel')
+              // 用户取消分享后执行的回调函数
+          }
+        });
+        wx.onMenuShareTimeline({
+          title: nickname+ '邀请你加入办公室计划', // 分享标题
+          desc: nickname+ '邀请你加入办公室计划，办公室计划致力于让两个人自然的相遇', // 分享描述
+          link: sharedUrl+'?sharedId='+this.$store.state.authUser.userId, // 分享链接
+          imgUrl: 'https://oimagea7.ydstatic.com/image?id=8247010287781274395&product=adpublish&w=520&h=347', // 分享图标
+          type: 'link', // 分享类型,music、video或link，不填默认为link
+          dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+          success: function (res) { 
+            console.log('on share success')
+            console.log(res)
+              // 用户确认分享后执行的回调函数
+          },
+          cancel: function () { 
+            console.log('share cancel')
+              // 用户取消分享后执行的回调函数
+          }
+        });
       })
-      wx.updateTimelineShareData({ 
-        title: '测试', // 分享标题
-        link: url+'?sharedId=5', // 分享链接
-        imgUrl: 'https://oimagea7.ydstatic.com/image?id=8247010287781274395&product=adpublish&w=520&h=347', // 分享图标
-        success: function () {
-          console.log('update time share success')
-          console.log(res)
-          this.test = 'update share time success' + (count++)
-        }
-      })
-      wx.onMenuShareAppMessage({
-        title: '测试', // 分享标题
-        desc: '测试描述', // 分享描述
-        link: url+'?sharedId=5', // 分享链接
-        imgUrl: 'https://oimagea7.ydstatic.com/image?id=8247010287781274395&product=adpublish&w=520&h=347', // 分享图标
-        type: 'link', // 分享类型,music、video或link，不填默认为link
-        dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-        success: function (res) { 
-          console.log('on share success')
-          console.log(res)
-          this.test = 'on share success' + (count++)
-            // 用户确认分享后执行的回调函数
-        },
-        cancel: function () { 
-          console.log('share cancel')
-          this.test = 'on share cancel' + (count++)
-            // 用户取消分享后执行的回调函数
-        }
-      });
-    })
+
+    }
   },
 
   async mounted() {
