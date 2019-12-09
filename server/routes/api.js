@@ -586,7 +586,12 @@ export class DatabaseController {
     }
     userQueryDict['wxcode'] = {$ne: null}
     userQueryDict['phoneNumber'] = {$ne: null}
-    let users = await User.find(userQueryDict).exec()
+    var users = await User.find(userQueryDict).exec()
+
+    if (session.user && session.user.filterAge) {
+      var compareAge = [0, 20, 25, 30, 35][session.user.filterAge]
+      users = users.filter((item)=>item.age > compareAge)
+    }
     let user = users ? users[parseInt(Math.random()*users.length)]:null
     if (user) {
       return (ctx.body = {
@@ -625,6 +630,7 @@ export class DatabaseController {
       filterGender,
       filterHeight,
       filterDegree,
+      filterAge,
     } = ctx.request.body
     if (openid) {
       const findUser = await User.findOne({unionid: openid,}).exec()
@@ -649,6 +655,7 @@ export class DatabaseController {
         findUser.filterGender = filterGender
         findUser.filterDegree = filterDegree
         findUser.filterHeight = filterHeight
+        findUser.filterAge = filterAge
         findUser.save()
         ctx.session = {
           openid: findUser.openid,

@@ -28,6 +28,9 @@ const UserSchema = new Schema({
   degree: Number,
   height: Number,
   // 格式固定 1988-11-14
+  birthyear: Number,
+  birthmonth: Number,
+  birthdate: Number,
   birthday: String,
   // 0-12 未知,魔羯座,水瓶座,双鱼座,白羊座,金牛座,双子座,巨蟹座,狮子座,处女座,天秤座,天蝎座,射手座
   xingzuo: Number,
@@ -70,6 +73,11 @@ const UserSchema = new Schema({
     type: Number,
     default: 3
   },
+  // 0 不限制 1、20岁以上 2、25岁以上 3、30岁以上 4、35岁以上
+  filterAge: {
+    type: Number,
+    default: 0
+  },
   filterDegree: {
     type: Number,
     default: 0
@@ -98,6 +106,9 @@ const UserSchema = new Schema({
     required: true,
     default: 0
   }
+}, {
+  toObject: { virtuals: true },
+  toJSON: {virtuals: true}
 })
 
 UserSchema.virtual('isLocked').get(function () {
@@ -106,6 +117,49 @@ UserSchema.virtual('isLocked').get(function () {
 
 UserSchema.virtual('isVip').get(function () {
   return !!(this.vipUntil && this.vipUntil > Date.now())
+})
+
+UserSchema.virtual('age').get(function () {
+  var birthday = this.birthday
+  if (birthday == null) {
+    return 0
+  }
+  var returnAge
+  var strBirthdayArr = birthday.split('-')
+  var birthYear = strBirthdayArr[0]
+  var birthMonth = strBirthdayArr[1]
+  var birthDay = strBirthdayArr[2]
+
+  let d = new Date()
+  var nowYear = d.getFullYear()
+  var nowMonth = d.getMonth() + 1
+  var nowDay = d.getDate()
+
+  if (nowYear === birthYear) {
+    returnAge = 0
+  } else {
+    var ageDiff = nowYear - birthYear
+    if (ageDiff > 0) {
+      if (nowMonth === birthMonth) {
+        var dayDiff = nowDay - birthDay
+        if (dayDiff < 0) {
+          returnAge = ageDiff - 1
+        } else {
+          returnAge = ageDiff
+        }
+      } else {
+        var monthDiff = nowMonth - birthMonth
+        if (monthDiff < 0) {
+          returnAge = ageDiff - 1
+        } else {
+          returnAge = ageDiff
+        }
+      }
+    } else {
+      returnAge = 0
+    }
+  }
+  return returnAge
 })
 
 UserSchema.virtual('token').get(function () {

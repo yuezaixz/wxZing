@@ -93,10 +93,11 @@ export default {
     commit('SET_USER', null)
   },
 
-  async selectFilter({state, commit}, {filterGender, filterDegree, filterHeight}) {
+  async selectFilter({state, commit}, {filterGender, filterDegree, filterHeight, filterAge}) {
     state.authUser.filterGender = filterGender
     state.authUser.filterHeight = filterHeight
     state.authUser.filterDegree = filterDegree
+    state.authUser.filterAge = filterAge
     return postUserInfo(state, commit)
   },
 
