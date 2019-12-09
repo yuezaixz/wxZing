@@ -592,6 +592,20 @@ export class DatabaseController {
       var compareAge = [0, 20, 25, 30, 35][session.user.filterAge]
       users = users.filter((item)=>item.age > compareAge)
     }
+    const currentActivity = await Activity.findOne({isOver: false}).sort('-createAt').exec()
+    var isExit = false
+    for (var k = 0; k < users.length; k++) {
+      let userItem = users[k]
+      const check = await ActivityApply.findOne({activity: currentActivity, userId: userItem.userId, isCancel:false, isSuccess:true }).exec()
+      if (check) {
+        userItem.isApply = true
+        isExit = true
+      }
+    }
+    if (isExit) {
+      users = users.filter((item)=>item.isApply)
+    }
+    
     let user = users ? users[parseInt(Math.random()*users.length)]:null
     if (user) {
       return (ctx.body = {
