@@ -766,7 +766,7 @@ export class DatabaseController {
   }
 
   @post('clickShared/:sharedId')
-  async sendSmscode(ctx, next) {
+  async clickShared(ctx, next) {
     const sharedId = ctx.params.sharedId
     const session = ctx.session
     let userId = session.user.userId
