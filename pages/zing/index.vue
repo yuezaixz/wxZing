@@ -259,7 +259,9 @@ export default {
     let sharedId = this.$route.query.sharedId
     console.log("sharedId："+sharedId)
     // TODO 记录下来
-    let data = await this.$store.dispatch('clickShared', sharedId)
+    if (sharedId && sharedId.length > 0) {
+      let data = await this.$store.dispatch('clickShared', sharedId)
+    }
   },
 
   async beforeCreate() {
