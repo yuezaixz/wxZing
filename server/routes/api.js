@@ -9,6 +9,7 @@ const User = mongoose.model('User')
 const Zing = mongoose.model('Zing')
 const Report = mongoose.model('Report')
 const Black = mongoose.model('Black')
+const SharedClick = mongoose.model('SharedClick')
 const Lookfor = mongoose.model('Lookfor')
 const SmsCode = mongoose.model('SmsCode')
 const Activity = mongoose.model('Activity')
@@ -513,14 +514,15 @@ export class DatabaseController {
     }
 
     const activityApplyResults = await ActivityApply.find({activity, isCancel:false}).exec()
-    console.log(11122333)
-    console.log(activityApplyResults.length)
-    if (session.user.role !== 'vip' && activityApplyResults && activityApplyResults.length > 100) {
-      return (ctx.body = {
-        success: false,
-        code: 509,
-        msg: '人数已满'
-      })
+    if (session.user.role !== 'vip' && activityApplyResults && activityApplyResults.length > 100) {//测试时候把100调小
+      let count = await SharedClick.count({activityId: activityId}).exec()
+      if (count < 3) {
+        return (ctx.body = {
+          success: false,
+          code: 509,
+          msg: '人数已满'
+        })
+      }
     }
 
     const check = await ActivityApply.findOne({activity, userId, isCancel:false }).exec()
@@ -761,6 +763,25 @@ export class DatabaseController {
       success: true,
       data:{user}
     })
+  }
+
+  @post('clickShared/:sharedId')
+  async sendSmscode(ctx, next) {
+    const sharedId = ctx.params.sharedId
+    const session = ctx.session
+    let userId = session.user.userId
+    if (userId === sharedId) {
+      ctx.body = {success:false, msg:'自己点击，不记录'}
+    } else {
+      const data = await Activity.findOne({isOver: false}).sort('-createAt').exec()
+      var sharedClick = SharedClick({
+        clickUserId: userId,
+        sharedUserId: sharedId,
+        activityId: data.activityId
+      })
+      sharedClick.save()
+    }
+    ctx.body = {success:true}
   }
 
   @post('smscode/:tel')

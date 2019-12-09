@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 // 互赞
 const TmpMediaSchema = new Schema({
   tmpMediaId: String,
-  userId: String,
+  userId: Number,
   liveUntil: {
     type: Number,
     default: Date.now()

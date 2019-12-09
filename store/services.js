@@ -44,6 +44,10 @@ class Services {
     return axios.post(`/api/smscode/${tel}`)
   }
 
+  clickShared(sharedId) {
+    return axios.post(`/api/clickShared/${sharedId}`)
+  }
+
   checkSmsCode(tel, smscode) {
     return axios.post('/api/check_smscode', {
       tel, smscode

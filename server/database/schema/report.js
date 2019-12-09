@@ -4,8 +4,8 @@ const Schema = mongoose.Schema
 // 互赞
 const ReportSchema = new Schema({
   reportId: { type: Number, default: 0 },
-  userId: String,
-  targetId: String,
+  userId: Number,
+  targetId: Number,
   msg: String,
   meta: {
     createAt: {

@@ -45,6 +45,7 @@
 <script>
 
 import { mapState } from 'vuex'
+import wechat from '~/static/mixins/wechat.js'
 
 export default {
   middleware: 'wechat-oauth',
@@ -203,6 +204,62 @@ export default {
   },
 
   components: {
+  },
+
+  mixins: [wechat],
+
+  async beforeMount () {
+    const url = window.location.href
+    var count = 1
+    await this.wechatInit(url, ()=>{
+      wx.updateAppMessageShareData({
+        title: '测试', // 分享标题
+        desc: '测试描述', // 分享描述
+        link: url+'?sharedId=5', // 分享链接
+        imgUrl: 'https://oimagea7.ydstatic.com/image?id=8247010287781274395&product=adpublish&w=520&h=347', // 分享图标
+        success: function () {
+          console.log('update share success')
+          console.log(res)
+          this.test = 'update share success' + (count++)
+        }
+      })
+      wx.updateTimelineShareData({ 
+        title: '测试', // 分享标题
+        link: url+'?sharedId=5', // 分享链接
+        imgUrl: 'https://oimagea7.ydstatic.com/image?id=8247010287781274395&product=adpublish&w=520&h=347', // 分享图标
+        success: function () {
+          console.log('update time share success')
+          console.log(res)
+          this.test = 'update share time success' + (count++)
+        }
+      })
+      wx.onMenuShareAppMessage({
+        title: '测试', // 分享标题
+        desc: '测试描述', // 分享描述
+        link: url+'?sharedId=5', // 分享链接
+        imgUrl: 'https://oimagea7.ydstatic.com/image?id=8247010287781274395&product=adpublish&w=520&h=347', // 分享图标
+        type: 'link', // 分享类型,music、video或link，不填默认为link
+        dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+        success: function (res) { 
+          console.log('on share success')
+          console.log(res)
+          this.test = 'on share success' + (count++)
+            // 用户确认分享后执行的回调函数
+        },
+        cancel: function () { 
+          console.log('share cancel')
+          this.test = 'on share cancel' + (count++)
+            // 用户取消分享后执行的回调函数
+        }
+      });
+    })
+  },
+
+  async mounted() {
+    let sharedId = this.$route.query.sharedId
+    console.log("sharedId："+sharedId)
+    // TODO 记录下来
+    let data = await this.$store.dispatch('clickShared', sharedId)
   },
 
   async beforeCreate() {

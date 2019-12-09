@@ -4,8 +4,8 @@ const Schema = mongoose.Schema
 // 进入相关微信群
 const LookforSchema = new Schema({
   tookforId: { type: Number, default: 0 },
-  userId: String,
-  targetId: String,
+  userId: Number,
+  targetId: Number,
   lookforCount: { type: Number, default: 0 },
   meta: {
     createAt: {

@@ -14,7 +14,6 @@ export async function signature(ctx, next) {
 
   url = decodeURIComponent(url)
   let params = await wechat.getSignatureAsync(url)
-
   ctx.body = {
     success: true,
     params: params

@@ -215,6 +215,11 @@ export default {
     return postUserInfo(state, commit)
   },
 
+  async clickShared({state, commit}, sharedId) {
+    const {data} = await Services.clickShared(sharedId)
+    return data
+  },
+
   async selectAbout({state, commit}, {aboutOther, aboutMe}) {
     if (aboutMe) {
       state.authUser.aboutMe = aboutMe

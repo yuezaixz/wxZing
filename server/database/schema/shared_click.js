@@ -2,10 +2,11 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 // 互赞
-const ZingSchema = new Schema({
-  zingId: { type: Number, default: 0 },
-  userId: Number,
-  targetId: Number,
+const SharedClickSchema = new Schema({
+  sharedClickId: { type: Number, default: 0 },
+  clickUserId: Number,
+  sharedUserId: Number,
+  activityId: Number,
   meta: {
     createAt: {
       type: Date,
@@ -19,24 +20,24 @@ const ZingSchema = new Schema({
 })
 
 // 保存前，设定创建时间或更新时间
-ZingSchema.pre('save', function (next) {
+SharedClickSchema.pre('save', function (next) {
   if (this.isNew) {
     this.meta.createdAt = this.meta.updatedAt = Date.now()
   } else {
     this.meta.updatedAt = Date.now()
   }
 
-  if (!this.zingId) {
+  if (!this.sharedClickId) {
     const Counter = mongoose.model('Counter')
     var doc = this
-    Counter.findByIdAndUpdate({_id: 'zingId'}, { $inc: {seq: 1} }, function (error, counter) {
-      console.log('zingId:', error, counter)
+    Counter.findByIdAndUpdate({_id: 'sharedClickId'}, { $inc: {seq: 1} }, function (error, counter) {
+      console.log('sharedClickId:', error, counter)
       if (error) {
         return next(error)
       }
       if (counter) {
-        doc.zingId = counter.seq
-        console.log('save zing:', doc.userId)
+        doc.sharedClickId = counter.seq
+        console.log('save sharedClick:', doc.userId)
       }
       next()
     })
@@ -45,4 +46,4 @@ ZingSchema.pre('save', function (next) {
   }
 })
 
-mongoose.model('Zing', ZingSchema)
+mongoose.model('SharedClick', SharedClickSchema)

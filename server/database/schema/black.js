@@ -1,11 +1,10 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-// 互赞
 const BlackSchema = new Schema({
   blackId: { type: Number, default: 0 },
-  userId: String,
-  targetId: String,
+  userId: Number,
+  targetId: Number,
   msg: String,
   meta: {
     createAt: {
