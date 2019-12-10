@@ -80,7 +80,6 @@ export default {
       'authUser',
       'followersCount',
       'loversCount',
-      'activityState'
     ])
   },
 

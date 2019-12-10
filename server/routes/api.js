@@ -45,7 +45,7 @@ export class DatabaseController {
     const id = ctx.params.id
     const res = await User.findOne({'userId': id}).exec()
 
-    let applys = await ActivityApply.find({'userId': id, isSuccess: true})
+    let applys = await ActivityApply.find({'userId': id, isCancel: false})
         .populate({
           path: 'activity',
           select: '_id activityId activityName isOver'
@@ -200,30 +200,12 @@ export class DatabaseController {
   async activity_state(ctx, next) {
     const session = ctx.session
     let userId = session.user.userId
-
-    let lookfors = await Lookfor.find({userId}).exec()
-
-    let activitApplys = await ActivityApply.find({userId, isCancel: false, isSuccess: true})
-      .populate({
-        path: 'activity',
-        select: '_id activityId activityName` isOver'
-      }).sort('-createAt').exec()
-    for (const activitApply in activitApplys) {
-      if (activitApply.activity!= null && !activitApply.activity.isOver) {
-        let fellowUser;
-        if (activitApply.fellowUserId) {
-          fellowUser = await User.findOne({userId: activitApply.fellowUserId,}).exec()
-        }
-        return (ctx.body = {
-          success: true,
-          fellowUser: fellowUser,
-          state: !activitApply ? 0 : (!activitApply.isHandle ? 2 : (activitApply.isSuccess ? 1 : 3) ) // 0未报名 1 已报名 2 审核中 3审核失败
-        })
-      }
-    }
+    const currentActivity = await Activity.findOne({isOver: false}).sort('-createAt').exec()
+    const check = await ActivityApply.findOne({activity: currentActivity, userId: userId, isCancel:false }).exec()
+    
     return (ctx.body = {
       success: true,
-      state: 0
+      data: check
     })
   }
 
@@ -597,7 +579,7 @@ export class DatabaseController {
     for (var k = 0; k < users.length; k++) {
       let userItem = users[k]
       userItem.isApply = false
-      const check = await ActivityApply.findOne({activity: currentActivity, userId: userItem.userId, isCancel:false, isSuccess:true }).exec()
+      const check = await ActivityApply.findOne({activity: currentActivity, userId: userItem.userId, isCancel:false }).exec()
       if (check) {
         userItem.isApply = true
         isExit = true
@@ -869,7 +851,7 @@ export class DatabaseController {
     const userId = ctx.params.userId
     const res = await User.findOne({userId: userId}).exec()
 
-    let applys = await ActivityApply.find({userId, isSuccess: true})
+    let applys = await ActivityApply.find({userId})
         .populate({
           path: 'activity',
           select: '_id activityId activityName isOver'
@@ -924,7 +906,7 @@ export class DatabaseController {
         msg: '无权限'
       })
     } else {
-      let applys = await ActivityApply.find({'userId': targetId, isSuccess: true})
+      let applys = await ActivityApply.find({'userId': targetId, isCancel: false})
         .populate({
           path: 'activity',
           select: '_id isOver'

@@ -32,7 +32,7 @@ const createStore = () => {
       followers: [],
       loversCount: 0,
       lovers: [],
-      activityState: 0,
+      activityState: false,
       activityFellowUser: null,
       qiniuOptions: qiniuOptions,
       registerInfo: {
