@@ -51,6 +51,22 @@ export default {
     }
   },
 
+  dismissDialog({state}) {
+    state.showDialog = false
+    state.dialogDefaultFn = null
+    state.dialogPrimaryFn = null
+  },
+
+  showDialog({state}, {dialogTitle, dialogContent, dialogDefault, dialogPrimary, dialogDefaultFn, dialogPrimaryFn}) {
+    state.dialogContent = dialogContent || '确定?'
+    state.dialogTitle = dialogTitle || '提示'
+    state.dialogDefault = dialogDefault || '取消'
+    state.dialogPrimary = dialogPrimary || '确定'
+    state.showDialog = true
+    state.dialogDefaultFn = dialogDefaultFn
+    state.dialogPrimaryFn = dialogPrimaryFn
+  },
+
   async sendSmscode({state}, {tel}) {
     let { data } = await Services.sendSmscode(tel)
     return data

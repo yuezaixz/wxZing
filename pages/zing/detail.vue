@@ -57,11 +57,11 @@
     .card2-body
       .card-row
         .title 关于我
-      .card-row(style="margin-top:10px;")
+      .card-row.card-row-marginright(style="margin-top:10px;")
         .content {{zingUser.aboutMe || '还没想好怎么表达自己，请再等我下'}}
       .card-row(style='margin-top:40px;margin-bottom:10px;')
         .title 关于理想型
-      .card-row(style='margin-bottom:50px;')
+      .card-row.card-row-marginright(style='margin-bottom:50px;')
         .content {{zingUser.aboutOther || '我喜欢的人轮廓还模糊，渐渐会清晰'}}
     .card2-footer
   .detail-next(@click="zingUserAction")
@@ -111,6 +111,7 @@ export default {
         photos: []
       },
       apply: null,
+      applyState: null,
       showApply: false,
     }
   },
@@ -272,23 +273,40 @@ export default {
         // this.$store.dispatch('showToast', {duration: 2000, str:'未注册', toastType:'icon-warn'})
         return;
       }
-      if (activityId) {
-        let data = await this.$store.dispatch('applyActivity', {activityId})
-        if (data.success) {
-          this.$store.dispatch('showToast', {duration: 2000, str:"报名成功", toastType:'icon-success-no-circle'})
-          setTimeout(()=>this.$router.push({
-            path: '/apply/success',
-            query: {
-              activityId: data.data.activityApplyId,
-              activityName: this.apply.activity.activityName
+      var fellowFn = () => {
+        if (activityId || parseInt(activityId) === 0) {
+          this.$store.dispatch('applyActivity', {activityId}).then((data)=>{
+            if (data.success) {
+              this.$store.dispatch('showToast', {duration: 2000, str:"报名成功", toastType:'icon-success-no-circle'})
+              setTimeout(()=>this.$router.push({
+                path: '/apply/success',
+                query: {
+                  activityId: data.data.activityApplyId,
+                  activityName: this.apply.activity.activityName
+                }
+              }), 1600)
+            } else {
+              this.$store.dispatch('showToast', {duration: 2000, str:data.msg, toastType:'icon-warn'})
             }
-          }), 1600)
+          })
         } else {
-          this.$store.dispatch('showToast', {duration: 2000, str:data.msg, toastType:'icon-warn'})
+          this.$store.dispatch('showToast', {duration: 2000, str:'群不存在', toastType:'icon-warn'})
         }
-      } else {
-        this.$store.dispatch('showToast', {duration: 2000, str:'群不存在', toastType:'icon-warn'})
       }
+
+      if (this.applyState) {
+        this.$store.dispatch('showDialog', {
+          dialogTitle: "确定进入该用户的群聊？", 
+          dialogContent: "选择确定后，讲替换当前申请加入的群聊", 
+          dialogDefault: "在考虑", 
+          dialogPrimary: "确定", 
+          // dialogDefaultFn: null, // 用默认的，关闭弹窗即可
+          dialogPrimaryFn: fellowFn
+        })
+      } else {
+        fellowFn()
+      }
+      
 
       // let data = await this.$store.dispatch('fellowUserActivity', {'userId': this.zingUser.userId})
       // if (data.success) {
@@ -324,6 +342,12 @@ export default {
       this.apply = data.apply
     } else {
       this.$store.dispatch('showToast', {duration: 2000, str:data.msg, toastType:'icon-warn'})
+    }
+
+
+    let stateData = await this.$store.dispatch('queryActivityState')
+    if (stateData.success) {
+      this.applyState = stateData.data
     }
   }
 }
