@@ -70,6 +70,10 @@
       .title 进入共同群聊
       .vip-block
         .vip-title VIP
+  .detail-next-disable(v-else)
+      .title 进入共同群聊
+      .vip-block
+        .vip-title VIP
   
   img.more(src='~static/img/more.png' @click="displayApply")
 
@@ -315,7 +319,6 @@ export default {
     let zingUserId = this.$route.query.zingUserId
     let data = await this.$store.dispatch('queryUserByUserId', zingUserId)
 
-    console.log(data)
     if (data.success) {
       this.zingUser = data.data
       this.apply = data.apply
