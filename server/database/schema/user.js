@@ -101,6 +101,10 @@ const UserSchema = new Schema({
   password: {
     type: String
   },
+  isApply: {
+    type: Boolean,
+    default: false
+  },
   loginAttempts: {
     type: Number,
     required: true,

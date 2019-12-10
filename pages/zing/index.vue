@@ -14,7 +14,7 @@
       .whole-card-photo-container
         img.whole-card-photo( v-if="zingUser.photos && zingUser.photos.length > 0" @click="zingDetail" :src='"http://wxzing.podoon.cn/"+zingUser.photos[0]+"?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100"')
         div.whole-card-photo(v-else style="background-color:black;")
-      .index-apply-block 已报名
+      .index-apply-block(v-if="zingUser.isApply") 已报名
       .index-info-block
         .index-info-title {{zingUser.nickname}}
         .index-info-sub-title(style="margin:10px 0 14px 0;") {{displayEduStr(zingUser)}} / {{['其他', '国企', '外企', '私企', '事业单位', '自由职业', '创业'][zingUser.jobType]}} / {{zingUser.career}} / {{['未知', '10w内', '10-20W', '20-50W', '50W以上'][zingUser.income]}}

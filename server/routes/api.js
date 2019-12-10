@@ -596,6 +596,7 @@ export class DatabaseController {
     var isExit = false
     for (var k = 0; k < users.length; k++) {
       let userItem = users[k]
+      userItem.isApply = false
       const check = await ActivityApply.findOne({activity: currentActivity, userId: userItem.userId, isCancel:false, isSuccess:true }).exec()
       if (check) {
         userItem.isApply = true
@@ -607,6 +608,7 @@ export class DatabaseController {
     }
     
     let user = users ? users[parseInt(Math.random()*users.length)]:null
+    console.log(user.isApply)
     if (user) {
       return (ctx.body = {
         success: true,
