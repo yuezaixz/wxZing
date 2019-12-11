@@ -221,6 +221,22 @@ UserSchema.pre('save', function (next) {
   })
 })
 
+UserSchema.pre('save', function (next) {
+  var user = this
+
+  if (!user.isModified('birthday')) return next()
+  if (user.birthday.indexOf('-') >= 0) {
+    let split = user.birthday.split('-')
+    if (split.length === 3) {
+      this.birthyear = split[0]
+      this.birthmonth = split[1]
+      this.birthdate = split[2]
+    }
+  }
+  user.birthYear = user.birth
+  next()
+})
+
 UserSchema.statics = {
   async removeAll() {
     await this.find({}).remove().exec()
