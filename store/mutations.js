@@ -3,6 +3,7 @@ export default {
     state.authUser = authUser
   },
   SET_USER: (state, user) => {
+    console.log(user)
     state.user = user
   },
   SET_IMDb: (state, data) => {

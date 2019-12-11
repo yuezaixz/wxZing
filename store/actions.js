@@ -86,15 +86,33 @@ export default {
     state.showToast = false
   },
 
-  async login({ commit }, { email, password }) {
+  async changePwd({ commit }, { wxcode, newpassword, oldpassword }) {
     try {
-      let res = await axios.post('/api/login', {
-        email,
+      let res = await axios.post('/admin/change_pwd', {
+        wxcode,
+        newpassword,
+        oldpassword
+      })
+
+      let { data } = res
+
+      return data
+    } catch (e) {
+      if (e.response.status === 401) {
+        throw new Error('You can\'t do it')
+      }
+    }
+  },
+
+  async login({ commit }, { wxcode, password }) {
+    try {
+      let res = await axios.post('/admin/login', {
+        wxcode,
         password
       })
 
       let { data } = res
-      if (!data.ret) commit('SET_USER', data.user)
+      if (data.success) commit('SET_USER', data.data)
 
       return data
     } catch (e) {
