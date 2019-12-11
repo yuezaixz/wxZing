@@ -336,7 +336,6 @@ export class DatabaseController {
   @get('activitys')
   async query_activitys(ctx, next) {
     const session = ctx.session
-    let userId = session.user.userId
     
     if (session.user.role != 'admin') {
       return (ctx.body = {
@@ -345,7 +344,12 @@ export class DatabaseController {
       })
     }
 
-    const data = await Activity.find({}).exec()
+    
+    let {page, limit} = ctx.query
+    page = Math.max(parseInt(page), 1)
+    limit = Math.max(parseInt(limit), 0)
+    const count = await Activity.count({}).exec()
+    const data = await Activity.find({}).sort('-createAt').skip((page-1)*limit).limit(limit).exec()
 
     return (ctx.body = {
       success: true,
@@ -404,6 +408,7 @@ export class DatabaseController {
     }
     var activity = new Activity({activityName, memo, interest})
     try {
+      await Activity.updateMany({}, {isOver: true})
       activity = await activity.save()
       return (ctx.body = {
         success: true,

@@ -1,28 +1,23 @@
 <template lang="pug">
-.content
+.content#app
   el-menu.el-menu-demo(:default-active="activeIndex" mode="horizontal" @select="handleSelect")
     el-menu-item(index="1") 用户中心
     el-menu-item(index="2") 活动中心
 
   div.line
-  div(style="height:50px;")
+  div(style="height:25px;")
+  el-button(@click="newActivity" round) 新增
+  div(style="height:25px;")
   el-table(:data="tableData" stripe border :default-sort = "{prop: 'userId', order: 'descending'}" style="width:100%;" )
-    el-table-column(prop="userId" label="id" sortable width="60")
-    el-table-column(prop="nickname" label="姓名" sortable width="200")
-    el-table-column(prop="wxcode" label="微信号" sortable width="150")
-    el-table-column(prop="gender" label="性别" :formatter="formatSex" sortable width="60")
-    el-table-column(prop="degree" label="学历" :formatter="formatdegree" sortable width="80")
-    el-table-column(prop="height" label="身高" sortable width="60")
-    el-table-column(prop="birthday" label="生日" sortable width="150")
-    el-table-column(prop="city" label="城市" :formatter="formatCity" sortable width="180")
-    el-table-column(prop="hometown" label="家乡" :formatter="formatHometown" sortable width="180")
-    el-table-column(prop="career" label="职业" sortable width="180")
-    el-table-column(prop="income" label="收入" :formatter="formatincome" sortable width="180")
-    el-table-column(prop="jobType" label="工作" :formatter="formatjobType" sortable width="180")
-    el-table-column(prop="houseType" label="房产" sortable width="180")
-    el-table-column(prop="aboutMe" label="关于我" sortable width="180")
-    el-table-column(prop="aboutOther" label="关于他" sortable width="180")
-    el-table-column(prop="isVip" label="VIP" :formatter="formatisVip" sortable width="180")
+    el-table-column(prop="activityId" label="id" sortable width="100")
+    el-table-column(prop="activityName" label="名称" sortable width="200")
+    el-table-column(prop="memo" label="备注" width="300")
+    el-table-column(prop="isOver" label="是否结束" :formatter="formatBoolean" sortable width="120")
+    el-table-column(prop="meta.createAt" label="开始时间" :formatter="formatDate" sortable width="180")
+    el-table-column(label="操作" width="200")
+      template(slot-scope="scope")
+        el-button(@click.native.prevent="overRow(scope.row)" type="text" size="small") 结束
+        el-button(@click.native.prevent="detailRow(scope.row)" type="text" size="small") 详细
   el-pagination(
     @size-change="handleSizeChange"
     @current-change="handleCurrentChange"
@@ -34,6 +29,16 @@
     layout="sizes, prev, pager, next"
     background :total="count"
   )
+
+  el-dialog(title="新建活动" :visible.sync="dialogFormVisible")
+    el-form(:model="form")
+      el-form-item(label="活动名" :label-width="formLabelWidth")
+        el-input(v-model="form.name" autocomplete="off")
+      el-form-item(label="备注" :label-width="formLabelWidth")
+        el-input(v-model="form.memo" autocomplete="off")
+    div.dialog-footer(slot="footer")
+      el-button(@click="dialogFormVisible = false") 取 消
+      el-button(type="primary" @click="newAction") 确 定
 </template>
 
 <script>
@@ -47,11 +52,17 @@ export default {
   data() {
     return {
       tableData: [],
-      users: null,
+      activitys: [],
       page: 0,
       limit: 10,
       count: 0,
-      activeIndex: "2"
+      activeIndex: "2",
+      form: {
+        name: "",
+        memo: "",
+      },
+      formLabelWidth: '120px',
+      dialogFormVisible: false,
     }
   },
   head () {
@@ -67,52 +78,50 @@ export default {
   },
 
   methods: {
-    formatSex: function (row, column) {
-      return row.gender === 1 ? '男' : row.gender === 2 ? '女' : '未知'
+    newActivity: function() {
+      this.dialogFormVisible = true
     },
-    formatdegree: function (row, column) {
-      return (row.degree || row.degree === 0)?['保密', '博士及以上', '研究生', '本科', '专科', '其他'][row.jobType]:"未知"
-    },
-    formatincome: function (row, column) {
-      return (row.income || row.income === 0)?['未知', '10w内', '10-20W', '20-50W', '50W以上'][row.jobType]:"未知"
-    },
-    formatjobType: function (row, column) {
-      return (row.jobType || row.jobType === 0)?['其他', '国企', '外企', '私企', '事业单位', '自由职业', '创业'][row.jobType]:"未知"
-    },
-    formatisVip: function (row, column) {
-      return row.isVip?(row.vipUntilStr || '是'):"否"
-    },
-    formatCity: function (row, column) {
-      return this.formatCityName(row.city)
-    },
-    formatHometown: function (row, column) {
-      return this.formatCityName(row.hometown)
-    },
-    formatCityName(code) {
-      var provCode = code && code.length == 6 ? (code.substr(0,2)+'0000'):null
-      var cityName = ''
-      var provName = ''
-      for (const key in citysData[provCode]) {
-        if (citysData[provCode].hasOwnProperty(key)) {
-          const element = citysData[provCode][key];
-          if (element.value === code) {
-            cityName = element.text
-          }
-        }
+    async newAction() {
+      this.dialogFormVisible = false
+      console.log(this.form)
+      if (!this.form.name) {
+        return
       }
-      for (const key in provsData) {
-        const element = provsData[key];
-        if (element.value === provCode) {
-          provName = element.text
-        }
+      let { data } = await axios.post('/api/activity', {
+        activityName: this.form.name,
+        memo: this.form.memo || "",
+        interestId: 0
+      })
+      if (data.success) {
+        this.$message({
+          message: '添加成功',
+          type: 'success',
+          duration: 1
+        });
+        this.reloadData()
+      } else {
+        this.$message.error(data.msg || "操作失败");
       }
-      provName = provName.replace('省', ' ')
-      cityName = cityName.replace('市', ' ')
-      return cityName && provName ? (provName + cityName) : cityName;
+    },
+    formatBoolean: function (row, column) {
+      return row.isOver?'是':'否'
+    },
+    formatDate: function (row, column) {
+      return row.meta.createAt.substring(0,10)
     },
     handleSelect(key, keyPath) {
       const visit = ['/admin/login', '/admin', '/admin/activity'][key]
       this.$router.replace(visit)
+    },
+    overRow(row) {
+      if (row) {
+        console.log(`结束：${row.activityName}`)
+      }
+    },
+    detailRow(row) {
+      if (row) {
+        console.log(`查看详细：${row.activityName}`)
+      }
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
@@ -135,7 +144,7 @@ export default {
       this.reloadData()
     },
     async reloadData() {
-      let {data} = await axios.get('/api/users?page='+ this.page + '&limit=' + this.limit)
+      let {data} = await axios.get('/api/activitys?page='+ this.page + '&limit=' + this.limit)
       if (data && data.success) {
         this.tableData = data.data
         this.count = data.count
@@ -145,7 +154,7 @@ export default {
   },
 
   async beforeCreate() {
-    let {data} = await axios.get('/api/users?page=1&limit=10')
+    let {data} = await axios.get('/api/activitys?page=1&limit=10')
     if (data && data.success) {
       this.tableData = data.data
       this.count = data.count
