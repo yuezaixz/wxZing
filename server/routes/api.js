@@ -219,12 +219,16 @@ export class DatabaseController {
         msg: '没有权限进行该操作'
       })
     }
-
-    const data = await User.find({}).exec()
+    let {page, limit} = ctx.query
+    page = Math.max(parseInt(page), 1)
+    limit = Math.max(parseInt(limit), 0)
+    let count = await User.count({}).exec()
+    const data = await User.find({}).sort('-createAt').skip((page-1)*limit).limit(limit).exec()
 
     return (ctx.body = {
       success: true,
-      data
+      data,
+      count
     })
   }
 

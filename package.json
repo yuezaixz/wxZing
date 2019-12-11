@@ -13,6 +13,7 @@
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore ."
   },
   "dependencies": {
+    "element-ui": "^2.4.6",
     "awe-dnd": "^0.3.1",
     "axios": "^0.18.0",
     "babel-core": "^6.25.0",

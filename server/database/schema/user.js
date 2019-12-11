@@ -31,6 +31,10 @@ const UserSchema = new Schema({
   birthyear: Number,
   birthmonth: Number,
   birthdate: Number,
+  star: {
+    type: Number,
+    default: 0
+  },
   birthday: String,
   // 0-12 未知,魔羯座,水瓶座,双鱼座,白羊座,金牛座,双子座,巨蟹座,狮子座,处女座,天秤座,天蝎座,射手座
   xingzuo: Number,

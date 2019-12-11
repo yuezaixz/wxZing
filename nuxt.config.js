@@ -51,6 +51,7 @@ module.exports = {
   plugins: [
     { src: '~plugins/swiper.js', ssr: false },
     { src: '~plugins/flexible.js', ssr: false },
+    { src: '~plugins/eleui.js', ssr: false },
     // { src: '~plugins/weui.js', ssr: false }
   ],
   loading: {
