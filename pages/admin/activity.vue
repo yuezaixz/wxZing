@@ -8,7 +8,7 @@
   div(style="height:25px;")
   el-button(@click="newActivity" round) 新增
   div(style="height:25px;")
-  el-table(:data="tableData" stripe border :default-sort = "{prop: 'userId', order: 'descending'}" style="width:100%;" )
+  el-table(:data="tableData" stripe border :default-sort = "{prop: 'activityId', order: 'descending'}" style="width:100%;" )
     el-table-column(prop="activityId" label="id" sortable width="100")
     el-table-column(prop="activityName" label="名称" sortable width="200")
     el-table-column(prop="memo" label="备注" width="300")
@@ -17,7 +17,7 @@
     el-table-column(label="操作" width="200")
       template(slot-scope="scope")
         el-button(@click.native.prevent="overRow(scope.row)" type="text" size="small") 结束
-        el-button(@click.native.prevent="detailRow(scope.row)" type="text" size="small") 详细
+        el-button(@click.native.prevent="queryFellow(scope.row)" type="text" size="small") 详细
   el-pagination(
     @size-change="handleSizeChange"
     @current-change="handleCurrentChange"
@@ -29,6 +29,30 @@
     layout="sizes, prev, pager, next"
     background :total="count"
   )
+
+  el-dialog(title="进群列表" :visible.sync="dialogTableVisible")
+    el-table(:data="gridData" stripe)
+      el-table-column(prop="userId" label="id" width="60")
+      el-table-column(prop="nickname" label="姓名")
+      el-table-column(prop="wxcode" label="微信号" width="100")
+      el-table-column(prop="gender" label="性别" :formatter="formatSex" sortable width="80")
+      el-table-column(prop="isVip" label="VIP" :formatter="formatisVip" sortable width="180")
+    el-pagination(
+      @size-change="handleGridSizeChange"
+      @current-change="handleGridCurrentChange"
+      @prev-click="handleGridPrev"
+      @next-click="handleGridNext"
+      :current-page.sync="gridPage"
+      :page-sizes="[10, 30, 50, 100]"
+      :page-size="gridLimit"
+      layout="sizes, prev, pager, next"
+      background :total="gridCount"
+    )
+    div
+      el-row 男:{{stat.maleCount}},女:{{stat.femaleCount}}
+      el-row 20以上:{{stat.more20Count}},25以上:{{stat.more25Count}},30以上:{{stat.more30Count}},35以上:{{stat.more35Count}}
+    div.dialog-footer(slot="footer")
+      el-button(type="primary" @click="dialogTableVisible = false") 关 闭
 
   el-dialog(title="新建活动" :visible.sync="dialogFormVisible")
     el-form(:model="form")
@@ -56,6 +80,12 @@ export default {
       page: 0,
       limit: 10,
       count: 0,
+      gridActivityId: null,
+      gridData: [],
+      stat: {more20Count:0 ,more25Count:0 ,more30Count:0 ,more35Count:0},
+      gridPage: 0,
+      gridLimit: 10,
+      gridCount: 0,
       activeIndex: "2",
       form: {
         name: "",
@@ -63,6 +93,7 @@ export default {
       },
       formLabelWidth: '120px',
       dialogFormVisible: false,
+      dialogTableVisible: false,
     }
   },
   head () {
@@ -109,6 +140,12 @@ export default {
     formatDate: function (row, column) {
       return row.meta.createAt.substring(0,10)
     },
+    formatSex: function (row, column) {
+      return row.gender === 1 ? '男' : row.gender === 2 ? '女' : '未知'
+    },
+    formatisVip: function (row, column) {
+      return row.isVip?(row.vipUntilStr || '是'):"否"
+    },
     handleSelect(key, keyPath) {
       const visit = ['/admin/login', '/admin', '/admin/activity'][key]
       this.$router.replace(visit)
@@ -116,11 +153,6 @@ export default {
     overRow(row) {
       if (row) {
         console.log(`结束：${row.activityName}`)
-      }
-    },
-    detailRow(row) {
-      if (row) {
-        console.log(`查看详细：${row.activityName}`)
       }
     },
     handleSizeChange(val) {
@@ -150,7 +182,49 @@ export default {
         this.count = data.count
         this.users = this.tableData
       }
-    }
+    },
+    handleGridSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+      this.limit = val
+      this.reloadGridData()
+    },
+    handleGridCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      this.page = val
+      this.reloadGridData()
+    },
+    handleGridPrev() {
+      this.page -= 1
+      consqueryFellowole.log(`当前页: ${this.page}`);
+      this.reloadGridData()
+    },
+    handleGridNext() {
+      this.page += 1
+      console.log(`当前页: ${this.page}`);
+      this.reloadGridData()
+    },
+    async reloadGridData() {
+      if (this.gridActivityId) {
+        let {data} = await axios.get('/api/user_by_activity_id?activityId=' + this.gridActivityId + '&page='+ this.gridPage + '&limit=' + this.gridLimit)
+        if (data && data.success) {
+          this.gridData = data.data
+          this.gridCount = data.count
+          this.stat = data.stat
+        }
+      }
+    },
+    async queryFellow(row) {
+      this.gridActivityId = row.activityId
+      await this.reloadGridData()
+      this.dialogTableVisible = true
+    },
+    async overRow(row) {
+      let activityId = row.activityId
+      let {data} = await axios.post('/api/over_activity', {activityId})
+      if (data && data.success) {
+        this.reloadData()
+      }
+    },
   },
 
   async beforeCreate() {

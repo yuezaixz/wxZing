@@ -219,11 +219,22 @@ export class DatabaseController {
         msg: '没有权限进行该操作'
       })
     }
-    let {page, limit} = ctx.query
+    let {page, limit, wxcode, age, nickname} = ctx.query
     page = Math.max(parseInt(page), 1)
     limit = Math.max(parseInt(limit), 0)
-    let count = await User.count({}).exec()
-    const data = await User.find({}).sort('-createAt').skip((page-1)*limit).limit(limit).exec()
+    var condition = {}
+    if (wxcode && wxcode.length > 0) {
+      condition['wxcode'] = wxcode
+    }
+    var re = /^[0-9]+.?[0-9]*/
+    if (age && age.length > 0 && re.test(age)) {
+      condition['age'] = {$gte: parseInt(age)}
+    }
+    if (nickname && nickname.length > 0) {
+      condition['nickname'] = { $regex: '.*' + nickname + '.*' }
+    }
+    let count = await User.count(condition).exec()
+    const data = await User.find(condition).sort('-createAt').skip((page-1)*limit).limit(limit).exec()
 
     return (ctx.body = {
       success: true,
@@ -259,6 +270,48 @@ export class DatabaseController {
       success: true,
       data,
       count
+    })
+  }
+
+  @get('user_by_activity_id')
+  async user_by_activity_id(ctx, next) {
+    const session = ctx.session
+    
+    if (session.user.role != 'admin') {
+      return (ctx.body = {
+        success: false,
+        msg: '没有权限进行该操作'
+      })
+    }
+    let {activityId, page, limit} = ctx.query
+    page = Math.max(parseInt(page), 1)
+    limit = Math.max(parseInt(limit), 0)
+
+    const currentActivity = await Activity.findOne({activityId: activityId}).exec()
+
+    let activitApplys = await ActivityApply.find({isCancel: false, activity: currentActivity})
+      .sort('-createAt').exec()
+    let fellowUserIds = activitApplys.map((item=>item.userId))
+
+    let users = await User.find({userId: {$in: fellowUserIds}}).exec()
+    let count = users.length
+    let maleCount = users.filter((item)=>item.gender==1).length
+    let femaleCount = users.filter((item)=>item.gender==2).length
+
+    let more20Count = users.filter((item)=>item.age >= 20).length
+    let more25Count = users.filter((item)=>item.age >= 25).length
+    let more30Count = users.filter((item)=>item.age >= 30).length
+    let more35Count = users.filter((item)=>item.age >= 35).length
+
+    const data = await User.find({userId: {$in: fellowUserIds}}).sort('-createAt').skip((page-1)*limit).limit(limit).exec()
+
+    return (ctx.body = {
+      success: true,
+      data,
+      count,
+      stat: {
+        maleCount, femaleCount, more20Count, more25Count, more30Count, more35Count
+      }
     })
   }
 
@@ -414,6 +467,39 @@ export class DatabaseController {
       success: true,
       data
     })
+  }
+  @post('over_activity')
+  @required({body: ['activityId']})
+  async over_activity(ctx, next) {
+    const session = ctx.session
+    
+    if (session.user.role != 'admin') {
+      return (ctx.body = {
+        success: false,
+        msg: '没有权限进行该操作'
+      })
+    }
+    const { activityId } = ctx.request.body
+
+    if (!activityId) {
+      return (ctx.body = {
+        success: false,
+        msg: '缺少参数activityId'
+      })
+    }
+    try {
+      await Activity.updateMany({activityId}, {isOver: true})
+      return (ctx.body = {
+        success: true,
+        data: activity
+      })
+    } catch (e) {
+      return (ctx.body = {
+        success: false,
+        msg: '保存出错'
+      })
+    }
+
   }
 
   @post('activity')

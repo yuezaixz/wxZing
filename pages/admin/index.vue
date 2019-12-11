@@ -5,7 +5,20 @@
     el-menu-item(index="2") 活动中心
 
   div.line
-  div(style="height:50px;")
+  div(style="height:25px;")
+  el-row
+    el-col(:span="3")
+      el-input(placeholder="微信号" v-model="wxcodeInput" clearable)
+    el-col(:span="1")
+      div(style="height:1px;")
+    el-col(:span="3")
+      el-input(placeholder="姓名" v-model="nicknameInput" clearable)
+    el-col(:span="1")
+      div(style="height:1px;")
+    el-col(:span="2")
+      el-button(@click="queryWxcode" type="primary" round style="width:100%;") 搜索
+
+  div(style="height:25px;")
   el-table(:data="tableData" stripe border :default-sort = "{prop: 'userId', order: 'descending'}" style="width:100%;" )
     el-table-column(prop="userId" label="id" sortable width="60")
     el-table-column(fixed="right" label="操作" width="100")
@@ -102,6 +115,12 @@ export default {
       formLabelWidth: '120px',
       dialogFormVisible: false,
       dialogTableVisible: false,
+      wxcodeInput: '',
+      wxcode: '',
+      ageInput: '',
+      age: '',
+      nicknameInput: '',
+      nickname: '',
     }
   },
   head () {
@@ -196,7 +215,7 @@ export default {
       this.reloadData()
     },
     async reloadData() {
-      let {data} = await axios.get('/api/users?page='+ this.page + '&limit=' + this.limit)
+      let {data} = await axios.get('/api/users?page='+ this.page + '&limit=' + this.limit + '&wxcode=' + (this.wxcode||'') + ('&age=' + this.age||'') + ('&nickname=' + this.nickname||''))
       if (data && data.success) {
         this.tableData = data.data
         this.count = data.count
@@ -206,12 +225,12 @@ export default {
     handleGridSizeChange(val) {
       console.log(`每页 ${val} 条`);
       this.limit = val
-      this.reloadData()
+      this.reloadGridData()
     },
     handleGridCurrentChange(val) {
       console.log(`当前页: ${val}`);
       this.page = val
-      this.reloadData()
+      this.reloadGridData()
     },
     handleGridPrev() {
       this.page -= 1
@@ -236,6 +255,12 @@ export default {
       this.gridUserId = row.userId
       await this.reloadGridData()
       this.dialogTableVisible = true
+    },
+    async queryWxcode() {
+      this.wxcode = this.wxcodeInput
+      this.age = this.ageInput
+      this.nickname = this.nicknameInput
+      await this.reloadData()
     }
   },
 
