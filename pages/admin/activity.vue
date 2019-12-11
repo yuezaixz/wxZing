@@ -34,7 +34,6 @@
     layout="sizes, prev, pager, next"
     background :total="count"
   )
-</el-pagination>
 </template>
 
 <script>
@@ -51,7 +50,8 @@ export default {
       users: null,
       page: 0,
       limit: 10,
-      count: 0
+      count: 0,
+      activeIndex: "2"
     }
   },
   head () {

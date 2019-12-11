@@ -8,6 +8,9 @@
   div(style="height:50px;")
   el-table(:data="tableData" stripe border :default-sort = "{prop: 'userId', order: 'descending'}" style="width:100%;" )
     el-table-column(prop="userId" label="id" sortable width="60")
+    el-table-column(fixed="right" label="操作" width="60")
+      template(slot-scope="scope")
+        el-button(@click.native.prevent="starRow(scope.row)" type="text" size="small") 评分
     el-table-column(prop="nickname" label="姓名" sortable width="200")
     el-table-column(prop="wxcode" label="微信号" sortable width="150")
     el-table-column(prop="gender" label="性别" :formatter="formatSex" sortable width="60")
@@ -34,7 +37,19 @@
     layout="sizes, prev, pager, next"
     background :total="count"
   )
-</el-pagination>
+
+  el-dialog(title="评分" :visible.sync="dialogFormVisible")
+    el-form(:model="form")
+      el-form-item(label="评分" :label-width="formLabelWidth")
+        el-select(v-model="form.star" placeholder="请选择星级")
+          el-option(label="一星" value="1")
+          el-option(label="二星" value="2")
+          el-option(label="三星" value="3")
+          el-option(label="四星" value="4")
+          el-option(label="五星" value="5")
+    div.dialog-footer(slot="footer")
+      el-button(@click="dialogFormVisible = false") 取 消
+      el-button(type="primary" @click="starAction") 确 定
 </template>
 
 <script>
@@ -51,7 +66,14 @@ export default {
       users: null,
       page: 0,
       limit: 10,
-      count: 0
+      count: 0,
+      activeIndex: "1",
+      form: {
+        row: null,
+        star: ''
+      },
+      formLabelWidth: '120px',
+      dialogFormVisible: false,
     }
   },
   head () {
@@ -67,6 +89,17 @@ export default {
   },
 
   methods: {
+    starRow(row) {
+      // TODO 评分功能未实现，先关闭
+      // if (row) {
+      //   this.form.row = row
+      //   this.dialogFormVisible = true
+      // }
+    },
+    starAction() {
+      this.dialogFormVisible = false
+      console.log(this.form)
+    },
     formatSex: function (row, column) {
       return row.gender === 1 ? '男' : row.gender === 2 ? '女' : '未知'
     },
