@@ -8,9 +8,10 @@
   div(style="height:50px;")
   el-table(:data="tableData" stripe border :default-sort = "{prop: 'userId', order: 'descending'}" style="width:100%;" )
     el-table-column(prop="userId" label="id" sortable width="60")
-    el-table-column(fixed="right" label="操作" width="60")
+    el-table-column(fixed="right" label="操作" width="100")
       template(slot-scope="scope")
         el-button(@click.native.prevent="starRow(scope.row)" type="text" size="small") 评分
+        el-button(@click.native.prevent="queryFellow(scope.row)" type="text" size="small") 查看
     el-table-column(prop="nickname" label="姓名" sortable width="200")
     el-table-column(prop="wxcode" label="微信号" sortable width="150")
     el-table-column(prop="gender" label="性别" :formatter="formatSex" sortable width="60")
@@ -37,6 +38,27 @@
     layout="sizes, prev, pager, next"
     background :total="count"
   )
+
+  el-dialog(title="跟随进群列表" :visible.sync="dialogTableVisible")
+    el-table(:data="gridData" stripe)
+      el-table-column(prop="userId" label="id" width="60")
+      el-table-column(prop="nickname" label="姓名")
+      el-table-column(prop="wxcode" label="微信号" width="100")
+      el-table-column(prop="gender" label="性别" :formatter="formatSex" sortable width="80")
+      el-table-column(prop="isVip" label="VIP" :formatter="formatisVip" sortable width="180")
+    el-pagination(
+      @size-change="handleGridSizeChange"
+      @current-change="handleGridCurrentChange"
+      @prev-click="handleGridPrev"
+      @next-click="handleGridNext"
+      :current-page.sync="gridPage"
+      :page-sizes="[10, 20, 30, 40]"
+      :page-size="gridLimit"
+      layout="sizes, prev, pager, next"
+      background :total="gridCount"
+    )
+    div.dialog-footer(slot="footer")
+      el-button(type="primary" @click="dialogTableVisible = false") 关 闭
 
   el-dialog(title="评分" :visible.sync="dialogFormVisible")
     el-form(:model="form")
@@ -67,6 +89,11 @@ export default {
       page: 0,
       limit: 10,
       count: 0,
+      gridUserId: null,
+      gridData: [],
+      gridPage: 0,
+      gridLimit: 10,
+      gridCount: 0,
       activeIndex: "1",
       form: {
         row: null,
@@ -74,6 +101,7 @@ export default {
       },
       formLabelWidth: '120px',
       dialogFormVisible: false,
+      dialogTableVisible: false,
     }
   },
   head () {
@@ -174,6 +202,40 @@ export default {
         this.count = data.count
         this.users = this.tableData
       }
+    },
+    handleGridSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+      this.limit = val
+      this.reloadData()
+    },
+    handleGridCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      this.page = val
+      this.reloadData()
+    },
+    handleGridPrev() {
+      this.page -= 1
+      consqueryFellowole.log(`当前页: ${this.page}`);
+      this.reloadGridData()
+    },
+    handleGridNext() {
+      this.page += 1
+      console.log(`当前页: ${this.page}`);
+      this.reloadGridData()
+    },
+    async reloadGridData() {
+      if (this.gridUserId) {
+        let {data} = await axios.get('/api/user_fellows_by_user_id?user_id=' + this.gridUserId + '&page='+ this.gridPage + '&limit=' + this.gridLimit)
+        if (data && data.success) {
+          this.gridData = data.data
+          this.gridCount = data.count
+        }
+      }
+    },
+    async queryFellow(row) {
+      this.gridUserId = row.userId
+      await this.reloadGridData()
+      this.dialogTableVisible = true
     }
   },
 

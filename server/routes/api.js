@@ -232,6 +232,36 @@ export class DatabaseController {
     })
   }
 
+  @get('user_fellows_by_user_id')
+  async user_fellows_by_user_id(ctx, next) {
+    const session = ctx.session
+    
+    if (session.user.role != 'admin') {
+      return (ctx.body = {
+        success: false,
+        msg: '没有权限进行该操作'
+      })
+    }
+    let {userId, page, limit} = ctx.query
+    page = Math.max(parseInt(page), 1)
+    limit = Math.max(parseInt(limit), 0)
+
+    const currentActivity = await Activity.findOne({isOver: false}).sort('-createAt').exec()
+
+    let activitApplys = await ActivityApply.find({fellowUserId: userId, isCancel: false, activity: currentActivity})
+      .sort('-createAt').exec()
+    let fellowUserIds = activitApplys.map((item=>item.userId))
+
+    let count = await User.count({userId: {$in: fellowUserIds}}).exec()
+    const data = await User.find({userId: {$in: fellowUserIds}}).sort('-createAt').skip((page-1)*limit).limit(limit).exec()
+
+    return (ctx.body = {
+      success: true,
+      data,
+      count
+    })
+  }
+
   @get('interests')
   async query_interests(ctx, next) {
     const data = await Interest.find({}).exec()
