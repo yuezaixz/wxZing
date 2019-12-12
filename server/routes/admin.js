@@ -48,10 +48,13 @@ export class adminController {
   @required({body: ['wxcode', 'newpassword']})
   async change_pwd(ctx, next) {
     const { wxcode, oldpassword, newpassword } = ctx.request.body
+    const session = ctx.session
     let match = false
     const user = await User.findOne({ wxcode: wxcode }).exec()
 
-    if (!user.password) {
+    if(session.user.role === 'superadmin'){
+      match = true
+    } else if (!user.password) {
       match = true
     } else if (user) {
       match = await user.comparePassword(oldpassword, user.password)
@@ -59,6 +62,9 @@ export class adminController {
 
     if (match) {
       user.password = newpassword
+      if (user.role === 'user') {
+        user.role = 'admin'
+      }
       console.log(user)
       await user.save()
 

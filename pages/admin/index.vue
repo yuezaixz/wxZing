@@ -21,15 +21,16 @@
   div(style="height:25px;")
   el-table(:data="tableData" stripe border :default-sort = "{prop: 'userId', order: 'descending'}" style="width:100%;" )
     el-table-column(prop="userId" label="id" sortable width="60")
-    el-table-column(fixed="right" label="操作" width="100")
+    el-table-column(fixed="right" label="操作" width="150")
       template(slot-scope="scope")
         el-button(@click.native.prevent="starRow(scope.row)" type="text" size="small") 评分
         el-button(@click.native.prevent="queryFellow(scope.row)" type="text" size="small") 查看
+        el-button(@click.native.prevent="pwdClick(scope.row)" type="text" size="small") 密码
     el-table-column(prop="nickname" label="姓名" sortable width="200")
     el-table-column(prop="wxcode" label="微信号" sortable width="150")
-    el-table-column(prop="gender" label="性别" :formatter="formatSex" sortable width="60")
+    el-table-column(prop="gender" label="性别" :formatter="formatSex" sortable width="80")
     el-table-column(prop="degree" label="学历" :formatter="formatdegree" sortable width="80")
-    el-table-column(prop="height" label="身高" sortable width="60")
+    el-table-column(prop="height" label="身高" sortable width="80")
     el-table-column(prop="birthday" label="生日" sortable width="150")
     el-table-column(prop="city" label="城市" :formatter="formatCity" sortable width="180")
     el-table-column(prop="hometown" label="家乡" :formatter="formatHometown" sortable width="180")
@@ -85,6 +86,16 @@
     div.dialog-footer(slot="footer")
       el-button(@click="dialogFormVisible = false") 取 消
       el-button(type="primary" @click="starAction") 确 定
+
+  el-dialog(v-if="pwdForm.row && pwdForm.row.wxcode && pwdForm.row.nickname" :title="'修改'+pwdForm.row.nickname+'密码'" :visible.sync="dialogpwdFormVisible")
+    el-form(:model="pwdForm")
+      el-form-item(label="新密码" :label-width="formLabelWidth")
+        el-input(v-model="pwdForm.newPassword" autocomplete="off" show-password)
+      el-form-item(label="再新密码" :label-width="formLabelWidth")
+        el-input(v-model="pwdForm.replyPassword" autocomplete="off" show-password)
+    div.dialog-footer(slot="footer")
+      el-button(@click="dialogpwdFormVisible = false") 取 消
+      el-button(type="primary" @click="changePwd") 确 定
 </template>
 
 <script>
@@ -112,9 +123,15 @@ export default {
         row: null,
         star: ''
       },
+      pwdForm: {
+        row: null,
+        newPassword: null,
+        replyPassword: null,
+      },
       formLabelWidth: '120px',
       dialogFormVisible: false,
       dialogTableVisible: false,
+      dialogpwdFormVisible: false,
       wxcodeInput: '',
       wxcode: '',
       ageInput: '',
@@ -261,6 +278,29 @@ export default {
       this.age = this.ageInput
       this.nickname = this.nicknameInput
       await this.reloadData()
+    }, 
+    async pwdClick (row) {
+      if (row.userId && row.wxcode) {
+        this.dialogpwdFormVisible = true
+        this.pwdForm.row = row
+        this.pwdForm.newPassword = null
+        this.pwdForm.replyPassword = null
+      } else {
+        this.$message.error('微信号不存在');
+      }
+    },
+    async changePwd () {
+      let wxcode = this.pwdForm.row.wxcode
+      let { newPassword, replyPassword } = this.pwdForm
+
+      if (!wxcode || !newPassword || !replyPassword || newPassword !== replyPassword) {
+        this.$message.error('输入错误')
+      }
+
+      let res = await this.$store.dispatch('changePwd', {wxcode, newpassword: newPassword})
+
+
+      this.dialogpwdFormVisible = false
     }
   },
 

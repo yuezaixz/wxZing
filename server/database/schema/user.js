@@ -127,6 +127,9 @@ UserSchema.virtual('isLocked').get(function () {
 })
 
 UserSchema.virtual('isVip').get(function () {
+  if (this.role === 'admin' || this.role === 'superadmin') {
+    return true
+  }
   return !!(this.vipUntil && this.vipUntil > Date.now())
 })
 

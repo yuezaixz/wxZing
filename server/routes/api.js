@@ -213,7 +213,7 @@ export class DatabaseController {
   async users(ctx, next) {
     const session = ctx.session
     
-    if (session.user.role != 'admin') {
+    if (session.user.role != 'admin' && session.user.role != 'superadmin') {
       return (ctx.body = {
         success: false,
         msg: '没有权限进行该操作'
@@ -247,7 +247,7 @@ export class DatabaseController {
   async user_fellows_by_user_id(ctx, next) {
     const session = ctx.session
     
-    if (session.user.role != 'admin') {
+    if (session.user.role != 'admin' && session.user.role != 'superadmin') {
       return (ctx.body = {
         success: false,
         msg: '没有权限进行该操作'
@@ -277,7 +277,7 @@ export class DatabaseController {
   async user_by_activity_id(ctx, next) {
     const session = ctx.session
     
-    if (session.user.role != 'admin') {
+    if (session.user.role != 'admin' && session.user.role != 'superadmin') {
       return (ctx.body = {
         success: false,
         msg: '没有权限进行该操作'
@@ -330,7 +330,7 @@ export class DatabaseController {
     const session = ctx.session
     let userId = session.user.userId
     
-    if (session.user.role != 'admin') {
+    if (session.user.role != 'admin' && session.user.role != 'superadmin') {
       return (ctx.body = {
         success: false,
         msg: '没有权限进行该操作'
@@ -360,7 +360,7 @@ export class DatabaseController {
     const session = ctx.session
     let userId = session.user.userId
     
-    if (session.user.role != 'admin') {
+    if (session.user.role != 'admin' && session.user.role != 'superadmin') {
       return (ctx.body = {
         success: false,
         msg: '没有权限进行该操作'
@@ -420,7 +420,7 @@ export class DatabaseController {
   async query_activitys(ctx, next) {
     const session = ctx.session
     
-    if (session.user.role != 'admin') {
+    if (session.user.role != 'admin' && session.user.role != 'superadmin') {
       return (ctx.body = {
         success: false,
         msg: '没有权限进行该操作'
@@ -445,7 +445,7 @@ export class DatabaseController {
     const session = ctx.session
     let userId = session.user.userId
     
-    if (session.user.role != 'admin') {
+    if (session.user.role != 'admin' && session.user.role != 'superadmin') {
       return (ctx.body = {
         success: false,
         msg: '没有权限进行该操作'
@@ -473,7 +473,7 @@ export class DatabaseController {
   async over_activity(ctx, next) {
     const session = ctx.session
     
-    if (session.user.role != 'admin') {
+    if (session.user.role != 'admin' && session.user.role != 'superadmin') {
       return (ctx.body = {
         success: false,
         msg: '没有权限进行该操作'
@@ -508,7 +508,7 @@ export class DatabaseController {
     const session = ctx.session
     let userId = session.user.userId
     
-    if (session.user.role != 'admin') {
+    if (session.user.role != 'admin' && session.user.role != 'superadmin') {
       return (ctx.body = {
         success: false,
         msg: '没有权限进行该操作'
@@ -621,7 +621,7 @@ export class DatabaseController {
     }
 
     const activityApplyResults = await ActivityApply.find({activity, isCancel:false}).exec()
-    if (session.user.role !== 'vip' && activityApplyResults && activityApplyResults.length > 100) {//测试时候把100调小
+    if (!session.user.isVip && activityApplyResults && activityApplyResults.length > 100) {//测试时候把100调小
       let count = await SharedClick.count({activityId: activityId}).exec()
       if (count < 3) {
         return (ctx.body = {
@@ -1022,8 +1022,8 @@ export class DatabaseController {
     }
     lookfor = await lookfor.save()
 
-    // if (session.user.role !== 'vip') {
-    if (false) { // 暂时不验证VIP
+    if (!session.user.isVip) {
+    // if (false) { // 暂时不验证VIP
       return (ctx.body = {
         success:false,
         code: 101, 
