@@ -18,7 +18,7 @@ export class adminController {
     }
 
     if (match) {
-      if (user.role !== 'admin') {
+      if (user.role !== 'admin' && user.role !== 'superadmin') {
         return (ctx.body = {
           success: false,
           msg: '来错地方了'
