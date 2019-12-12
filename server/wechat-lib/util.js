@@ -133,6 +133,17 @@ function signIt(nonce, ticket, timestamp, url) {
   return sha
 }
 
+function ymdToDate(year, month, day) {
+  var yearStr = `${year}`
+  var monthStr = digit2Bit(month)
+  var dayStr = digit2Bit(day)
+  return Date.parse([yearStr, monthStr, dayStr].join('-'))
+}
+
+function digit2Bit(i) {
+  return (i < 10 ? '0' : '') + i
+}
+
 function sign(ticket, url) {
   const nonce = createNonce()
   const timestamp = createTimestamp()
@@ -150,5 +161,6 @@ export {
   tpl,
   sign,
   dayTimeStr,
-  getXingzuo
+  getXingzuo,
+  ymdToDate
 }

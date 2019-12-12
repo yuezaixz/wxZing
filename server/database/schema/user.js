@@ -1,3 +1,5 @@
+import { ymdToDate } from '../../wechat-lib/util'
+
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 
@@ -36,6 +38,7 @@ const UserSchema = new Schema({
     default: 0
   },
   birthday: String,
+  birthdayTimstamp: Number,
   // 0-12 未知,魔羯座,水瓶座,双鱼座,白羊座,金牛座,双子座,巨蟹座,狮子座,处女座,天秤座,天蝎座,射手座
   xingzuo: Number,
   // 微信读取到的
@@ -228,9 +231,10 @@ UserSchema.pre('save', function (next) {
   if (user.birthday.indexOf('-') >= 0) {
     let split = user.birthday.split('-')
     if (split.length === 3) {
-      this.birthyear = split[0]
-      this.birthmonth = split[1]
-      this.birthdate = split[2]
+      user.birthyear = split[0]
+      user.birthmonth = split[1]
+      user.birthdate = split[2]
+      user.birthdayTimstamp = ymdToDate(parseInt(user.birthyear), parseInt(user.birthmonth), parseInt(user.birthdate))
     }
   }
   user.birthYear = user.birth
