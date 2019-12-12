@@ -1,5 +1,7 @@
 import * as wechat from '../api/wechat'
 import config from '../config'
+import api from '../api'
+import { getParamsAsync } from '../wechat-lib/pay'
 import {
   parse as urlParse
 } from 'url'
@@ -43,6 +45,12 @@ export async function oauth(ctx, next) {
   const params = queryParse(urlObj.query)
   const code = params.code
   const user = await wechat.getUserByCode(code)
+
+  if (!user || !user.openid) {
+    return (ctx.body = {
+      success: false
+    })
+  }
 
   // 如果不存在该openid的用户，则添加到用户系统中。如果存在，则把附加信息加上
   const mongoose = require('mongoose')
@@ -90,5 +98,48 @@ export async function oauth(ctx, next) {
   ctx.body = {
     success: true,
     user: dbUser
+  }
+}
+
+export async function wechatPay(ctx, next) {
+  const ip = ctx.ip.replace('::ffff:', '')
+  const session = ctx.session
+  let {
+    vipType
+  } = ctx.request.body
+
+  try {
+
+    vipType = parseInt(vipType)
+    if (vipType !== 1 || vipType !== 3 || vipType !== 12) {
+      return (ctx.body = {success: false, err: 'vipType输入错误'})
+    }
+    const price = vipType === 1 ? 60 * 100 : (vipType === 3 ? (3 * 46 * 100) : (12 * 34.9 * 100))
+    let user = await api.user.findUserByUnionId(session.user.unionid).exec()
+    if (!user) return (ctx.body = {success: false, err: '用户不存在'})
+    console.log(`价格${price}`)
+    const orderParams = {
+      body: '续费会员' + vipType,
+      attach: '续费会员权限',
+      out_trade_no: 'Product_' + vipType + '_' + (+new Date()),
+      spbill_create_ip: ip,
+      // total_fee: price,
+      total_fee: 0.01 * 100,
+      openid: session.user.unionid,
+      trade_type: 'JSAPI'
+    }
+
+    const order = await getParamsAsync(orderParams)
+    const payment = await api.payment.create(user, vipType, order, '公众号')
+
+    ctx.body = {
+      success: true,
+      data: payment.order
+    }
+  } catch (err) {
+    ctx.body = {
+      success: false,
+      err: err
+    }
   }
 }

@@ -12,6 +12,12 @@ export async function fetchUserById(id) {
   return user
 }
 
+export async function findUserByUnionId(unionid) {
+  const user = await User.findOne({unionid: unionid}).exec()
+
+  return user
+}
+
 export async function findDetailByOpenIdAsync(wxUser, from) {
   var openid = wxUser.openid
   // var avatar

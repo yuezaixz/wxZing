@@ -51,4 +51,16 @@ export class WxController {
   async wxOAuth(ctx, next) {
     await wechat.oauth(ctx, next)
   }
+
+  @post('/wechat-pay')
+  @required({ body: ['vipType'] })
+  async createOrder (ctx, next) {
+
+    const session = ctx.session
+    let userId = session.user.userId
+    if (!userId) {
+      return (ctx.body = {success: false, msg: '用户未登录'})
+    }
+    await wechat.wechatPay(ctx, next)
+  }
 }

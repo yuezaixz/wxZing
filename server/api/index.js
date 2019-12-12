@@ -1,4 +1,5 @@
 export default {
   creation: require('./creation'),
-  mp: require('./mp')
+  mp: require('./mp'),
+  user: require('./user')
 }
