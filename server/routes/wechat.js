@@ -63,4 +63,9 @@ export class WxController {
     }
     await wechat.wechatPay(ctx, next)
   }
+
+  @post('/wechat-pay-notify')
+  async payNotify (ctx, next) {
+    await wechat.wechatPayNotify(ctx, next)
+  }
 }

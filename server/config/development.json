@@ -6,10 +6,10 @@
   "WEBSITE_ROOT_URL": "http://www.paodong.cn",
   "ngrok": "110636128451",
   "shop": {
-    "appID": "你的 shop ID",
-    "mchId": "你的 shop mchId",
-    "notifyUrl": "接收通知的 URL",
-    "key": "key"
+    "appId": "wx1d6d5d9be3dd255a",
+    "mchId": "1507336411",
+    "notifyUrl": "http://wxzing.officeplan.cn/wechat-pay-notify",
+    "partnerKey": "davidisAhandsomeyoungman"
   },
   "wechat": {
     "appID": "wxc787af5a595998d0",

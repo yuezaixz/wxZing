@@ -58,13 +58,14 @@
 
 
     .card-footer
-  .next
+  .next(@click="payAction")
     .title 获取VIP
 </template>
 
 <script>
 
 import { mapState } from 'vuex'
+import axios from 'axios'
 
 export default {
   middleware: 'wechat-info',
@@ -86,6 +87,26 @@ export default {
   methods: {
     selectAction(selectIndex) {
       this.selectIndex = selectIndex
+    },
+    payAction() {
+      if (this.selectIndex <= 0) {
+        return
+      }
+      let { data } = await axios.post('/wechat-pay', {
+        vipType: [0, 1, 3, 12][this.selectIndex]
+      })
+      if (data.success) {
+        WeixinJSBridge.invoke('getBrandWCPayRequest', data.data, function(res){
+          if(res.err_msg == "get_brand_wcpay_request:ok"){
+            this.$store.dispatch('showToast', {duration: 2000, str:"支付成功", toastType:'icon-success-no-circle'})
+            // 这里可以跳转到订单完成页面向用户展示
+          }else{
+            this.$store.dispatch('showToast', {duration: 2000, str:"支付失败，请重试", toastType:'icon-warn'})
+          }
+        });
+      } else {
+        this.$store.dispatch('showToast', {duration: 2000, str:data.msg || "支付失败", toastType:'icon-warn'})
+      }
     }
   },
 

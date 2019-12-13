@@ -1,13 +1,16 @@
 import * as wechat from '../api/wechat'
 import config from '../config'
 import api from '../api'
-import { getParamsAsync } from '../wechat-lib/pay'
+import { getParamsAsync, getNoticeAsync, getPayDataAsync, buildSuccessXML } from '../wechat-lib/pay'
 import {
   parse as urlParse
 } from 'url'
 import {
   parse as queryParse
 } from 'querystring'
+import mongoose from 'mongoose'
+
+const Payment = mongoose.model('Payment')
 
 export async function signature(ctx, next) {
   let url = ctx.query.url
@@ -101,6 +104,60 @@ export async function oauth(ctx, next) {
   }
 }
 
+export async function paymentAsync(ctx, next) {
+  const { body } = ctx.request
+
+  try {
+    let payment = await Payment.findOne({
+      _id: body.payment._id
+    }).exec()
+
+    if (!payment) return (ctx.body = {success: false, msg: '订单不存在'})
+
+    if (String(payment.vipType) !== body.vipType || String(payment.user) !== body.user._id) {
+      return (ctx.body = {
+        success: false,
+        msg: '订单错误，请联系网站管理员'
+      })
+    }
+
+    payment.success = 1
+    await payment.save()
+
+    ctx.body = {success: true, msg: '支付成功'}
+  } catch (err) {
+    return (ctx.body = {
+      success: false,
+      err: err
+    })
+  }
+}
+
+export async function wechatPayNotify(ctx, next) {
+  try {
+    const data = await getPayDataAsync(ctx.req)
+    const message = await getNoticeAsync(data)
+    if (message.return_code === 'SUCCESS') {
+      let payment = await api.payment.getPaymentByTrade(message.out_trade_no)
+      if (parseInt(message.total_fee) !== parseInt(payment.totalFee)) {
+        payment.success = 500
+      }
+      // 如果已经有notify 了，就不保存了
+      if (!payment.notify) {
+        payment.notify = message
+        payment.success = 100
+        payment = await api.payment.updatePayment(payment)
+      }
+    }
+    ctx.status = 200
+    ctx.type = 'application/xml'
+    ctx.body = buildSuccessXML()
+    return ctx.body
+  } catch (e) {
+    throw new Error('通知异常')
+  }
+}
+
 export async function wechatPay(ctx, next) {
   const ip = ctx.ip.replace('::ffff:', '')
   const session = ctx.session
@@ -109,7 +166,6 @@ export async function wechatPay(ctx, next) {
   } = ctx.request.body
 
   try {
-
     vipType = parseInt(vipType)
     if (vipType !== 1 || vipType !== 3 || vipType !== 12) {
       return (ctx.body = {success: false, err: 'vipType输入错误'})
@@ -118,10 +174,11 @@ export async function wechatPay(ctx, next) {
     let user = await api.user.findUserByUnionId(session.user.unionid).exec()
     if (!user) return (ctx.body = {success: false, err: '用户不存在'})
     console.log(`价格${price}`)
+    const outTradeNo = 'Product_' + vipType + '_' + (+new Date())
     const orderParams = {
       body: '续费会员' + vipType,
       attach: '续费会员权限',
-      out_trade_no: 'Product_' + vipType + '_' + (+new Date()),
+      out_trade_no: outTradeNo,
       spbill_create_ip: ip,
       // total_fee: price,
       total_fee: 0.01 * 100,
@@ -130,7 +187,7 @@ export async function wechatPay(ctx, next) {
     }
 
     const order = await getParamsAsync(orderParams)
-    const payment = await api.payment.create(user, vipType, order, '公众号')
+    const payment = await api.payment.create(user, vipType, price, order, outTradeNo)
 
     ctx.body = {
       success: true,
