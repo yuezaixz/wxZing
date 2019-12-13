@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { controller, get, post, log } from '../decorator/router'
+import { controller, get, post, log, required } from '../decorator/router'
 import * as wechat from '../controllers/wechat'
 import config from '../config'
 import reply from '../wechat/reply'

@@ -88,7 +88,7 @@ export default {
     selectAction(selectIndex) {
       this.selectIndex = selectIndex
     },
-    payAction() {
+    async payAction() {
       if (this.selectIndex <= 0) {
         return
       }
