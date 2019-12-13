@@ -8,9 +8,9 @@ module.exports =
 /******/ 	function __webpack_require__(moduleId) {
 /******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
+/******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
-/******/
+/******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
@@ -34,9 +34,6 @@ module.exports =
 /******/
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
 /******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
@@ -65,30 +62,194 @@ module.exports =
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 5);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
+module.exports = require("path");
+
+/***/ }),
+/* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* WEBPACK VAR INJECTION */(function(__dirname) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_koa__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_koa___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_koa__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__config__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_nuxt__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_nuxt___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_nuxt__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ramda__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ramda___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_ramda__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_path__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_path___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_path__);
+
+
+
+
+
+
+// Import and Set Nuxt.js options
+const config = __webpack_require__(8);
+config.dev = !(__WEBPACK_IMPORTED_MODULE_1__config__["a" /* default */].env === 'production');
+
+const r = path => Object(__WEBPACK_IMPORTED_MODULE_4_path__["resolve"])(__dirname, path);
+const MIDDLEWARES = ['database', 'common', 'router'];
+
+class Server {
+  constructor() {
+    this.app = new __WEBPACK_IMPORTED_MODULE_0_koa___default.a();
+    this.useMiddlewares(this.app)(MIDDLEWARES);
+  }
+  useMiddlewares(app) {
+    // 中间件的个数不定，通过 Ramda 的特性，从右往左进行函数组合，右侧函数的返回结果总是左侧函数的输入参数
+    // R.map(console.log)([1, 2, 3])
+    // MIDDLEWARE 数组交给了 R.map
+    // 分别拿到的单个数组中的值，我们可以通过 R.compose 再次进行组合。
+    return __WEBPACK_IMPORTED_MODULE_3_ramda___default.a.map(__WEBPACK_IMPORTED_MODULE_3_ramda___default.a.compose(__WEBPACK_IMPORTED_MODULE_3_ramda___default.a.map(i => i(app)), !(function webpackMissingModule() { var e = new Error("Cannot find module \".\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()), i => `${r('./middleware')}/${i}`));
+  }
+
+  async start() {
+    // Instantiate nuxt.js
+    const nuxt = new __WEBPACK_IMPORTED_MODULE_2_nuxt__["Nuxt"](config);
+    // Build in development
+    if (config.dev) {
+      const builder = new __WEBPACK_IMPORTED_MODULE_2_nuxt__["Builder"](nuxt);
+      await builder.build();
+    }
+    this.app.use(async (ctx, next) => {
+      await next();
+      ctx.req.session = ctx.session;
+      // console.log('ctx.req.session', ctx.session)
+      ctx.status = 200; // koa defaults to 404 when it sees that status is unset
+      return new Promise((resolve, reject) => {
+        ctx.res.on('close', resolve);
+        ctx.res.on('finish', resolve);
+        nuxt.render(ctx.req, ctx.res, promise => {
+          // nuxt.render passes a rejected promise into callback on error.
+          promise.then(resolve).catch(reject);
+        });
+      });
+    });
+    this.app.listen(__WEBPACK_IMPORTED_MODULE_1__config__["a" /* default */].port, __WEBPACK_IMPORTED_MODULE_1__config__["a" /* default */].host);
+    console.log('Server listening on ' + __WEBPACK_IMPORTED_MODULE_1__config__["a" /* default */].host + ':' + __WEBPACK_IMPORTED_MODULE_1__config__["a" /* default */].port); // eslint-disable-line no-console
+  }
+}
+
+const app = new Server();
+app.start();
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, "server"))
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+module.exports = require("koa");
+
+/***/ }),
+/* 3 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_path__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_path___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_path__);
+
+
+
+const host = process.env.HOST || 'localhost';
+const env = "production" || 'development';
+const conf = !(function webpackMissingModule() { var e = new Error("Cannot find module \".\""); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+
+/* harmony default export */ __webpack_exports__["a"] = (__WEBPACK_IMPORTED_MODULE_0_lodash___default.a.assign({
+  env,
+  host
+}, conf));
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+module.exports = require("lodash");
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+function webpackEmptyContext(req) {
+	throw new Error("Cannot find module '" + req + "'.");
+}
+webpackEmptyContext.keys = function() { return []; };
+webpackEmptyContext.resolve = webpackEmptyContext;
+module.exports = webpackEmptyContext;
+webpackEmptyContext.id = 5;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports) {
+
+module.exports = require("nuxt");
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports) {
+
+module.exports = require("ramda");
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports) {
+
+/* eslint-disable */
 module.exports = {
   /*
-  ** Headers of the page
-  */
+   ** Headers of the page
+   */
   head: {
-    title: 'starter',
-    meta: [{ charset: 'utf-8' }, { name: 'viewport', content: 'width=device-width, initial-scale=1' }, { hid: 'description', name: 'description', content: 'Nuxt.js project' }],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    title: 'Office Plan',
+    meta: [{
+      // 禁止下一行的各种警告
+      // eslint-disable-next-line
+      charset: 'utf-8'
+    }, {
+      name: 'viewport',
+      content: 'width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0'
+    }, {
+      hid: 'description',
+      name: 'description',
+      content: 'TODO一个相亲项目'
+    }],
+    link: [{
+      rel: 'icon',
+      type: 'image/x-icon',
+      href: 'favicon.ico'
+    }],
+    script: [{
+      src: 'https://res.wx.qq.com/open/js/jweixin-1.4.0.js'
+    }]
   },
   /*
-  ** Global CSS
-  */
-  css: ['~static/css/main.css'],
+   ** Global CSS
+   */
+  css: [{
+    src: 'static/sass/base.sass',
+    lang: 'sass?indentedSyntax=true'
+  }, {
+    src: 'swiper/dist/css/swiper.css'
+  }, {
+    src: 'static/css/weui.min.css'
+  }],
   /*
-  ** Customize the progress-bar color
-  */
-  loading: { color: '#3B8070' },
+   ** Customize the progress-bar color
+   */
+  plugins: [{ src: '~plugins/swiper.js', ssr: false }, { src: '~plugins/flexible.js', ssr: false }, { src: '~plugins/eleui.js', ssr: false }],
+  loading: {
+    color: '#3B8070'
+  },
   /*
    ** Build configuration
    */
@@ -96,166 +257,42 @@ module.exports = {
     /*
      ** Run ESLINT on save
      */
-    extend: function extend(config, ctx) {
-      if (ctx.isClient) {
-        config.module.rules.push({
-          enforce: 'pre',
-          test: /\.(js|vue)$/,
-          loader: 'eslint-loader',
-          exclude: /(node_modules)/
-        });
+    // extend(config, ctx) {
+    //   if (ctx.isClient) {
+    //     config.module.rules.push({
+    //       enforce: 'pre',
+    //       test: /\.(js|vue)$/,
+    //       loader: 'eslint-loader',
+    //       exclude: /(node_modules)/
+    //     })
+    //   }
+    // },
+    loaders: [{
+      test: /\.(png|jpe?g|gif|svg)$/,
+      loader: 'url-loader',
+      query: {
+        limit: 10000,
+        name: 'img/[name].[hash].[ext]'
       }
-    }
+    }]
+  },
+  performance: {
+    prefetch: false
   }
 };
 
-/***/ },
-/* 1 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 9 */
+/***/ (function(module, exports) {
 
-module.exports = __webpack_require__(4);
+function webpackEmptyContext(req) {
+	throw new Error("Cannot find module '" + req + "'.");
+}
+webpackEmptyContext.keys = function() { return []; };
+webpackEmptyContext.resolve = webpackEmptyContext;
+module.exports = webpackEmptyContext;
+webpackEmptyContext.id = 9;
 
-
-/***/ },
-/* 2 */
-/***/ function(module, exports) {
-
-module.exports = require("koa");
-
-/***/ },
-/* 3 */
-/***/ function(module, exports) {
-
-module.exports = require("nuxt");
-
-/***/ },
-/* 4 */
-/***/ function(module, exports) {
-
-module.exports = require("regenerator-runtime");
-
-/***/ },
-/* 5 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Users_David_Woo_GitSource_Test_wxrunmaf_node_modules_babel_runtime_regenerator__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Users_David_Woo_GitSource_Test_wxrunmaf_node_modules_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Users_David_Woo_GitSource_Test_wxrunmaf_node_modules_babel_runtime_regenerator__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_koa__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_koa___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_koa__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_nuxt__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_nuxt___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_nuxt__);
-
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-
-
-
-// Import and Set Nuxt.js options
-var config = __webpack_require__(0);
-config.dev = !(app.env === 'production');
-var host = process.env.HOST || '127.0.0.1';
-var port = process.env.PORT || 3000;
-
-var Server = function () {
-  function Server() {
-    _classCallCheck(this, Server);
-
-    this.app = new __WEBPACK_IMPORTED_MODULE_1_koa___default.a();
-    this.useMiddlewares(this.app);
-  }
-
-  _createClass(Server, [{
-    key: 'useMiddlewares',
-    value: function useMiddlewares(app) {}
-  }, {
-    key: 'start',
-    value: function () {
-      var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0__Users_David_Woo_GitSource_Test_wxrunmaf_node_modules_babel_runtime_regenerator___default.a.mark(function _callee2() {
-        var _this = this;
-
-        var nuxt, builder;
-        return __WEBPACK_IMPORTED_MODULE_0__Users_David_Woo_GitSource_Test_wxrunmaf_node_modules_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                // Instantiate nuxt.js
-                nuxt = new __WEBPACK_IMPORTED_MODULE_2_nuxt__["Nuxt"](config);
-                // Build in development
-
-                if (!config.dev) {
-                  _context2.next = 5;
-                  break;
-                }
-
-                builder = new __WEBPACK_IMPORTED_MODULE_2_nuxt__["Builder"](nuxt);
-                _context2.next = 5;
-                return builder.build();
-
-              case 5:
-                app.use(function () {
-                  var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0__Users_David_Woo_GitSource_Test_wxrunmaf_node_modules_babel_runtime_regenerator___default.a.mark(function _callee(ctx, next) {
-                    return __WEBPACK_IMPORTED_MODULE_0__Users_David_Woo_GitSource_Test_wxrunmaf_node_modules_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
-                      while (1) {
-                        switch (_context.prev = _context.next) {
-                          case 0:
-                            _context.next = 2;
-                            return next();
-
-                          case 2:
-                            ctx.status = 200; // koa defaults to 404 when it sees that status is unset
-                            return _context.abrupt('return', new Promise(function (resolve, reject) {
-                              ctx.res.on('close', resolve);
-                              ctx.res.on('finish', resolve);
-                              nuxt.render(ctx.req, ctx.res, function (promise) {
-                                // nuxt.render passes a rejected promise into callback on error.
-                                promise.then(resolve).catch(reject);
-                              });
-                            }));
-
-                          case 4:
-                          case 'end':
-                            return _context.stop();
-                        }
-                      }
-                    }, _callee, _this);
-                  }));
-
-                  return function (_x, _x2) {
-                    return _ref2.apply(this, arguments);
-                  };
-                }());
-                app.listen(port, host);
-                console.log('Server listening on ' + host + ':' + port); // eslint-disable-line no-console
-
-              case 8:
-              case 'end':
-                return _context2.stop();
-            }
-          }
-        }, _callee2, this);
-      }));
-
-      function start() {
-        return _ref.apply(this, arguments);
-      }
-
-      return start;
-    }()
-  }]);
-
-  return Server;
-}();
-
-var app = new Server();
-app.start();
-
-/***/ }
+/***/ })
 /******/ ]);
 //# sourceMappingURL=main.map

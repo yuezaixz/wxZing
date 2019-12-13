@@ -41,6 +41,7 @@ class Server {
       await builder.build()
     }
     this.app.use(async (ctx, next) => {
+      // ctx.request.socket.setTimeout(5 * 60 * 1000)
       await next()
       ctx.req.session = ctx.session
       // console.log('ctx.req.session', ctx.session)
@@ -54,7 +55,10 @@ class Server {
         })
       })
     })
-    this.app.listen(conf.port, conf.host)
+    let aaserver = this.app.listen(conf.port, conf.host)
+    // console.log(`aasbbcc1${aaserver.timeout}`)
+    aaserver.setTimeout(25 * 60 * 1000)
+    // console.log(`aasbbcc2${aaserver.timeout}`)
     console.log('Server listening on ' + conf.host + ':' + conf.port) // eslint-disable-line no-console
   }
 }

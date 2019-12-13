@@ -78,7 +78,7 @@ export default {
 
   methods: {
     isVip(userItem){
-      console.log('util:'+userItem.vipUntil+',now:'+Date.now());
+      console.log('vip:'+userItem.isVip);
       return !!(userItem.vipUntil && userItem.vipUntil > Date.now())
     },
     displayUserId(userItem) {
