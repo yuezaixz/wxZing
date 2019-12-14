@@ -55,6 +55,7 @@ class Server {
         })
       })
     })
+    this.app.listen(conf.port, conf.host)
     // let aaserver = this.app.listen(conf.port, conf.host)
     // console.log(`aasbbcc1${aaserver.timeout}`)
     // aaserver.setTimeout(25 * 60 * 1000)
