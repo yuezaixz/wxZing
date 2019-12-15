@@ -664,7 +664,7 @@ export class DatabaseController {
   @post('zing/random')
   async random_zing(ctx, next) {
     const session = ctx.session
-    // let userId = session.user ? session.user.userId : null
+    let userId = session.user ? session.user.userId : null
     let {execludeUserIds} = ctx.request.body
     // if (!userId) {
     //   return (ctx.body = {
@@ -687,6 +687,13 @@ export class DatabaseController {
     }
     if (session.user && session.user.filterHeight) {
       userQueryDict['height'] = {$gte:session.user.filterHeight}
+    }
+    if (userId) {
+      if (!execludeUserIds || execludeUserIds == 0) {
+        execludeUserIds = [userId]
+      } else {
+        execludeUserIds.push(userId)
+      }
     }
     if (execludeUserIds && execludeUserIds.length > 0) {
       userQueryDict['userId'] = {$nin:execludeUserIds}
