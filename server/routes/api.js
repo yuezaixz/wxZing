@@ -755,8 +755,8 @@ export class DatabaseController {
       filterDegree,
       filterAge,
     } = ctx.request.body
-    if (openid) {
-      const findUser = await User.findOne({unionid: openid,}).exec()
+    if (unionid) {
+      const findUser = await User.findOne({unionid: unionid,}).exec()
       if (findUser) {
         findUser.nickname = nickname
         findUser.phoneNumber = phoneNumber
