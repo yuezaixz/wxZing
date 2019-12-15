@@ -1,5 +1,5 @@
 import axios from 'axios'
-import config from '../config'
+import config from '../server/config'
 
 export default function ({ commit, store, route, redirect }) {
   if (!store.state.authUser) {
