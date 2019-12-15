@@ -732,7 +732,7 @@ export class DatabaseController {
   @post('change_user')
   async change_user(ctx, next) {
     let {
-      openid,
+      unionid,
       nickname,
       phoneNumber,
       wxcode,
@@ -781,7 +781,7 @@ export class DatabaseController {
         findUser.filterAge = filterAge
         findUser.save()
         ctx.session = {
-          openid: findUser.openid,
+          openid: findUser.unionid,
           user: findUser
         }
         return (ctx.body = {
