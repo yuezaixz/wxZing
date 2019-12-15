@@ -106,7 +106,8 @@ export default {
           this.$router.replace(visit)
         }
       } else {
-        this.$store.dispatch('showToast', {duration: 2000, str:'请填写', toastType:'icon-warn'})
+        const visit = '/register/registerdone'
+        this.$router.replace(visit)
       }
     }
   },
