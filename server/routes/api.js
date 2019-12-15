@@ -971,6 +971,19 @@ export class DatabaseController {
     }
   }
 
+  @get('user/auto_login/:openid')
+  async auto_login_by_openid(ctx, next) {
+    console.log('auto_login_by_openid')
+    const openid = ctx.params.openid
+    const res = await User.findOne({unionid: openid}).exec()
+    if (!res) {
+      ctx.session.user = findUser
+      return (ctx.body = {success:false, msg: '用户不存在'})
+    } else {
+      return (ctx.body = {success:true, data:res})
+    }
+  }
+
   @get('user/:userId')
   async query_user_by_id(ctx, next) {
     const userId = ctx.params.userId

@@ -48,7 +48,7 @@ import { mapState } from 'vuex'
 import wechat from '~/static/mixins/wechat.js'
 
 export default {
-  middleware: 'wechat-oauth',
+  middleware: ['wechat-oauth', 'wechat-autologin'],
   data() {
     return {
       zingUser: null,

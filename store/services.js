@@ -58,6 +58,10 @@ class Services {
     return axios.get('/api/user/' + userId)
   }
 
+  queryUserByOpenId(openId) {
+    return axios.get('/api/user/auto_login/' + openId)
+  }
+
   zingUserAction(zingUserId) {
     return axios.post('/api/zing/user', {
       zingUserId
