@@ -722,7 +722,6 @@ export class DatabaseController {
     }
     
     let user = users ? users[parseInt(Math.random()*users.length)]:null
-    console.log(user.isApply)
     if (user) {
       return (ctx.body = {
         success: true,
