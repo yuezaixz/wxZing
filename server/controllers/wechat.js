@@ -146,6 +146,8 @@ export async function wechatPayNotify(ctx, next) {
       if (!payment.notify) {
         payment.notify = message
         payment.success = 100
+        const findUser = await api.user.fetchUserByUserId(payment.user.userId)
+        findUser.incVipTime(payment.vipType * 31 * (86400) * 1000)
         payment = await api.payment.updatePayment(payment)
       }
     }

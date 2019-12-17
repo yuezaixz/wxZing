@@ -12,6 +12,12 @@ export async function fetchUserById(id) {
   return user
 }
 
+export async function fetchUserByUserId(userId) {
+  const user = await User.findOne({userId}).exec()
+
+  return user
+}
+
 export async function findUserByUnionId(unionid) {
   const user = await User.findOne({unionid: unionid}).exec()
 

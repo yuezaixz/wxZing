@@ -48,7 +48,12 @@ export async function getPayment(_id) {
 export async function getPaymentByTrade(outTradeNo) {
   const payment = await Payment.findOne({
     outTradeNo: outTradeNo
-  }).exec()
+  }).populate([
+    {
+      path: 'user',
+      select: 'userId'
+    }
+  ]).exec()
   return payment
 }
 

@@ -99,6 +99,14 @@ export default {
         WeixinJSBridge.invoke('getBrandWCPayRequest', data.data, function(res){
           if(res.err_msg == "get_brand_wcpay_request:ok"){
             this.$store.dispatch('showToast', {duration: 2000, str:"支付成功", toastType:'icon-success-no-circle'})
+            setTimeout(()=>{
+              let user = await this.$store.dispatch('autologin')
+              if (!user) {
+                this.$store.dispatch('showToast', {duration: 2000, str:"VIP用户", toastType:'icon-success-no-circle'})
+              } else {
+                this.$store.dispatch('showToast', {duration: 2000, str:"用户信息获取失败", toastType:'icon-warn'})
+              }
+            }, 1000)
             // 这里可以跳转到订单完成页面向用户展示
           }else{
             this.$store.dispatch('showToast', {duration: 2000, str:"支付失败，请重试", toastType:'icon-warn'})

@@ -104,6 +104,20 @@ export default {
     }
   },
 
+  async autologin({commit, state}) {
+    if (state.authUser && state.authUser.unionid) {
+      let loginRes = await axios.get('/api/user/auto_login/' + state.authUser.unionid)
+      if (loginRes.data.success) {
+        let user = loginRes.data.data
+        if (user) {
+          commit('SET_AUTHUSER', user)
+          return user
+        }
+      }
+    }
+    return null
+  },
+
   async login({ commit }, { wxcode, password }) {
     try {
       let res = await axios.post('/admin/login', {
