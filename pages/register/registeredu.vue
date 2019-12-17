@@ -46,9 +46,9 @@
 
     .card-footer
   .next
-    nuxt-link(to='/register/registerwx'  v-if="authUser.degree && authUser.birthday")
+    nuxt-link.link(to='/register/registerwx'  v-if="authUser.degree && authUser.birthday")
       .title 下一步
-    div(@click='next'  v-else)
+    div.link(@click='next'  v-else)
       .title 下一步
 
   vue-picker(

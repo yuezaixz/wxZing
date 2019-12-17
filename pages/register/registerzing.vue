@@ -30,7 +30,7 @@
       
     .card-footer
   .next
-    nuxt-link(to='/zing')
+    nuxt-link.link(to='/zing')
       .title 查看资料库
 
 </template>

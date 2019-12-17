@@ -29,7 +29,7 @@
 
     .card-footer
   .next
-    div(@click='next')
+    div.link(@click='next')
       .title 下一步
 </template>
 

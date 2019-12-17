@@ -38,9 +38,9 @@
 
     .card-footer
   .next
-    nuxt-link(to='/register/registeredu'  v-if="(authUser.isLocal && authUser.hometown) || (authUser.hometown && authUser.city)")
+    nuxt-link.link(to='/register/registeredu'  v-if="(authUser.isLocal && authUser.hometown) || (authUser.hometown && authUser.city)")
       .title 下一步
-    div(@click='next'  v-else)
+    div.link(@click='next'  v-else)
       .title 下一步
 
   vue-picker(

@@ -24,7 +24,7 @@
 
     .card-footer
   .next
-    div(@click='next')
+    div.link(@click='next')
       .title 发送验证码
 
 </template>
