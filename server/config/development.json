@@ -7,9 +7,9 @@
   "ngrok": "110636128451",
   "shop": {
     "appId": "wx1d6d5d9be3dd255a",
-    "mchId": "1507336411",
+    "mchId": "1569509841",
     "notifyUrl": "http://wxzing.officeplan.cn/wechat-pay-notify",
-    "partnerKey": "davidisAhandsomeyoungman"
+    "partnerKey": "HNFWgFHwKtKk6nEBMa2cPLGb2qMQU2kj"
   },
   "wechat": {
     "appID": "wxc787af5a595998d0",
