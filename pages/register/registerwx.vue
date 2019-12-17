@@ -18,7 +18,7 @@
         .card-column(style='height:10px;')
         .card-inner 这是对方联系你的唯一方式，请务必填写正确
         .city-control
-          .city-title(style='width:60px;') 微信号
+          .city-title(style='min-width:60px;') 微信号
           .city-title(style="padding-top: 4px; font-size:18px;padding-left: 0px;padding-right: 5px;") |
           input.city-input.title-sftext(v-model="authUser.wxcode" placeholder="请在此填写" value="authUser.wxcode")
         .card-column(style='height:10px;')
