@@ -169,6 +169,11 @@ export default {
     return data
   },
 
+  async cancelZingUserAction({state}, {zingUserId}) {
+    let { data } = await Services.cancelZingUserAction(zingUserId)
+    return data
+  },
+
   async reportUserAction({state}, {userId}) {
     let { data } = await Services.reportUserAction(userId)
     return data

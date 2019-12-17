@@ -2,7 +2,7 @@
   "db":"mongodb://localhost/wxZing",
   "port": 3008,
   "base": "http://localhost:3008",
-  "SITE_ROOT_URL": "http://paodong.vipgz1.idcfengye.com",
+  "SITE_ROOT_URL": "http://wxzing.vipgz2.idcfengye.com",
   "WEBSITE_ROOT_URL": "http://www.paodong.cn",
   "ngrok": "110636128451",
   "shop": {

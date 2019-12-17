@@ -62,6 +62,12 @@ class Services {
     return axios.get('/api/user/auto_login/' + openId)
   }
 
+  cancelZingUserAction(zingUserId) {
+    return axios.post('/api/zing/deluser', {
+      zingUserId
+    })
+  }
+
   zingUserAction(zingUserId) {
     return axios.post('/api/zing/user', {
       zingUserId

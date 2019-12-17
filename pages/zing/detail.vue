@@ -16,16 +16,16 @@
       //- img.card-close(src='~static/img/banner_close.png')
 
     .card-body(v-if="zingUser")
-      .card-row(style="margin-bottom:8px;margin-top:20px;align-items:flex-end;")
+      .card-row(style="margin-bottom:3px;margin-top:20px;align-items:flex-end;")
         .name-title {{zingUser.nickname}}
-        .id-content {{displayUserId}}
+        .id-content NO.{{displayUserId}}
         div(style="flex:1")
         .index-apply-block(v-if="apply") 已报名
         //- .gender-block
         //-   img.gender-block-icon(v-if="zingUser.gender === 1" src="~static/img/male_mini_icon.png")
         //-   img.gender-block-icon(v-else src="~static/img/female_mini_icon.png")
         //-   .gender-block-title {{displayAge}}岁
-      .card-row(style="margin-bottom:10px;")
+      .card-row(style="margin-bottom:3px;")
         .sub-title {{zingUser.provinceName}}，{{zingUser.cityName}}
       .card-row(style="justify-content: flex-start; align-items: flex-start;display: flex;")
         .info-info-item-career.yellow-item 
@@ -43,10 +43,12 @@
       //- .card-row(style="margin-bottom:4px;")
       //-   .content 来自 {{zingUser.provinceName}},{{zingUser.cityName}}
       .card-row(style="margin-bottom:4px;")
+        .content 来自 {{displayName(zingUser.hometown)}}
+      .card-row(style="margin-bottom:28px;")
         .content 关于房产：{{displayHouseType}}
-      .card-row(style="margin-bottom:20px;")
-        .content 微信号：
-        .wechat-content 互赞即可显示
+      //- .card-row(style="margin-bottom:20px;")
+      //-   .content 微信号：
+      //-   .wechat-content 互赞即可显示
 
     .card-body(v-else)
       
@@ -55,7 +57,7 @@
   .card(v-if="zingUser" style="margin-top:26px;")
     .card2-header
     .card2-body
-      .card-row
+      .card-row(style="margin-top:16px;")
         .title 关于我
       .card-row.card-row-marginright(style="margin-top:10px;")
         .content {{zingUser.aboutMe || '还没想好怎么表达自己，请再等我下'}}
@@ -65,17 +67,17 @@
         .content {{zingUser.aboutOther || '我喜欢的人轮廓还模糊，渐渐会清晰'}}
     .card2-footer
   .detail-next(@click="zingUserAction")
-      .title 赞
+      .title {{loverCount>0?(''+loverCount+','):''}}{{isLoved?'已赞':'赞'}}
   .detail-next(v-if="apply" @click="fellowUserActivity(apply.activity.activityId)")
-      .title 进入共同群聊
+      .title 进入共同微信群
       .vip-block
         .vip-title VIP
-  .detail-next-disable(v-else)
-      .title 进入共同群聊
+  .detail-next-disable(v-else @click="fellowUserActivity()")
+      .title 进入共同微信群
       .vip-block
         .vip-title VIP
   
-  img.more(src='~static/img/more.png' @click="displayApply")
+  //- img.more(src='~static/img/more.png' @click="displayApply")
 
   div.apply-modal(v-if="zingUser" :style="showApply?'':'display:none;'")
     div.weui-mask(@click="hideApply")
@@ -94,6 +96,7 @@
 <script>
 
 import { mapState } from 'vuex'
+import { provsData, citysData } from '~/components/areaData.js'
 
 export default {
   middleware: 'wechat-oauth',
@@ -111,6 +114,8 @@ export default {
         photos: []
       },
       apply: null,
+      loverCount: 0,
+      isLoved: false,
       applyState: null,
       showApply: false,
     }
@@ -221,6 +226,28 @@ export default {
   },
 
   methods: {
+    displayName(code) {
+      var provCode = code && code.length == 6 ? (code.substr(0,2)+'0000'):null
+      var cityName = ''
+      var provName = ''
+      for (const key in citysData[provCode]) {
+        if (citysData[provCode].hasOwnProperty(key)) {
+          const element = citysData[provCode][key];
+          if (element.value === code) {
+            cityName = element.text
+          }
+        }
+      }
+      for (const key in provsData) {
+        const element = provsData[key];
+        if (element.value === provCode) {
+          provName = element.text
+        }
+      }
+      // provName = provName.replace('省', ' ')
+      // cityName = cityName.replace('市', ' ')
+      return cityName && provName ? (provName + cityName) : cityName;
+    },
     displayApply() {
       if (!this.$store.state.authUser || !this.$store.state.authUser.phoneNumber || !this.$store.state.authUser.wxcode) {
         return;
@@ -257,13 +284,23 @@ export default {
         })
         return;
       }
-      let data = await this.$store.dispatch('zingUserAction', {'zingUserId': this.zingUser.userId})
-      if (data.success) {
-        this.zingUser.zing = data.data
-        this.$store.dispatch('showToast', {duration: 2000, str:"点赞成功", toastType:'icon-success-no-circle'})
+      if (this.isLoved) {
+        let data = await this.$store.dispatch('cancelZingUserAction', {'zingUserId': this.zingUser.userId})
+        if (data.success) {
+          this.isLoved = false
+          this.loverCount -= 1
+        }
       } else {
-        this.$store.dispatch('showToast', {duration: 2000, str:data.msg || "点赞失败", toastType:'icon-warn'})
+        let data = await this.$store.dispatch('zingUserAction', {'zingUserId': this.zingUser.userId})
+        if (data.success) {
+          this.isLoved = true
+          this.loverCount += 1
+          this.$store.dispatch('showToast', {duration: 2000, str:"点赞成功", toastType:'icon-success-no-circle'})
+        } else {
+          this.$store.dispatch('showToast', {duration: 2000, str:data.msg || "点赞失败", toastType:'icon-warn'})
+        }
       }
+      
     },
     async fellowUserActivity(activityId) {
       if (!this.$store.state.authUser || !this.$store.state.authUser.phoneNumber || !this.$store.state.authUser.wxcode) {
@@ -273,6 +310,16 @@ export default {
         // this.$store.dispatch('showToast', {duration: 2000, str:'未注册', toastType:'icon-warn'})
         return;
       }
+      if (!this.$store.state.authUser.isVip) {
+        this.$router.push({
+          path: '/vip'
+        })
+        return
+      }
+      if (!activityId) {
+        return
+      }
+
       var fellowFn = () => {
         if (activityId || parseInt(activityId) === 0) {
           this.$store.dispatch('applyActivity', {activityId}).then((data)=>{
@@ -297,8 +344,8 @@ export default {
       if (this.applyState) {
         this.$store.dispatch('showDialog', {
           dialogTitle: "确定进入该用户的群聊？", 
-          dialogContent: "选择确定后，讲替换当前申请加入的群聊", 
-          dialogDefault: "在考虑", 
+          dialogContent: "选择确定后，将替换当前申请加入的群聊", 
+          dialogDefault: "再考虑", 
           dialogPrimary: "确定", 
           // dialogDefaultFn: null, // 用默认的，关闭弹窗即可
           dialogPrimaryFn: fellowFn
@@ -340,6 +387,8 @@ export default {
     if (data.success) {
       this.zingUser = data.data
       this.apply = data.apply
+      this.loverCount = data.loverCount
+      this.isLoved = data.isLoved
     } else {
       this.$store.dispatch('showToast', {duration: 2000, str:data.msg, toastType:'icon-warn'})
     }

@@ -33,7 +33,7 @@ export class DatabaseController {
   async last9User(ctx, next) {
     const session = ctx.session
     let userId = session.user.userId
-    let users = await User.find({'userId': {$ne:userId}}).limit(9).exec()
+    let users = await User.find({'userId': {$ne:userId}, 'wxcode': {$ne:null}, 'phoneNumber': {$ne:null},}).limit(9).exec()
     return (ctx.body = {
       success: true,
       data: users
@@ -202,7 +202,7 @@ export class DatabaseController {
     let userId = session.user.userId
     const currentActivity = await Activity.findOne({isOver: false}).sort('-createAt').exec()
     const check = await ActivityApply.findOne({activity: currentActivity, userId: userId, isCancel:false }).exec()
-    
+
     return (ctx.body = {
       success: true,
       data: check
@@ -992,6 +992,11 @@ export class DatabaseController {
 
   @get('user/:userId')
   async query_user_by_id(ctx, next) {
+    const session = ctx.session
+    if (!session.user) {
+      return (ctx.body = {success:false, msg: '未登录'})
+    }
+
     const userId = ctx.params.userId
     const res = await User.findOne({userId: userId}).exec()
 
@@ -1009,10 +1014,13 @@ export class DatabaseController {
       }
     }
 
+    const loverCount = await Zing.count({targetId: userId}).exec()
+    const isLoved = (await Zing.count({targetId: userId, userId: session.user.userId }).exec()) > 0
+
     if (!res) {
       return (ctx.body = {success:false, msg: '用户不存在'})
     } else {
-      return (ctx.body = {success:true, data:res, apply})
+      return (ctx.body = {success:true, data:res, apply, loverCount, isLoved})
     }
   }
 
@@ -1134,6 +1142,22 @@ export class DatabaseController {
     }
   }
 
+  @post('zing/deluser')
+  async delZingUser(ctx, next) {
+    var targetId = ctx.request.body.zingUserId
+    const session = ctx.session
+    let userId = session.user.userId
+    let zing = await Zing.remove({userId, targetId}).exec()
+    
+    if (zing) {
+      return (ctx.body = {
+        success: true,
+        data: zing
+      })
+    } else {
+      return (ctx.body = {success:false, msg: '操作出错'})
+    }
+  }
 
   @post('zing/user')
   async zingUser(ctx, next) {
