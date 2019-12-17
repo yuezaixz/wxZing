@@ -19,7 +19,7 @@
         .card-inner 请填写你工作中的主要岗位
         .city-control
           //- .city-titl(v-if='!authUser.career') 请在此输入
-          input.city-input(v-model="authUser.career" value="authUser.career" , placeholder='请在此填写')
+          input.city-input(v-model="authUser.career" value="authUser.career" , placeholder='建筑设计师')
 
     .card-footer
   .next
