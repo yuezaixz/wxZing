@@ -99,7 +99,7 @@ export default {
         WeixinJSBridge.invoke('getBrandWCPayRequest', data.data, function(res){
           if(res.err_msg == "get_brand_wcpay_request:ok"){
             this.$store.dispatch('showToast', {duration: 2000, str:"支付成功", toastType:'icon-success-no-circle'})
-            setTimeout(()=>{
+            setTimeout(async()=>{
               let user = await this.$store.dispatch('autologin')
               if (!user) {
                 this.$store.dispatch('showToast', {duration: 2000, str:"VIP用户", toastType:'icon-success-no-circle'})
