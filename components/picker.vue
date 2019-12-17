@@ -20,7 +20,7 @@
                   @touchstart="gearTouchStart"
                   @touchmove="gearTouchMove"
                   @touchend="gearTouchEnd">
-                <div :class="selects.select1 && item.value === selects.select1.value ?'tooth tooth_select':'tooth'" v-for="(item,index) in pData1" :key="index">{{item.text}}</div>
+                <div :class="selecting.select1?(selecting.select1 && item.value === selecting.select1.value ?'tooth tooth_select':'tooth'):(selects.select1 && item.value === selects.select1.value ?'tooth tooth_select':'tooth')" v-for="(item,index) in pData1" :key="index">{{item.text}}</div>
               </div>
               <div class="area_grid">
               </div>
@@ -37,7 +37,7 @@
                   @touchmove="gearTouchMove"
                   @touchend="gearTouchEnd"
                   val="5">
-                <div :class="selects.select2 && item.value === selects.select2.value ?'tooth tooth_select':'tooth'" v-for="(item,index) in pData2" :key="index">{{item.text}}</div>
+                <div :class="selecting.select2?(selecting.select2 && item.value === selecting.select2.value ?'tooth tooth_select':'tooth'):(selects.select2 && item.value === selects.select2.value ?'tooth tooth_select':'tooth')" v-for="(item,index) in pData2" :key="index">{{item.text}}</div>
               </div>
               <div class="area_grid">
               </div>
@@ -54,7 +54,7 @@
                   @touchmove="gearTouchMove"
                   @touchend="gearTouchEnd"
                   val="5">
-                <div :class="selects.select3 && item.value === selects.select3.value ?'tooth tooth_select':'tooth'" v-for="(item,index) in pData3" :key="index">{{item.text}}</div>
+                <div :class="selecting.select3?(selecting.select3 && item.value === selecting.select3.value ?'tooth tooth_select':'tooth'):(selects.select3 && item.value === selects.select3.value ?'tooth tooth_select':'tooth')" v-for="(item,index) in pData3" :key="index">{{item.text}}</div>
               </div>
               <div class="area_grid">
               </div>
@@ -110,6 +110,11 @@
           select1: '',
           select2: '',
           select3: ''
+        },
+        selecting: {
+          select1: null,
+          select2: null,
+          select3: null
         },
         noData: false,
         isOpened: 0
@@ -175,6 +180,10 @@
         target['pos_' + target.id] = target['o_d_' + target.id] + f
         target.style['-webkit-transform'] = 'translate3d(0,' + target['pos_' + target.id] + 'em,0)'
         target.setAttribute('top', target['pos_' + target.id] + 'em')
+
+        var pos = target['pos_' + target.id];
+        var gearVal = Math.abs(pos) / 2
+        this.setGearing(target, gearVal)
         if (e.targetTouches[0].screenY < 1) {
           gearTouchEnd(e)
         }
@@ -247,9 +256,23 @@
           d++;
         }, 30);
       },
+      setGearing(target, val) {
+        var endVal = Math.round(val)
+        var type = target.getAttribute('data-type')
+        if (type === 'provs') {
+          this.selecting.select1 = this.pData1[endVal]
+        } else if (type === 'city') {
+          this.selecting.select2 = this.pData2[endVal]
+        } else {
+          this.selecting.select3 = this.pData3[endVal]
+        }
+      },
       setGear(target, val) {
         var endVal = Math.round(val)
         var type = target.getAttribute('data-type')
+        this.selecting.select1 = null
+        this.selecting.select2 = null
+        this.selecting.select3 = null
         // 不是联级
         if (!this.link) {
           if (type === 'provs') {
@@ -498,8 +521,11 @@
 }
 
 .tooth_select {
-  color: #313131;
   font-size: 16px;
+  letter-spacing: 0px;
+  line-height: 29px;
+  color: #313131;
+  font-family: "Ping Fang SC";
 }
 
 .area_roll>div .gear {
