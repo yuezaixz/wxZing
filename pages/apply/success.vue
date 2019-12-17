@@ -13,6 +13,7 @@
       div(style="height:45px;")
       img.apply-office-qrcode(src='~static/img/apply_success_top_img.png' style="height:58px;width:50px;")
       .apply-success-title {{!activityApply?'--':(!activityApply.isHandle?'审核中':(activityApply.isSuccess? '报名成功':'报名失败'))}}
+      div(style="height:10px;")
       .apply-success-sub-title( v-if="!activityApply || !activityApply.fellowUserId" style='white-space:pre;') 
                                                         | 你已报名参加办公室计划第2期活动，请添加工作人员微信
                                                         | 若已经添加，则无需重复添加
@@ -42,19 +43,18 @@ import { mapState } from 'vuex'
 import { setTimeout } from 'timers';
 
 export default {
-  // middleware: 'wechat-auth',
+  middleware: 'wechat-auth',
   data() {
     return {
       activityName:null,
       activityId:null,
-      activityApply: null,
-      authUser: {}
+      activityApply: null
     }
   },
 
   computed: {
     ...mapState([
-      // 'authUser'
+      'authUser'
     ])
   },
   beforeMount() {
@@ -95,18 +95,18 @@ export default {
     }
   },
   mounted() {
-    // this.activityId = this.$route.query.activityId
-    // this.activityName = this.$route.query.activityName
-    // console.log(this.activityId , this.activityName)
-    // if (!this.activityName) {
-    //   // this.$route.
-    //   this.$store.dispatch('showToast', {duration: 2000, str:"非法访问", toastType:'icon-warn'})
-    //   setTimeout(()=>this.$router.push({
-    //     path: '/apply'
-    //   }), 1600)
+    this.activityId = this.$route.query.activityId
+    this.activityName = this.$route.query.activityName
+    console.log(this.activityId , this.activityName)
+    if (!this.activityName) {
+      // this.$route.
+      this.$store.dispatch('showToast', {duration: 2000, str:"非法访问", toastType:'icon-warn'})
+      setTimeout(()=>this.$router.push({
+        path: '/apply'
+      }), 1600)
       
-    //   return;
-    // }
+      return;
+    }
   }
 }
 </script>
