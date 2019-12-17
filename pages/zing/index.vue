@@ -17,7 +17,7 @@
       .index-apply-block(v-if="zingUser.isApply") 已报名
       .index-info-block
         .index-info-title {{zingUser.nickname}}
-        .index-info-sub-title(style="margin:10px 0 14px 0;") {{displayEduStr(zingUser)}} / {{['其他', '国企', '外企', '私企', '事业单位', '自由职业', '创业'][zingUser.jobType]}} / {{zingUser.career}} / {{['未知', '10w内', '10-20W', '20-50W', '50W以上'][zingUser.income]}}
+        .index-info-sub-title(style="margin:5px 0 7px 0;") {{displayEduStr(zingUser)}} / {{['其他', '国企', '外企', '私企', '事业单位', '自由职业', '创业'][zingUser.jobType]}} / {{zingUser.career}} / {{['未知', '10w内', '10-20W', '20-50W', '50W以上'][zingUser.income]}}
         .card-row(style="justify-content: flex-start; align-items: flex-start;margin:0 0;width:100%;display: flex;")
           .info-info-item-career 
             img.info-info-item-img-male( v-if="zingUser.gender==1" src='~static/img/male_mini_simple_white.png')
