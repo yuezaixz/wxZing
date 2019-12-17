@@ -26,7 +26,8 @@
         .card-error {{errorMsg || ' '}}
       .card-column(style='height:10px;')
       .card-column
-        label.retry-prompt(@click="sendSmsCode") {{retrySeconds > 0?''+retrySeconds+'s':'重发'}}
+        label.retry-prompt-sf(v-if="retrySeconds > 0" @click="sendSmsCode") {{''+retrySeconds+'s'}}
+        label.retry-prompt(v-else @click="sendSmsCode") 重发
 
     .card-footer
   .next
