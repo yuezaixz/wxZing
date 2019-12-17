@@ -18,7 +18,7 @@
         .card-column(style='height:10px;')
         .card-inner 这是对方联系你的唯一方式，请务必填写正确
         .city-control
-          .city-title(style='width:60px;') 微信号
+          .city-title.title-sftext(style='width:60px;') 微信号
           input.city-input(v-model="authUser.wxcode" placeholder="请在此填写" value="authUser.wxcode")
         .card-column(style='height:10px;')
         .card-inner(style="font-size: 12px;-webkit-transform-origin-x: 0;-webkit-transform: scale(0.83);") 请务必确认微信号是正确的，若填写错误，则管理人员 无法与您取得联系，从而无法参与活动。
