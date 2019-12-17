@@ -19,7 +19,7 @@
         .card-inner 手机号码隐私保护，无任何营销电话骚扰
         .city-control
           .city-title +86
-          .city-title(style="font-weight:bold; font-size:18px;") |
+          .city-title(style="padding-top: 4px; font-size:18px;padding-right: 5px;") |
           input.city-input(v-model="registerInfo.tel"  placeholder="在此输入" value="registerInfo.tel")
 
     .card-footer
