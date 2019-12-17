@@ -33,6 +33,7 @@
               .city-title 我想保密
 
     .card-footer
+  div(style="flex:1;")
   .next
     div.link(@click='next')
       .title 下一步

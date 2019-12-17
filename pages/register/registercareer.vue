@@ -22,6 +22,7 @@
           input.city-input(v-model="authUser.career" value="authUser.career" , placeholder='建筑设计师')
 
     .card-footer
+  div(style="flex:1;")
   .next
     div.link(@click='next')
       .title 下一步

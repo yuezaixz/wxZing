@@ -48,6 +48,7 @@
           img.card-arrow-down(src='~static/img/arrow_down.png')
 
     .card-footer
+  div(style="flex:1;")
   .next
     nuxt-link.link(to='/register/registerwx'  v-if="authUser.degree && authUser.birthday")
       .title 下一步

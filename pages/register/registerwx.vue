@@ -25,6 +25,7 @@
         .card-inner(style="font-size: 12px;-webkit-transform-origin-x: 0;-webkit-transform: scale(0.83);") 请务必确认微信号是正确的，若填写错误，则管理人员 无法与您取得联系，从而无法参与活动。
 
     .card-footer
+  div(style="flex:1;")
   .next
     div.link(@click='next')
       .title 下一步

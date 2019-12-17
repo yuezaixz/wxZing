@@ -29,6 +29,7 @@
 
       
     .card-footer
+  div(style="flex:1;")
   .next
     nuxt-link.link(to='/zing')
       .title 查看资料库

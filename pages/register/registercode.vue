@@ -30,6 +30,7 @@
         label.retry-prompt(v-else @click="sendSmsCode") 重发
 
     .card-footer
+  div(style="flex:1;")
   .next
     div.link(@click='next')
       .title 下一步

@@ -40,6 +40,7 @@
             .city-select-flex1(style="border:none;")
 
     .card-footer
+  div(style="flex:1;")
   .next
     div.link(@click='next')
       .title 下一步

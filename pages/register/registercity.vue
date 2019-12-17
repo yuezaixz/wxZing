@@ -37,6 +37,7 @@
           img.card-arrow-down(src='~static/img/arrow_down.png')
 
     .card-footer
+  div(style="flex:1;")
   .next
     nuxt-link.link(to='/register/registeredu'  v-if="(authUser.isLocal && authUser.hometown) || (authUser.hometown && authUser.city)")
       .title 下一步

@@ -23,6 +23,7 @@
           input.city-input(v-model="registerInfo.tel"  placeholder="在此输入" value="registerInfo.tel")
 
     .card-footer
+  div(style="flex:1;")
   .next
     div.link(@click='next')
       .title 发送验证码

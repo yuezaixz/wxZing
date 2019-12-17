@@ -28,6 +28,7 @@
           //- input.about-input(v-model="authUser.aboutOther" value="authUser.aboutOther", placeholder='理想型')
 
     .card-footer
+  div(style="flex:1;")
   .next
     div.link(@click='next')
       .title 下一步

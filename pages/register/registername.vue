@@ -21,6 +21,7 @@
           input.about-input(v-model="authUser.nickname" value="authUser.nickname", placeholder='点击在此输入')
 
     .card-footer
+  div(style="flex:1;")
   .next
     div.link(@click='next')
       .title 下一步

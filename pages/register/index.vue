@@ -34,6 +34,7 @@
             .card-prompt(style="margin-top:26px;") 女生
 
     .card-footer
+  div(style="flex:1;")
   .next
     nuxt-link.link(to='/register/registercity')
       .title 下一步

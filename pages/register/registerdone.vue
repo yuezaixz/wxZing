@@ -23,6 +23,7 @@
       div(style="flex:1")
 
     .card-footer
+  div(style="flex:1;")
   .next
     nuxt-link.link(to='/register/registerzing')
       .title 下一步
