@@ -35,7 +35,7 @@
 
     .card-footer
   .next
-    nuxt-link(to='/register/registercity')
+    nuxt-link.link(to='/register/registercity')
       .title 下一步
 </template>
 
