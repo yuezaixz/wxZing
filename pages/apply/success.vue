@@ -22,7 +22,7 @@
                                                         | 请添加工作人员微信，若已经添加，
                                                         | 则无需重复添加
                                                         | 工作人员将在2019/11/18前把你加进相关群聊
-      div(style="height:21px;")
+      div(style="flex:1;")
       img.apply-office-qrcode(src='~static/img/office_qrcode.png')
       div(style="height:4px;")
       .apply-success-qrcode-title 长按识别二维码，添加工作人员微信
@@ -42,18 +42,19 @@ import { mapState } from 'vuex'
 import { setTimeout } from 'timers';
 
 export default {
-  middleware: 'wechat-auth',
+  // middleware: 'wechat-auth',
   data() {
     return {
       activityName:null,
       activityId:null,
-      activityApply: null
+      activityApply: null,
+      authUser: {}
     }
   },
 
   computed: {
     ...mapState([
-      'authUser'
+      // 'authUser'
     ])
   },
   beforeMount() {
@@ -76,7 +77,7 @@ export default {
     },
     async next() {
       this.$router.push({
-        path: '/apply'
+        path: '/zing'
       })
     }
   },
@@ -94,18 +95,18 @@ export default {
     }
   },
   mounted() {
-    this.activityId = this.$route.query.activityId
-    this.activityName = this.$route.query.activityName
-    console.log(this.activityId , this.activityName)
-    if (!this.activityName) {
-      // this.$route.
-      this.$store.dispatch('showToast', {duration: 2000, str:"非法访问", toastType:'icon-warn'})
-      setTimeout(()=>this.$router.push({
-        path: '/apply'
-      }), 1600)
+    // this.activityId = this.$route.query.activityId
+    // this.activityName = this.$route.query.activityName
+    // console.log(this.activityId , this.activityName)
+    // if (!this.activityName) {
+    //   // this.$route.
+    //   this.$store.dispatch('showToast', {duration: 2000, str:"非法访问", toastType:'icon-warn'})
+    //   setTimeout(()=>this.$router.push({
+    //     path: '/apply'
+    //   }), 1600)
       
-      return;
-    }
+    //   return;
+    // }
   }
 }
 </script>
