@@ -11,7 +11,7 @@
 
     .card-body
       .card-column(style='height:45px;')
-        .page-title(@click='next') 跳过
+        .page-title(@click='next' style='font-size: 12px;line-height: 14px;font-weight: bold;') 跳过
       .card-column
         .card-row(style='justify-content:flex-start;')
           .card-title 关于我，关于你
