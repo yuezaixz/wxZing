@@ -28,7 +28,7 @@
       .card-column
         .card-row(style='justify-content:flex-start;')
           .card-title 你的故乡
-          img.card-arrow-down(src='~static/img/arrow_down.png')
+          //- img.card-arrow-down(src='~static/img/arrow_down.png')
         .card-column(style='height:5px;')
         .card-inner 我们会推荐一些和你相同故乡的人
         .city-control(@click='showCityDialog(1)')
