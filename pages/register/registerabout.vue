@@ -103,11 +103,11 @@ export default {
         })
         if (data.success) {
           const visit = '/register/registerdone'
-          this.$router.replace(visit)
+          this.$router.push({path: visit})
         }
       } else {
         const visit = '/register/registerdone'
-        this.$router.replace(visit)
+          this.$router.push({path: visit})
       }
     }
   },

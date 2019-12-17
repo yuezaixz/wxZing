@@ -107,7 +107,7 @@ export default {
         var data = await this.$store.dispatch('checkSmsCode', {tel: this.$store.state.registerInfo.tel, smscode: this.code})
         if (data.success) {
           const visit = '/register/registerjob'
-          this.$router.replace(visit)
+          this.$router.push({path: visit})
         } else {
           this.errorMsg = data.msg
           this.$store.dispatch('showToast', {duration: 2000, str:data.msg, toastType:'icon-warn'})
@@ -133,7 +133,7 @@ export default {
       }
     } else {
       const visit = '/register/registertel'
-      this.$router.replace(visit)
+      this.$router.push({path: visit})
     }
   },
 }

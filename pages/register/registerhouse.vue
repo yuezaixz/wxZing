@@ -68,7 +68,7 @@ export default {
         this.$store.state.authUser.houseType = 0
       }
       const visit = '/register/registerphoto'
-      this.$router.replace(visit)
+      this.$router.push({path: visit})
     }
   },
 

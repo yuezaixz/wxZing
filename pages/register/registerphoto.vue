@@ -109,7 +109,7 @@ export default {
         var data = await this.$store.dispatch('selectPhoto', this.$store.state.authUser.photos)
         if (data.success) {
           const visit = '/register/registername'
-          this.$router.replace(visit)
+          this.$router.push({path: visit})
         }
       } else {
         this.$store.dispatch('showToast', {duration: 2000, str:'请选择', toastType:'icon-warn'})

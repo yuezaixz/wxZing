@@ -58,7 +58,7 @@ export default {
           this.$store.dispatch('showToast', {duration: 2000, str:'号码错误', toastType:'icon-warn'})
         } else {
           const visit = '/register/registercode'
-          this.$router.replace(visit)
+          this.$router.push({path: visit})
         }
       } else {
         this.$store.dispatch('showToast', {duration: 2000, str:'请填写', toastType:'icon-warn'})

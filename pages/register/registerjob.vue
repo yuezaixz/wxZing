@@ -73,7 +73,7 @@ export default {
     async next() {
       if (this.$store.state.authUser.jobType) {
         const visit = '/register/registercareer'
-        this.$router.replace(visit)
+        this.$router.push({path: visit})
       } else {
         this.$store.dispatch('showToast', {duration: 2000, str:'请填写', toastType:'icon-warn'})
       }

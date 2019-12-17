@@ -61,10 +61,10 @@ export default {
         if (data.success) {
           if (!this.$store.state.authUser.tel) {
             const visit = '/register/registertel'
-            this.$router.replace(visit)
+            this.$router.push({path: visit})
           } else {
             const visit = '/register/registerjob'
-            this.$router.replace(visit)
+            this.$router.push({path: visit})
           }
         }
       } else {

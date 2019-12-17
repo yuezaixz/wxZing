@@ -64,7 +64,7 @@ export default {
     async next() {
       if (this.$store.state.authUser.income) {
         const visit = '/register/registerhouse'
-        this.$router.replace(visit)
+        this.$router.push({path: visit})
       } else {
         this.$store.dispatch('showToast', {duration: 2000, str:'请选择', toastType:'icon-warn'})
       }

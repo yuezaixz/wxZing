@@ -53,7 +53,7 @@ export default {
         var data = await this.$store.dispatch('selectCareer', this.$store.state.authUser.career)
         if (data.success) {
           const visit = '/register/registerincome'
-          this.$router.replace(visit)
+          this.$router.push({path: visit})
         }
       } else {
         this.$store.dispatch('showToast', {duration: 2000, str:'请填写', toastType:'icon-warn'})
