@@ -18,7 +18,8 @@
         .card-column(style='height:10px;')
         .card-inner 请选择你的最高学历
         .city-control(@click='showCityDialog(1)' style="margin-top:10px;")
-          .city-title {{displayEduStr(authUser) || '请选择'}}
+          .city-title.title-sftext(v-if="displayEduStr(authUser)") {{displayEduStr(authUser)}}
+          .city-title.title-prompt(v-else) 请选择
           .div(style="flex:1")
           img.card-arrow-down(src='~static/img/arrow_down.png')
 
@@ -29,7 +30,8 @@
         .card-column(style='height:10px;')
         .card-inner 请选择你身体成熟后的身高
         .city-control(@click='showCityDialog(3)' style="margin-top:10px;")
-          .city-title {{displayHeightStr(authUser) || '请选择'}}
+          .city-title.title-sftext(v-if="displayHeightStr(authUser)") {{displayHeightStr(authUser)}}
+          .city-title.title-prompt(v-else) 请选择
           .div(style="flex:1")
           img.card-arrow-down(src='~static/img/arrow_down.png')
 
@@ -40,7 +42,8 @@
         .card-column(style='height:10px;')
         .card-inner 填写出生年月将为您匹配合适的对象
         .city-control(@click='showCityDialog(2)' style="margin-top:10px;")
-          .city-title {{displayDateStr(authUser) || '请选择'}}
+          .city-title.title-sftext(v-if="displayDateStr(authUser)") {{displayDateStr(authUser)}}
+          .city-title.title-prompt(v-else) 请选择
           .div(style="flex:1")
           img.card-arrow-down(src='~static/img/arrow_down.png')
 
@@ -176,7 +179,7 @@ export default {
 
   methods: {
     displayEduStr(authUser) {
-      return authUser.degree ? ['请选择', '博士及以上', '研究生', '本科', '专科', '其他'][this.$store.state.authUser.degree] : this.$store.state.authUser.degree
+      return authUser.degree ? ['请选择', '博士及以上', '研究生', '本科', '专科', '其他'][authUser.degree] : authUser.degree
     },
     displayDateStr(authUser) {
       return authUser.birthday
