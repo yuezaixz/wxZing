@@ -21,8 +21,6 @@
         .card-done-inner(style='text-align:center;padding-left: 0px;') 办公室计划只计划偶遇，不计划爱情， 
         .card-done-inner(style='text-align:center;padding-left: 0px;') 因为她会自然发生。
       div(style="flex:1")
-      .card-column
-        .card-inner(style='text-align:left;padding-right: 5px;padding-bottom:15px;-webkit-transform-origin-x: 50%;-webkit-transform: scale(0.9)') 点击下一步代表你已同意我们的《隐私政策》以及《服务条款》。
 
     .card-footer
   .next
