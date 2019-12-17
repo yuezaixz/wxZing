@@ -164,20 +164,20 @@ export async function wechatPay(ctx, next) {
   let {
     vipType
   } = ctx.request.body
-
   try {
     vipType = parseInt(vipType)
-    if (vipType !== 1 || vipType !== 3 || vipType !== 12) {
+    if (vipType !== 1 && vipType !== 3 && vipType !== 12) {
       return (ctx.body = {success: false, err: 'vipType输入错误'})
     }
-    const price = vipType === 1 ? 60 * 100 : (vipType === 3 ? (3 * 46 * 100) : (12 * 34.9 * 100))
-    let user = await api.user.findUserByUnionId(session.user.unionid).exec()
+    const price = vipType === 1 ? 6000 : (vipType === 3 ? 13800 : 41800)
+    let user = await api.user.findUserByUnionId(session.user.unionid)
+
     if (!user) return (ctx.body = {success: false, err: '用户不存在'})
     console.log(`价格${price}`)
     const outTradeNo = 'Product_' + vipType + '_' + (+new Date())
     const orderParams = {
       body: '续费会员' + vipType,
-      attach: '续费会员权限',
+      attach: '办公室计划会员在线支付',
       out_trade_no: outTradeNo,
       spbill_create_ip: ip,
       // total_fee: price,
@@ -185,7 +185,7 @@ export async function wechatPay(ctx, next) {
       openid: session.user.unionid,
       trade_type: 'JSAPI'
     }
-
+    console.log(orderParams)
     const order = await getParamsAsync(orderParams)
     const payment = await api.payment.create(user, vipType, price, order, outTradeNo)
 
@@ -194,6 +194,8 @@ export async function wechatPay(ctx, next) {
       data: payment.order
     }
   } catch (err) {
+    console.log('error:')
+    console.log(err)
     ctx.body = {
       success: false,
       err: err
