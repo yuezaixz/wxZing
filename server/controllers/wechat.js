@@ -48,7 +48,6 @@ export async function oauth(ctx, next) {
   const params = queryParse(urlObj.query)
   const code = params.code
   const user = await wechat.getUserByCode(code)
-
   if (!user || !user.openid) {
     return (ctx.body = {
       success: false

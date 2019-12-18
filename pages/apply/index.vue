@@ -1,10 +1,14 @@
 <template lang="pug">
 .apply-container
-  .next(@click="apply")
-    .title 活动报名
+  .next(v-if="!isFull || isShare" @click="apply")
+    .title(v-if="!isFull") 活动报名 {{activitys.length > 0 && activitys[0] ? ('第'+(parseInt(activitys[0].activityId) + 1)+'期'):''}}
+    .title(v-else) 分享成功，点击报名
+  .detail-next-disable(v-else @click="apply")
+    .title() 活动已满员
   div(style="flex:1")
-  .tip-title TIPS：
   .tip-container
+    .tip-title TIPS：
+    div(style="flex:1;")
     .tip-content 办公室计划致力于让两个人自然的相遇，点击上方的立即报名，我们将把你随机加入到20人左右的群聊，建立群聊后，群员推选出一位队长，
   
   div.apply-modal(:style="showApply?'':'display:none;'")
@@ -37,7 +41,9 @@ export default {
       showApply: false,
       activityId: null,
       activityName: null,
-      activitys: []
+      activitys: [],
+      isFull: false,
+      isShare: false
     }
   },
 
@@ -49,7 +55,9 @@ export default {
 
   methods: {
     async apply() {
-      if (this.activitys) {
+      if (this.isFull && !this.isShare) {
+        this.$store.dispatch('showToast', {duration: 2000, str:'分享后三名好友点击即可获得加入', toastType:'icon-warn'})
+      } else if (this.activitys) {
         let activity = this.activitys[0]
         let data = await this.$store.dispatch('applyActivity', {activityId:activity.activityId})
         if (data.success) {
@@ -82,14 +90,14 @@ export default {
       if (this.activityId || this.activityId === 0) {
         let data = await this.$store.dispatch('applyActivity', {activityId:this.activityId})
         if (data.success) {
-          this.$store.dispatch('showToast', {duration: 2000, str:"报名成功", toastType:'icon-success-no-circle'})
-          setTimeout(()=>this.$router.push({
+          this.$router.push({
             path: '/apply/success',
             query: {
               activityId: data.data.activityApplyId,
               activityName: this.activityName
             }
-          }), 1000)
+          })
+          // this.$store.dispatch('showToast', {duration: 2000, str:"报名成功", toastType:'icon-success-no-circle'})
         } else {
           this.$store.dispatch('showToast', {duration: 2000, str:data.msg, toastType:'icon-warn'})
         }
@@ -104,8 +112,11 @@ export default {
 
   async beforeCreate() {
     let data = await this.$store.dispatch('queryActivityings')
+    console.log(data)
     if (data.success) {
       this.activitys = data.data
+      this.isFull = data.isFull
+      this.isShare = data.isShare
     } else if (data.code === 106) {
       setTimeout(()=>this.$router.push({
         path: '/apply/success',

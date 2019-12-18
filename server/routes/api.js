@@ -16,6 +16,8 @@ const Activity = mongoose.model('Activity')
 const ActivityApply = mongoose.model('ActivityApply')
 const Interest = mongoose.model('Interest')
 
+const FULL_NUM = 100
+
 @controller('/api')
 export class DatabaseController {
   @get('qiniu/token')
@@ -409,10 +411,20 @@ export class DatabaseController {
     }
 
     const data = await Activity.find({isOver: false}).exec()
+    let isFull = false
+    let isShare = false
+    if (data && data.length > 0) {
+      const activityApplyResults = await ActivityApply.find({activity: data[0], isCancel:false}).exec()
+      isFull = activityApplyResults > FULL_NUM
+      let count = await SharedClick.count({activityId: data[0].activityId}).exec()
+      isShare = count >= 3
+    }
 
     return (ctx.body = {
       success: true,
-      data
+      data,
+      isFull,
+      isShare
     })
   }
 
@@ -621,7 +633,7 @@ export class DatabaseController {
     }
 
     const activityApplyResults = await ActivityApply.find({activity, isCancel:false}).exec()
-    if (!session.user.isVip && activityApplyResults && activityApplyResults.length > 100) {//测试时候把100调小
+    if (!session.user.isVip && activityApplyResults && activityApplyResults.length > FULL_NUM) {//测试时候把100调小
       let count = await SharedClick.count({activityId: activityId}).exec()
       if (count < 3) {
         return (ctx.body = {
