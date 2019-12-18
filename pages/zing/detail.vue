@@ -316,7 +316,7 @@ export default {
         })
         return
       }
-      if (!activityId) {
+      if (!activityId && activityId !== 0) {
         return
       }
 
