@@ -910,12 +910,14 @@ export class DatabaseController {
       ctx.body = {success:false, msg:'自己点击，不记录'}
     } else {
       const data = await Activity.findOne({isOver: false}).sort('-createAt').exec()
-      var sharedClick = SharedClick({
-        clickUserId: userId,
-        sharedUserId: sharedId,
-        activityId: data.activityId
-      })
-      sharedClick.save()
+      if (data) {
+        var sharedClick = SharedClick({
+          clickUserId: userId,
+          sharedUserId: sharedId,
+          activityId: data.activityId
+        })
+        sharedClick.save()
+      }
     }
     ctx.body = {success:true}
   }

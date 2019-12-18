@@ -212,39 +212,39 @@ export default {
     if (this.$store.state.authUser && this.$store.state.authUser.userId) {
       var url = window.location.href
       var sharedUrl = url
-      var findIndex = url.indexOf('sharedId')
+      var findIndex = url.indexOf('/zing')
       if (findIndex > 0) {
-        sharedUrl = url.substring(0, findIndex-1)
+        sharedUrl = url.substring(0, findIndex)
       }
       
       var nickname = this.$store.state.authUser.nickname ? this.$store.state.authUser.nickname: ''
 
       await this.wechatInit(url, ()=>{
         wx.updateAppMessageShareData({
-          title: nickname+ '邀请你加入办公室计划', // 分享标题
-          desc: nickname+ '邀请你加入办公室计划，办公室计划致力于让两个人自然的相遇', // 分享描述
-          link: sharedUrl+'?sharedId='+this.$store.state.authUser.userId, // 分享链接
-          imgUrl: 'https://oimagea7.ydstatic.com/image?id=8247010287781274395&product=adpublish&w=520&h=347', // 分享图标
+          title: '我是' + nickname+ '推荐来的，交个朋友吧！', // 分享标题
+          desc: nickname+ '你好哇。', // 分享描述
+          link: sharedUrl+'/zing/detail?zingUserId='+this.$store.state.authUser.userId+'&sharedId='+this.$store.state.authUser.userId, // 分享链接
+          imgUrl: 'http://wxzing.podoon.cn/wxzing_share.jpg', // 分享图标
           success: function () {
             console.log('update share success')
             console.log(res)
           }
         })
         wx.updateTimelineShareData({ 
-          title: nickname+ '邀请你加入办公室计划', // 分享标题
-          desc: nickname+ '邀请你加入办公室计划，办公室计划致力于让两个人自然的相遇', // 分享描述
-          link: sharedUrl+'?sharedId='+this.$store.state.authUser.userId, // 分享链接
-          imgUrl: 'https://oimagea7.ydstatic.com/image?id=8247010287781274395&product=adpublish&w=520&h=347', // 分享图标
+          title: '我是' + nickname+ '推荐来的，交个朋友吧！', // 分享标题
+          desc: nickname+ '你好哇。', // 分享描述
+          link: sharedUrl+'/zing/detail?zingUserId='+this.$store.state.authUser.userId+'&sharedId='+this.$store.state.authUser.userId, // 分享链接
+          imgUrl: 'http://wxzing.podoon.cn/wxzing_share.jpg', // 分享图标
           success: function () {
             console.log('update time share success')
             console.log(res)
           }
         })
         wx.onMenuShareAppMessage({
-          title: nickname+ '邀请你加入办公室计划', // 分享标题
-          desc: nickname+ '邀请你加入办公室计划，办公室计划致力于让两个人自然的相遇', // 分享描述
-          link: sharedUrl+'?sharedId='+this.$store.state.authUser.userId, // 分享链接
-          imgUrl: 'https://oimagea7.ydstatic.com/image?id=8247010287781274395&product=adpublish&w=520&h=347', // 分享图标
+          title: '我是' + nickname+ '推荐来的，交个朋友吧！', // 分享标题
+          desc: nickname+ '你好哇。', // 分享描述
+          link: sharedUrl+'/zing/detail?zingUserId='+this.$store.state.authUser.userId+'&sharedId='+this.$store.state.authUser.userId, // 分享链接
+          imgUrl: 'http://wxzing.podoon.cn/wxzing_share.jpg', // 分享图标
           type: 'link', // 分享类型,music、video或link，不填默认为link
           dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
           success: function (res) { 
@@ -258,10 +258,10 @@ export default {
           }
         });
         wx.onMenuShareTimeline({
-          title: nickname+ '邀请你加入办公室计划', // 分享标题
-          desc: nickname+ '邀请你加入办公室计划，办公室计划致力于让两个人自然的相遇', // 分享描述
-          link: sharedUrl+'?sharedId='+this.$store.state.authUser.userId, // 分享链接
-          imgUrl: 'https://oimagea7.ydstatic.com/image?id=8247010287781274395&product=adpublish&w=520&h=347', // 分享图标
+          title: '我是' + nickname+ '推荐来的，交个朋友吧！', // 分享标题
+          desc: nickname+ '你好哇。', // 分享描述
+          link: sharedUrl+'/zing/detail?zingUserId='+this.$store.state.authUser.userId+'&sharedId='+this.$store.state.authUser.userId, // 分享链接
+          imgUrl: 'http://wxzing.podoon.cn/wxzing_share.jpg', // 分享图标
           type: 'link', // 分享类型,music、video或link，不填默认为link
           dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
           success: function (res) { 
@@ -278,16 +278,7 @@ export default {
 
     }
   },
-
-  async mounted() {
-    let sharedId = this.$route.query.sharedId
-    console.log("sharedId："+sharedId)
-    // TODO 记录下来
-    if (sharedId && sharedId.length > 0) {
-      let data = await this.$store.dispatch('clickShared', sharedId)
-    }
-  },
-
+  
   async beforeCreate() {
     await this.$store.dispatch('autologin')
     let data = await this.$store.dispatch('randomZing')
