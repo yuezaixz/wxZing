@@ -124,6 +124,10 @@ export default {
 
   components: {
   },
+
+  async beforeCreate() {
+    await this.$store.dispatch('autologin')
+  },
   async mounted() {
     if (this.$store.state.registerInfo.tel) {
       var responseData = await this.$store.dispatch('sendSmscode', {tel: this.$store.state.registerInfo.tel})

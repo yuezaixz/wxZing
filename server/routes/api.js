@@ -983,7 +983,7 @@ export class DatabaseController {
     const openid = ctx.params.openid
     const res = await User.findOne({unionid: openid}).exec()
     if (!res) {
-      ctx.session.user = findUser
+      ctx.session.user = res
       return (ctx.body = {success:false, msg: '用户不存在'})
     } else {
       return (ctx.body = {success:true, data:res})

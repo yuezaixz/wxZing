@@ -121,7 +121,8 @@ export default {
   components: {
   },
 
-  beforeCreate() {
+  async beforeCreate() {
+    await this.$store.dispatch('autologin')
   }
 }
 </script>

@@ -1,5 +1,7 @@
 export default {
   SET_AUTHUSER: (state, authUser) => {
+    console.log('刷新用户信息')
+    console.log(authUser)
     state.authUser = authUser
   },
   SET_USER: (state, user) => {

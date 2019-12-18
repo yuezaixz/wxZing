@@ -289,6 +289,7 @@ export default {
   },
 
   async beforeCreate() {
+    await this.$store.dispatch('autologin')
     let data = await this.$store.dispatch('randomZing')
     if (data.success) {
       this.zingUser = data.data

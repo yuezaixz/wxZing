@@ -128,8 +128,11 @@ export default {
       return ~this.loverList.indexOf(userId);
     }
   },
-
   components: {
+  },
+
+  async beforeCreate() {
+    await this.$store.dispatch('autologin')
   },
   async mounted() {
     var responseData = await this.$store.dispatch('queryLast9Users')

@@ -72,6 +72,16 @@ export default {
   },
 
   components: {
+  },
+
+  async beforeCreate() {
+    let user = await this.$store.dispatch('autologin')
+    if (!user) {
+      let { fullPath } = this.$route
+      fullPath = encodeURIComponent(fullPath.substring(1))
+      let url = `/wechat-redirect?visit=${fullPath}`
+      window.location = url;
+    }
   }
 }
 </script>

@@ -13,9 +13,10 @@ async function postUserInfo(state, commit) {
 }
 
 export default {
+  // 虽然是在前端，但事实服务端的钩子，运行在服务器的ssr过程
   nuxtServerInit({ commit }, { req }) {
     if (req.session && req.session.openid) {
-      if (!req.session.user.city) {
+      if (req.session.user && !req.session.user.city) {
         req.session.user.city = '350200'
       }
       commit('SET_AUTHUSER', req.session.user)
@@ -104,15 +105,17 @@ export default {
     }
   },
 
-  async autologin({commit, state}) {
+  async autologin(param) {
+    let {commit, state} = param
     if (state.authUser && state.authUser.unionid) {
       let loginRes = await axios.get('/api/user/auto_login/' + state.authUser.unionid)
       if (loginRes.data.success) {
         let user = loginRes.data.data
         if (user) {
+          console.log(user)
           commit('SET_AUTHUSER', user)
-          return user
         }
+        return user
       }
     }
     return null

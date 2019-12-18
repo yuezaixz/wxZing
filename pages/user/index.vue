@@ -127,6 +127,13 @@ export default {
   },
 
   async beforeCreate() {
+    let user = await this.$store.dispatch('autologin')
+    if (!user) {
+      let { fullPath } = this.$route
+      fullPath = encodeURIComponent(fullPath.substring(1))
+      let url = `/wechat-redirect?visit=${fullPath}`
+      window.location = url;
+    }
     let data = await this.$store.dispatch('queryActivityState')
     if (data.success) {
       this.apply = data.data

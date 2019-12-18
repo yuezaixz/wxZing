@@ -182,6 +182,10 @@ export default {
 
   components: {
     vuePicker
+  },
+
+  async beforeCreate() {
+    await this.$store.dispatch('autologin')
   }
 }
 </script>

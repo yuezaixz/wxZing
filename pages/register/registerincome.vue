@@ -73,6 +73,10 @@ export default {
   },
 
   components: {
+  },
+
+  async beforeCreate() {
+    await this.$store.dispatch('autologin')
   }
 }
 </script>
