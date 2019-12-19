@@ -1,6 +1,6 @@
 <template lang="pug">
 
-.container
+.apply-container
   .card
     .card-header
       img.card-left-circle(src='~static/img/banner_circle.png')
