@@ -12,7 +12,7 @@
     .card-body(style="align-items:center;")
       div(style="height:45px;")
       img.apply-office-qrcode(src='~static/img/apply_success_top_img.png' style="height:58px;width:50px;")
-      .apply-success-title {{!activityApply?'--':(!activityApply.isHandle?'审核中':(activityApply.isSuccess? '报名成功':'报名失败'))}}
+      .apply-success-title {{!activityApply?'--':(!activityApply.isHandle?'报名成功':'报名失败')}}
       div(style="height:10px;")
       .apply-success-sub-title( v-if="!activityApply || !activityApply.fellowUserId" style='white-space:pre;') 
                                                         | 你已报名参加办公室计划第2期活动，请添加工作人员微信
