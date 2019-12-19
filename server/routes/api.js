@@ -35,7 +35,15 @@ export class DatabaseController {
   async last9User(ctx, next) {
     const session = ctx.session
     let userId = session.user.userId
-    let users = await User.find({'userId': {$ne:userId}, 'wxcode': {$ne:null}, 'phoneNumber': {$ne:null},}).limit(9).exec()
+    const lovers = await Zing.find({userId}).sort('-updateAt').exec()
+    let execludeUserIds = lovers!=null?lovers.map((item)=>item.targetId):[]
+    execludeUserIds.push(userId)
+    let users = await User.find({'userId': {$nin:execludeUserIds}, 'wxcode': {$ne:null}, 'phoneNumber': {$ne:null},}).limit(9).exec()
+    for (var k = 0; k < users.length; k++) {
+      let userItem = users[k]
+      let zing = Zing({userId, targetId: userItem.userId})
+      await zing.save()
+    }
     return (ctx.body = {
       success: true,
       data: users

@@ -116,12 +116,21 @@ export default {
     
     },
     async love(user) {
-      let data = await this.$store.dispatch('zingUserAction', {'zingUserId': user.userId})
-      if (data.success) {
-        this.loverList.push(user.userId)
-        this.$store.dispatch('showToast', {duration: 2000, str:"点赞成功", toastType:'icon-success-no-circle'})
+      if (this.isCheck(user.userId)) {
+        console.log('cancel zing1')
+        let data = await this.$store.dispatch('cancelZingUserAction', {'zingUserId': user.userId})
+        if (data.success) {
+          var index = this.loverList.indexOf(user.userId);
+          if (index > -1) {
+            this.loverList.splice(index, 1);
+          }
+        }
       } else {
-        this.$store.dispatch('showToast', {duration: 2000, str:data.msg || "点赞失败", toastType:'icon-warn'})
+        console.log('zing')
+        let data = await this.$store.dispatch('zingUserAction', {'zingUserId': user.userId})
+        if (data.success) {
+          this.loverList.push(user.userId)
+        }
       }
     },
     isCheck(userId) {
@@ -138,6 +147,7 @@ export default {
     var responseData = await this.$store.dispatch('queryLast9Users')
     if (responseData.success) {
       this.rUsers = responseData.data
+      this.loverList = responseData.data.map((item)=>item.userId)
     } else {
       this.$store.dispatch('showToast', {duration: 2000, str:data.msg, toastType:'icon-warn'})
     }
