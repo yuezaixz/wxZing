@@ -13,6 +13,8 @@
         .vip-eslap-time(v-if='isVip(authUser)') 会员到期时间：{{authUser.vipUntilStr}}
         div(style="flex:1")
         img.user-edit(src='~static/img/icon_edit.png' @click='editUser')
+      .card-vip-top(style="justify-content: flex-start; height:auto;")
+        nuxt-link.vip-eslap-time(to="/vip" style="text-decoration: underline; ") {{isVip(authUser)?"立即续费":"成为会员"}}
       .card-column
         .card-row(style='justify-content:center;')
           .big_avatar_container
@@ -23,14 +25,14 @@
         .card-row(style='justify-content:center;')
           .user-name-title {{authUser.nickname}}
         .card-row(style='justify-content:center;-webkit-transform-origin-x: 50%;-webkit-transform: scale(0.75);')
-          .user-name-sub-title 办公室编号：
+          .user-name-sub-title ID：
           .user-name-sub-title(style='text-decoration:underline;-webkit-transform-origin-x: 0%;') {{displayUserId(authUser)}}
       .card-column(style='height:15px;')
       .card-item-container
         .card-row(style='justify-content:center;')
           .card-column(@click="gotoLoveList" style='display:flex;align-items: center;flex:1;')
             img.index_item_img(src='~static/img/index_good_img.png')
-            .index-item-sub-title 互赞即可查看微信号
+            .index-item-sub-title 这些人觉得我很赞
             .index-item-title {{loversCount}}，赞我
           .v-divider(style="height:73px;")
           .card-column(@click="gotoFellowList" style='display:flex;align-items: center;flex:1;')
@@ -49,6 +51,8 @@
         .bottom-sub-title 您尚未报名活动
         .signup-btn(@click='applyAction') 立即报名
     .card-footer
+  nuxt-link.next(to="/zing")
+    .title 查看更多会员
 </template>
 
 <script>

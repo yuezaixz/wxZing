@@ -81,12 +81,12 @@
 
   .card
     width: calc(100% - 38px) !important
-    height: calc(100% - 60px) !important
+    height: calc(100% - 135px) !important
     display: inline-table
     flex-direction: column
     align-items: center
     margin-top: 20px
-    margin-bottom: 40px
+    margin-bottom: 20px
     // box-shadow: $shadow-1db
 
     .card-header
@@ -146,19 +146,18 @@
         justify-content: center
         align-items: center
       .card-vip-top
-        width: calc(100%-22px)
+        width: calc(100%-34px)
         display: flex
         flex-direction: row
         justify-content: center
-        align-items: center
-        height: 25px
-        padding-left: 7px
-        padding-right: 15px
+        align-items: flex-end
+        height: 30px
+        padding-left: 12px
+        padding-right: 22px
 
         .vip-eslap-time
           font-size: 12px
-          letter-spacing: -1px
-          line-height: 23px
+          letter-spacing: -0.5px
           color: #8e8e8e
           font-family: "PingFang SC"
           font-weight: 400
@@ -180,11 +179,11 @@
           font-family: "Ping Fang SC"
           font-weight: bold
         .user-name-sub-title
-          font-size: 10px
+          font-size: 12px
           letter-spacing: 1px
           line-height: 22px
           color: #8e8e8e
-          font-family: "Ping Fang SC"
+          font-family: "S FPro Display"
           -webkit-transform-origin-x: 100%
           -webkit-transform: scale(0.83)
       .no-more-title
@@ -261,13 +260,13 @@
           .day-dd
             font-size: 14px
             color: #313131
-            font-family: "S FPro Text"
+            font-family: "S FPro Display"
             font-weight: 500
 
           .day-mm
             font-size: 12px
             color: #8e8e8e
-            font-family: "S FPro Text"
+            font-family: "S FPro Display"
             font-weight: 400
 
           .day-all-user
@@ -341,8 +340,8 @@
 
         .big_avatar_vip
           position: absolute
-          right: -3px
-          top: 5px
+          bottom: 0px
+          left: calc(50%-13px)
           width: 26px
           height: 16px
           line-height: 16px
