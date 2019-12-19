@@ -80,6 +80,7 @@ export class DatabaseController {
   async zing_user_list(ctx, next) {
     const session = ctx.session
     let userId = session.user.userId
+    // const lovers = await Zing.find({}).sort('-updateAt').exec()
     const lovers = await Zing.find({targetId: userId}).sort('-updateAt').exec()
     let loverGroups = []
 
@@ -87,12 +88,18 @@ export class DatabaseController {
     for (var i = 0; i < lovers.length; i++) {
       let lover = lovers[i]
       let userItem = await User.findOne({userId: lover.userId}).exec()
+      if (!userItem) {
+        continue
+      }
       
       const year = lover.meta.updateAt.getFullYear()
       const month = lover.meta.updateAt.getMonth()
       const day = lover.meta.updateAt.getDate()
 
       let dateStr = `${year}-${month}-${day}`
+      console.log({
+        year, month, day, userItem
+      })
       if (lastItemDateStr && lastItemDateStr === dateStr) {
         loverGroups[loverGroups.length-1]['items'].push({
           year, month, day, userItem
@@ -202,6 +209,12 @@ export class DatabaseController {
   async activity_state(ctx, next) {
     const session = ctx.session
     let userId = session.user.userId
+    if (!userId) {
+      return (ctx.body = {
+        success: false,
+        msg: '未登录'
+      })
+    }
     const currentActivity = await Activity.findOne({isOver: false}).sort('-createAt').exec()
     const check = await ActivityApply.findOne({activity: currentActivity, userId: userId, isCancel:false }).exec()
 

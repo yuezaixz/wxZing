@@ -14,7 +14,7 @@
           .day-dd {{groupItem.dateStr.substring(0,2)}}
           .day-mm {{groupItem.dateStr.substring(2)}}
           .flex-1
-          .day-all-user 全部 >
+          //- .day-all-user 全部 >
         .user-list-row
           .user-block(v-for='item in groupItem.items' @click="gotoDetail(item.userItem.userId)"  v-if='item.year > 0')
             img.user-cover(:src='"http://wxzing.podoon.cn/"+item.userItem.photos[0]+"?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100"')
@@ -23,70 +23,7 @@
             .user-sub-title {{item.userItem.career}}
             .user-sub-title {{displayIncome(item.userItem)}}
           .user-block(v-else)
-
-
-      //- .day-user-list
-      //-   .day-title-row
-      //-     .day-dd 09
-      //-     .day-mm /5月
-      //-     .flex-1
-      //-     .day-all-user 全部 >
-      //-   .user-list-row
-      //-     .user-block
-      //-       img.user-cover(src='http://wxzing.podoon.cn/products/7t86ys2dkitxvsdgpztw55et6vmw5ysk?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100')
-      //-       .user-title 用户的名称
-      //-       .user-sub-title 23岁
-      //-       .user-sub-title 平面设计师
-      //-       .user-sub-title 10万以内
-      //-     .user-block
-      //-       img.user-cover(src='http://wxzing.podoon.cn/products/7t86ys2dkitxvsdgpztw55et6vmw5ysk?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100')
-      //-       .user-title 用户的名称
-      //-       .user-sub-title 23岁
-      //-       .user-sub-title 平面设计师
-      //-       .user-sub-title 10万以内
-      //-     .user-block
-      //-       img.user-cover(src='http://wxzing.podoon.cn/products/7t86ys2dkitxvsdgpztw55et6vmw5ysk?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100')
-      //-       .user-title 用户的名称
-      //-       .user-sub-title 23岁
-      //-       .user-sub-title 平面设计师
-      //-       .user-sub-title 10万以内
-      //-     .user-block
-      //-       img.user-cover(src='http://wxzing.podoon.cn/products/7t86ys2dkitxvsdgpztw55et6vmw5ysk?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100')
-      //-       .user-title 用户的名称
-      //-       .user-sub-title 23岁
-      //-       .user-sub-title 平面设计师
-      //-       .user-sub-title 10万以内
-      //-     .user-block
-      //-       img.user-cover(src='http://wxzing.podoon.cn/products/7t86ys2dkitxvsdgpztw55et6vmw5ysk?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100')
-      //-       .user-title 用户的名称
-      //-       .user-sub-title 23岁
-      //-       .user-sub-title 平面设计师
-      //-       .user-sub-title 10万以内
-
-      //-     .user-block
-      //- .day-user-list
-      //-   .day-title-row
-      //-     .day-dd 09
-      //-     .day-mm /5月
-      //-     .flex-1
-      //-     .day-all-user 全部 >
-      //-   .user-list-row
-      //-     .user-block
-      //-       img.user-cover(src='http://wxzing.podoon.cn/products/7t86ys2dkitxvsdgpztw55et6vmw5ysk?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100')
-      //-       .user-title 用户的名称
-      //-       .user-sub-title 23岁
-      //-       .user-sub-title 平面设计师
-      //-       .user-sub-title 10万以内
-      //-     .user-block
-      //-       img.user-cover(src='http://wxzing.podoon.cn/products/7t86ys2dkitxvsdgpztw55et6vmw5ysk?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100')
-      //-       .user-title 用户的名称
-      //-       .user-sub-title 23岁
-      //-       .user-sub-title 平面设计师
-      //-       .user-sub-title 10万以内
-      //-     .user-block
-
-      
-
+      .no-more-title 没有更多了
     .card-footer
   .next(@click="lookOther")
     .title 查看其他会员资料
@@ -202,6 +139,7 @@ export default {
     
     if (data.success) {
       this.userGroups = data.data
+      console.log(this.userGroups)
     } else {
       this.$store.dispatch('showToast', {duration: 2000, str:data.msg, toastType:'icon-warn'})
     }
