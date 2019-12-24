@@ -20,7 +20,7 @@ export default function ({ store, route, redirect }) {
     url = '/register/registercareer'
   } else if (!store.state.authUser.income) {
     url = '/register/registerincome'
-  } else if (!store.state.authUser.photos) {
+  } else if (!store.state.authUser.photos || store.state.authUser.photos.length === 0) {
     url = '/register/registerphoto'
   }
 

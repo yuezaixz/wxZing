@@ -161,10 +161,14 @@ class Services {
     })
   }
 
-  applyActivity(activityId) {
-    return axios.post('/api/activity/apply', {
+  applyActivity(activityId, fellowUserId) {
+    var bodyData = {
       activityId
-    })
+    }
+    if (fellowUserId) {
+      bodyData = {...bodyData, fellowUserId}
+    }
+    return axios.post('/api/activity/apply', bodyData)
   }
 
   cancelApply(activityId) {

@@ -295,8 +295,8 @@ export default {
   next({ state }) {
   },
 
-  async applyActivity({state}, {activityId}) {
-    const {data} = await Services.applyActivity(activityId)
+  async applyActivity({state}, {activityId, fellowUserId}) {
+    const {data} = await Services.applyActivity(activityId, fellowUserId)
     return data
   },
 

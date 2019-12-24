@@ -640,7 +640,7 @@ export class DatabaseController {
   async apply_activity(ctx, next) {
     const session = ctx.session
     let userId = session.user.userId
-    const { activityId } = ctx.request.body
+    const { activityId, fellowUserId } = ctx.request.body
 
     const activity = await Activity.findOne({activityId}).exec()
     if (!activity) {
@@ -671,6 +671,9 @@ export class DatabaseController {
     }
 
     var activityApply = new ActivityApply({activity, userId, isCancel: false})
+    if (fellowUserId) {
+      activityApply.fellowUserId = fellowUserId
+    }
     try {
       activityApply = await activityApply.save()
       return (ctx.body = {

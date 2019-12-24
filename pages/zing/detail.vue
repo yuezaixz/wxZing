@@ -325,7 +325,7 @@ export default {
 
       var fellowFn = () => {
         if (activityId || parseInt(activityId) === 0) {
-          this.$store.dispatch('applyActivity', {activityId}).then((data)=>{
+          this.$store.dispatch('applyActivity', {activityId, fellowUserId: this.zingUser.userId}).then((data)=>{
             if (data.success) {
               this.$store.dispatch('showToast', {duration: 2000, str:"报名成功", toastType:'icon-success-no-circle'})
               setTimeout(()=>this.$router.push({

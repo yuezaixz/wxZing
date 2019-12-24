@@ -43,7 +43,7 @@ import { mapState } from 'vuex'
 import { setTimeout } from 'timers';
 
 export default {
-  middleware: 'wechat-auth',
+  middleware: 'wechat-info',
   data() {
     return {
       activityName:null,
