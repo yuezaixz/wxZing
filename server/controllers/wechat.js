@@ -181,8 +181,8 @@ export async function wechatPay(ctx, next) {
       attach: '办公室计划会员在线支付',
       out_trade_no: outTradeNo,
       spbill_create_ip: ip,
-      // total_fee: price,
-      total_fee: 0.01 * 100,
+      total_fee: price,
+      // total_fee: 0.01 * 100,
       openid: session.user.unionid,
       trade_type: 'JSAPI'
     }
