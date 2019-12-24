@@ -195,6 +195,18 @@ export default {
       let data = await this.$store.dispatch('randomZing', [...this.execludeUserIds])
       console.log(data)
       if (data.success) {
+        var url = window.location.href
+        var sharedUrl = url
+        var findIndex = url.indexOf('/zing')
+        if (findIndex > 0) {
+          sharedUrl = url.substring(findIndex)
+        }
+        findIndex = sharedUrl.indexOf('?')
+        if (findIndex > 0) {
+          sharedUrl = sharedUrl.substring(0, findIndex)
+        }
+        sharedUrl += '?zingUserId='+data.data.userId
+        this.$router.replace(sharedUrl)
         this.zingUser = data.data
         this.$store.dispatch('showToast', {duration: 2000, str:'更新成功', toastType:'icon-success-no-circle'})
       } else {
