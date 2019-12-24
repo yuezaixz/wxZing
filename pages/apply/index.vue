@@ -1,6 +1,6 @@
 <template lang="pug">
 .apply-container
-  .next(v-if="!isFull || isShare" @click="apply")
+  .apply-next(v-if="!isFull || isShare" @click="apply")
     .title(v-if="!isFull") 活动报名 {{activitys.length > 0 && activitys[0] ? ('第'+(parseInt(activitys[0].activityId) + 1)+'期'):''}}
     .title(v-else) 分享成功，点击报名
   .detail-next-disable(v-else @click="apply")
@@ -9,7 +9,8 @@
   .tip-container
     .tip-title TIPS：
     div(style="flex:1;")
-    .tip-content 办公室计划致力于让两个人自然的相遇，点击上方的立即报名，我们将把你随机加入到20人左右的群聊，建立群聊后，群员推选出一位队长，
+    .tip-content(style="margin-bottom:0px;") 办公室的吃货计划
+    .tip-content 本期活动主题和吃有关，我们会安排互换午餐计划，以及城市的美食攻略等等。报名成功后工作人员将在周日晚间组建微信群聊，请留意微信消息，每个微信群大概15人，男女性别比例随机，不能重复添加群聊，普通用户将随机加入微信群，vip用户可以申请加入某人指定群聊，报名成功后，会有工作人员微信二维码，请务必添加二维码，否则报名无效，本次活动报名截止时间周六20:00。最后，祝好运呀。
   
   div.apply-modal(:style="showApply?'':'display:none;'")
     div.weui-mask(@click="hideApply")

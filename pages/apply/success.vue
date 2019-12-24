@@ -15,16 +15,16 @@
       .apply-success-title {{!activityApply?'--':(!activityApply.isHandle?'报名成功':'报名失败')}}
       div(style="height:10px;")
       .apply-success-sub-title( v-if="!activityApply || !activityApply.fellowUserId" style='white-space:pre;') 
-                                                        | 你已报名参加办公室计划第2期活动，请添加工作人员微信
-                                                        | 若已经添加，则无需重复添加
-                                                        | 工作人员将在2019/08/18日前把你加进
+                                                        | 你已报名参加办公室计划，请长按扫一扫添加工作人员微信
+                                                        | 如已经添加，则无需重复添加
+                                                        | 恋爱有风险，请各位在享受美妙关系的同时保持警惕
       .apply-success-sub-title( v-else style='white-space:pre;') 
                                                         | 你已申请与 <em style="text-decoration:underline" ><em style="font-weight: bold; font-size:15px;" >用户的ID</em>({{activityApply.fellowUserId}})</em>进入同一群聊，
-                                                        | 请添加工作人员微信，若已经添加，
+                                                        | 请长按扫一扫添加工作人员微信，若已经添加，
                                                         | 则无需重复添加
-                                                        | 工作人员将在2019/11/18前把你加进相关群聊
+                                                        | 恋爱有风险，请各位在享受美妙关系的同时保持警惕
       div(style="flex:1;")
-      img.apply-office-qrcode(src='~static/img/office_qrcode.png')
+      img.apply-office-qrcode(src='~static/img/office_qrcode.jpeg')
       div(style="height:4px;")
       .apply-success-qrcode-title 长按识别二维码，添加工作人员微信
       div(style="height:20px;")
@@ -97,8 +97,7 @@ export default {
   mounted() {
     this.activityId = this.$route.query.activityId
     this.activityName = this.$route.query.activityName
-    console.log(this.activityId , this.activityName)
-    if (!this.activityName) {
+    if (!this.activityId) {
       // this.$route.
       this.$store.dispatch('showToast', {duration: 2000, str:"非法访问", toastType:'icon-warn'})
       setTimeout(()=>this.$router.push({

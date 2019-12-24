@@ -23,7 +23,7 @@
             .user-sub-title {{item.userItem.career}}
             .user-sub-title {{displayIncome(item.userItem)}}
           .user-block(v-else)
-      .no-more-title 没有更多了
+      .no-more-title {{isLoading?"加载中...":"没有更多了"}}
     .card-footer
   .next(@click="lookOther")
     .title 查看其他会员资料
@@ -39,7 +39,8 @@ export default {
     return {
       userGroups: [],
       activeGender:0,
-      isSignup: true
+      isSignup: true,
+      isLoading: true
     }
   },
 
@@ -127,7 +128,7 @@ export default {
   components: {
   },
 
-  async beforeCreate() {
+  async mounted() {
     let isFollow = this.$route.query.isFollow
     let data
     if (isFollow) {
@@ -135,11 +136,11 @@ export default {
     } else {
       data = await this.$store.dispatch('queryZingUsers')
     }
-    console.log(data)
-    
+    // console.log(data)
+    this.isLoading = false
     if (data.success) {
       this.userGroups = data.data
-      console.log(this.userGroups)
+      // console.log(this.userGroups)
     } else {
       this.$store.dispatch('showToast', {duration: 2000, str:data.msg, toastType:'icon-warn'})
     }

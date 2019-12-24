@@ -281,11 +281,36 @@ export default {
   
   async beforeCreate() {
     await this.$store.dispatch('autologin')
-    let data = await this.$store.dispatch('randomZing')
-    if (data.success) {
-      this.zingUser = data.data
+    let zingUserId = this.$route.query.zingUserId
+    console.log(zingUserId)
+    if (zingUserId) {
+      let data = await this.$store.dispatch('queryUserByUserId', zingUserId)
+      if (data.success) {
+        this.zingUser = data.data
+      } else {
+        this.$store.dispatch('showToast', {duration: 2000, str:data.msg, toastType:'icon-warn'})
+      }
     } else {
-      this.$store.dispatch('showToast', {duration: 2000, str:data.msg, toastType:'icon-warn'})
+      let data = await this.$store.dispatch('randomZing')
+      if (data.success) {
+        var url = window.location.href
+        var sharedUrl = url
+        var findIndex = url.indexOf('/zing')
+        if (findIndex > 0) {
+          sharedUrl = url.substring(findIndex)
+        }
+        findIndex = url.indexOf('?')
+        if (findIndex > 0) {
+          sharedUrl += '&zingUserId='+data.data.userId
+        } else {
+          sharedUrl += '?zingUserId='+data.data.userId
+        }
+        this.$router.replace(sharedUrl)
+        this.zingUser = data.data
+      } else {
+        this.$store.dispatch('showToast', {duration: 2000, str:data.msg, toastType:'icon-warn'})
+      }
+      
     }
   }
 }

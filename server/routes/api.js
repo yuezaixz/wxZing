@@ -105,9 +105,6 @@ export class DatabaseController {
       const day = lover.meta.updateAt.getDate()
 
       let dateStr = `${year}-${month}-${day}`
-      console.log({
-        year, month, day, userItem
-      })
       if (lastItemDateStr && lastItemDateStr === dateStr) {
         loverGroups[loverGroups.length-1]['items'].push({
           year, month, day, userItem

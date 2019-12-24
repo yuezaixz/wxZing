@@ -39,14 +39,16 @@
             img.index_item_img(src='~static/img/index_love_img.png')
             .index-item-sub-title 对方将出现在你的群组
             .index-item-title {{followersCount}}，为你而来
+
+
         .card-row(style='height:15px;')
-      .flex-1( v-if="!activityState")
-      .card-column(style='height:20px;')
+      //- .flex-1( v-if="!activityState")
+      //- .card-column(style='height:20px;')
       .index-bottom( v-if="apply")
         .index-signup-success 您已报名成功!
         .card-column(style='height:15px;')
-        .index-signup-success-content( v-if="activityFellowUser" @click="jumpToWxAction") 你已申请与 <em style="text-decoration:underline">${activityFellowUser.nickname}(ID{{displayUserId(activityFellowUser)}})</em>进入同一群聊，<em style="text-decoration:underline">请添加工作人员微信</em>，若已经添加，则无需重复添加，工作人员将在2019<em style="text-decoration:underline">请添加工作人员微信</em>，若已经添加，则无需重复添加，工作人员将在2019/11/18日前把你加进相关群聊
-        .index-signup-success-content( v-else @click="jumpToWxAction") 你已报名参加办公室计划第2期活动，<em style="text-decoration:underline">请添加工作人员微信</em>，若已经添加，则无需重复添加，工作人员将在2019/11/18日前把你加进相关群聊
+        .index-signup-success-content( v-if="activityFellowUser" @click="jumpToWxAction") 你已申请与 <em style="text-decoration:underline">${activityFellowUser.nickname}(ID{{displayUserId(activityFellowUser)}})</em>进入同一群聊，<em style="text-decoration:underline">请添加工作人员微信</em>，若已经添加，则无需重复添加，工作人员将在2019<em style="text-decoration:underline">请添加工作人员微信</em>，若已经添加，则无需重复添加，工作人员将在五日内把你加进相关群聊
+        .index-signup-success-content( v-else @click="jumpToWxAction") 你已报名参加办公室计划第2期活动，<em style="text-decoration:underline">请添加工作人员微信</em>，若已经添加，则无需重复添加，工作人员将在五日内把你加进相关群聊
       .index-bottom( v-if="!apply")
         .bottom-sub-title 您尚未报名活动
         .signup-btn(@click='applyAction') 立即报名
@@ -103,7 +105,13 @@ export default {
       this.$router.replace('/register/registercity')
     },
     jumpToWxAction() {
-      this.$router.replace('/apply/success')
+      this.$router.push({
+        path: '/apply/success',
+        query: {
+          activityId: this.apply.activityApplyId,
+          activityName: ""
+        }
+      })
     },
     gotoFellowList() {
       if (this.$store.state.followersCount > 0) {

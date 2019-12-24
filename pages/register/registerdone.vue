@@ -25,7 +25,8 @@
     .card-footer
   div(style="flex:1;")
   .next
-    nuxt-link.link(to='/register/registerzing')
+    //- nuxt-link.link(to='/register/registerzing') //因为不用互赞了，所以跳过
+    nuxt-link.link(to='/user')
       .title 下一步
 
 </template>

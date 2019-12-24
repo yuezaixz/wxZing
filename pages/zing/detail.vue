@@ -26,7 +26,7 @@
         //-   img.gender-block-icon(v-else src="~static/img/female_mini_icon.png")
         //-   .gender-block-title {{displayAge}}岁
       .card-row(style="margin-bottom:3px;")
-        .sub-title {{zingUser.provinceName}}，{{zingUser.cityName}}
+        .sub-title {{displayName(zingUser.city)}}
       .card-row(style="justify-content: flex-start; align-items: flex-start;display: flex;")
         .info-info-item-career.yellow-item 
           img.info-info-item-img-male( v-if="zingUser.gender==1" src='~static/img/male_mini_simple_white.png')
@@ -141,6 +141,9 @@ export default {
       return ['未知', '10w内', '10-20W', '20-50W', '50W以上'][this.zingUser.income]
     },
     displayHouseType() {
+      if (!this.zingUser.houseType || this.zingUser.houseType >3) {
+        return "我想保密"
+      }
       return ['我想保密', '无房产，仍在奋斗', '和家人住', '已购房产'][this.zingUser.houseType]
     },
     displayXingzuo() {
