@@ -195,7 +195,7 @@ export default {
     },
     handleGridPrev() {
       this.page -= 1
-      consqueryFellowole.log(`当前页: ${this.page}`);
+      console.log(`当前页: ${this.page}`);
       this.reloadGridData()
     },
     handleGridNext() {
@@ -204,7 +204,7 @@ export default {
       this.reloadGridData()
     },
     async reloadGridData() {
-      if (this.gridActivityId) {
+      if (this.gridActivityId || parseInt(this.gridActivityId) == 0) {
         let {data} = await axios.get('/api/user_by_activity_id?activityId=' + this.gridActivityId + '&page='+ this.gridPage + '&limit=' + this.gridLimit)
         if (data && data.success) {
           this.gridData = data.data

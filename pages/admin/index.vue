@@ -251,7 +251,7 @@ export default {
     },
     handleGridPrev() {
       this.page -= 1
-      consqueryFellowole.log(`当前页: ${this.page}`);
+      console.log(`当前页: ${this.page}`);
       this.reloadGridData()
     },
     handleGridNext() {

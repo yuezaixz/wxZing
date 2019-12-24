@@ -273,13 +273,13 @@ export class DatabaseController {
         msg: '没有权限进行该操作'
       })
     }
-    let {userId, page, limit} = ctx.query
+    let {user_id, page, limit} = ctx.query
     page = Math.max(parseInt(page), 1)
     limit = Math.max(parseInt(limit), 0)
 
     const currentActivity = await Activity.findOne({isOver: false}).sort('-createAt').exec()
 
-    let activitApplys = await ActivityApply.find({fellowUserId: userId, isCancel: false, activity: currentActivity})
+    let activitApplys = await ActivityApply.find({fellowUserId: user_id, isCancel: false, activity: currentActivity})
       .sort('-createAt').exec()
     let fellowUserIds = activitApplys.map((item=>item.userId))
 
