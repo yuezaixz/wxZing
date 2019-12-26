@@ -19,7 +19,7 @@
                                                         | 请扫码添加办公室小秘书等待活动安排！
                                                         | 小秘书活人操作，如有延迟回复，万万谅解。
       .apply-success-sub-title( v-else style='white-space:pre;') 
-                                                        | 你已申请与 <em style="text-decoration:underline" ><em style="font-weight: bold; font-size:15px;" >用户的ID</em>({{activityApply.fellowUserId}})</em>进入同一群聊，
+                                                        | 你已申请与 <em style="text-decoration:underline" ><em style="font-weight: bold; font-size:15px;" >{{fellowUser?fellowUser.nickname:""}}</em>(ID:{{activityApply.fellowUserId}})</em>进入同一群聊，
                                                         | 请扫码添加办公室小秘书等待活动安排！
                                                         | 小秘书活人操作，如有延迟回复，万万谅解。
       div(style="flex:1;")
@@ -47,7 +47,8 @@ export default {
     return {
       activityName:null,
       activityId:null,
-      activityApply: null
+      activityApply: null,
+      fellowUser: null
     }
   },
 
@@ -89,6 +90,7 @@ export default {
     let data = await this.$store.dispatch('queryActivityApply', {activityApplyId})
     if (data.success) {
       this.activityApply = data.data
+      this.fellowUser = data.fellowUser
     }  else {
       this.$store.dispatch('showToast', {duration: 3000, str:data.msg || "数据错误", toastType:'icon-warn'})
     }

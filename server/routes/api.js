@@ -629,9 +629,11 @@ export class DatabaseController {
         msg: '查找出错'
       })
     }
+    const fellowUser = await User.findOne({userId: activityApply.fellowUserId}).exec()
     return (ctx.body = {
       success: true,
-      data: activityApply
+      data: activityApply,
+      fellowUser: fellowUser
     })
   }
 
