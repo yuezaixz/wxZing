@@ -15,14 +15,13 @@
       .apply-success-title {{!activityApply?'--':(!activityApply.isHandle?'报名成功':'报名失败')}}
       div(style="height:10px;")
       .apply-success-sub-title( v-if="!activityApply || !activityApply.fellowUserId" style='white-space:pre;') 
-                                                        | 你已报名参加办公室计划，请长按扫一扫添加工作人员微信
-                                                        | 如已经添加，则无需重复添加
-                                                        | 恋爱有风险，请各位在享受美妙关系的同时保持警惕
+                                                        | 已成功报名参加第一期线上活动「办公室吃货养成计划」
+                                                        | 请扫码添加办公室小秘书等待活动安排！
+                                                        | 小秘书活人操作，如有延迟回复，万万谅解。
       .apply-success-sub-title( v-else style='white-space:pre;') 
                                                         | 你已申请与 <em style="text-decoration:underline" ><em style="font-weight: bold; font-size:15px;" >用户的ID</em>({{activityApply.fellowUserId}})</em>进入同一群聊，
-                                                        | 请长按扫一扫添加工作人员微信，若已经添加，
-                                                        | 则无需重复添加
-                                                        | 恋爱有风险，请各位在享受美妙关系的同时保持警惕
+                                                        | 请扫码添加办公室小秘书等待活动安排！
+                                                        | 小秘书活人操作，如有延迟回复，万万谅解。
       div(style="flex:1;")
       img.apply-office-qrcode(src='~static/img/office_qrcode.jpeg')
       div(style="height:4px;")

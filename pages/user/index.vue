@@ -47,8 +47,8 @@
       .index-bottom( v-if="apply")
         .index-signup-success 您已报名成功!
         .card-column(style='height:15px;')
-        .index-signup-success-content( v-if="activityFellowUser" @click="jumpToWxAction") 你已申请与 <em style="text-decoration:underline">${activityFellowUser.nickname}(ID{{displayUserId(activityFellowUser)}})</em>进入同一群聊，<em style="text-decoration:underline">请添加工作人员微信</em>，若已经添加，则无需重复添加，工作人员将在2019<em style="text-decoration:underline">请添加工作人员微信</em>，若已经添加，则无需重复添加，工作人员将在五日内把你加进相关群聊
-        .index-signup-success-content( v-else @click="jumpToWxAction") 你已报名参加办公室计划第2期活动，<em style="text-decoration:underline">请添加工作人员微信</em>，若已经添加，则无需重复添加，工作人员将在五日内把你加进相关群聊
+        .index-signup-success-content( v-if="activityFellowUser" @click="jumpToWxAction") 你已申请与 <em style="text-decoration:underline">${activityFellowUser.nickname}(ID{{displayUserId(activityFellowUser)}})</em>进入同一群聊，<em style="text-decoration:underline">请添加办公室小秘书微信</em>，等待活动安排！小秘书活人操作，如有延迟回复，万万谅解。
+        .index-signup-success-content( v-else @click="jumpToWxAction") 已成功报名参加第一期线上活动「办公室吃货养成计划」，<em style="text-decoration:underline">请添加办公室小秘书微信</em>，等待活动安排！小秘书活人操作，如有延迟回复，万万谅解。
       .index-bottom( v-if="!apply")
         .bottom-sub-title 您尚未报名活动
         .signup-btn(@click='applyAction') 立即报名

@@ -18,19 +18,19 @@
         img.body-item-img(src='~static/img/Love.png')
         .card-column(style="flex:1;")
           .body-item-title 精准加群
-          .body-item-sub-title 精准加入心仪对象的微信群，快速认识ta
+          .body-item-sub-title 资料库里看上谁了？精准加入对方所在的微信群聊，悄悄种下故事的种子
       .dash-line
       .card-row-left23
         img.body-item-img(src='~static/img/Shopping Bag.png')
         .card-column(style="flex:1;")
-          .body-item-title 报名权限
-          .body-item-sub-title 报名满额后，在截止报名前仍然可以报名参加活动
+          .body-item-title 线上活动无限权
+          .body-item-sub-title 会员期内免排队参与线上活动
       .dash-line
       .card-row-left23
         img.body-item-img(src='~static/img/Gift.png')
         .card-column(style="flex:1;")
-          .body-item-title 线下活动
-          .body-item-sub-title 官方组织线下活动时优先报名
+          .body-item-title 线下活动优先权
+          .body-item-sub-title 官方组织线下活动时，优先选择会员参与
       .dash-line
       //- .sub-mini-title 如果选择购买订阅，费用将从你的账户收取。当前缴费期结束前，系统会提前24小时从你的账户扣费。点击购买即表示你同意我们的《隐私政策》以及《服务条款》
       .flex-1
