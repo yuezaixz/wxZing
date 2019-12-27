@@ -1,7 +1,7 @@
 <template lang="pug">
 .detail-container
   .top-swiper
-    .swiper(v-swiper='swiperConfig')
+    .swiper(v-swiper='swiperConfig' style="height:573px;")
       .swiper-wrapper
         .swiper-slide(v-for='item in zingUser.photos')
           img.top-swiper-img(:src='imageCDN + item + "?imageMogr2/auto-orient/thumbnail/x999/gravity/Center/crop/666x/blur/1x0/quality/100"')
