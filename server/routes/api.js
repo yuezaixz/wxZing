@@ -741,7 +741,7 @@ export class DatabaseController {
       var compareAge = [0, 20, 25, 30, 35][session.user.filterAge]
       users = users.filter((item)=>item.age > compareAge)
     }
-    if (user) {
+    if (users) {
       users = users.filter((item)=>item.photos && item.photos.length > 0)
     }
     const currentActivity = await Activity.findOne({isOver: false}).sort('-createAt').exec()
