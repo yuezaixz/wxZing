@@ -60,7 +60,7 @@ export default {
       if (this.$store.state.authUser.wxcode) {
         var data = await this.$store.dispatch('selectWxcode', this.$store.state.authUser.wxcode)
         if (data.success) {
-          if (!this.$store.state.authUser.tel) {
+          if (!this.$store.state.authUser.phoneNumber) {
             const visit = '/register/registertel'
             this.$router.push({path: visit})
           } else {

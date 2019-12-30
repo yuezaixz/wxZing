@@ -46,7 +46,8 @@ export default {
   data() {
     return {
       user: {},
-      activeGender:0
+      activeGender:0,
+      photoIndex: -1
     }
   },
 
@@ -59,6 +60,7 @@ export default {
   methods: {
     async selectPhoto(photoIndex) {
       console.log(photoIndex)
+      this.photoIndex = photoIndex
       // this.$store.dispatch('selectHouseType', houseType)
     },
 
@@ -100,7 +102,11 @@ export default {
 
       uploader.cancel()
       console.log(res)
-      this.$store.state.authUser.photos.push(res.key)
+      if (index >= 0 && index < this.$store.state.authUser.photos.length) {
+        this.$store.state.authUser.photos[index] = res.key
+      } else {
+        this.$store.state.authUser.photos.push(res.key)
+      }
 
       this.$store.dispatch('showToast', {duration: 2000, str:'上传成功', toastType:'icon-success-no-circle'})
       // this.edited.images.push(res.key)
