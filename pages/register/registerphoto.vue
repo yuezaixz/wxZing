@@ -19,13 +19,13 @@
         .card-inner 首张作为封面展示，点击图片可重新上传
         .card-column(style='height:40px;')
         .card-select-row(style='flex-wrap: wrap; margin-right: 20px;')
-          .city-photo-flex1(v-for='(item, index) in authUser.photos')
-            img.card-photo(:src='"http://wxzing.podoon.cn/"+item')
+          .city-photo-flex1(v-for='(item, index) in photos')
+            img.card-photo(:src='displayPhotoUrl(authUser, index)')
             input(type='file', @change='uploadImg(index, $event)')
-          .city-photo-flex1(v-if='authUser.photos.length < 6')
+          .city-photo-flex1(v-if='photos.length < 6')
             .add-title(style="font-size:23px;") +
             .add-title 添加照片
-            input(type='file', @change='uploadImg(authUser.photos.length, $event)')
+            input(type='file', @change='uploadImg(photos.length, $event)')
 
     .card-footer
   div(style="flex:1;")
@@ -46,6 +46,7 @@ export default {
   data() {
     return {
       user: {},
+      photos:[],
       activeGender:0,
       photoIndex: -1
     }
@@ -62,6 +63,10 @@ export default {
       console.log(photoIndex)
       this.photoIndex = photoIndex
       // this.$store.dispatch('selectHouseType', houseType)
+    },
+    displayPhotoUrl(authUser, index) {
+      var item = this.photos[index]
+      return "http://wxzing.podoon.cn/"+item
     },
 
     async getUptoken (key) {
@@ -102,18 +107,21 @@ export default {
 
       uploader.cancel()
       console.log(res)
-      if (index >= 0 && index < this.$store.state.authUser.photos.length) {
-        this.$store.state.authUser.photos[index] = res.key
+      if (index >= 0 && index < this.photos.length) {
+        var newPhotos = []
+        newPhotos.push(...this.photos)
+        newPhotos[index] = res.key
+        this.photos = newPhotos
       } else {
-        this.$store.state.authUser.photos.push(res.key)
+        this.photos.push(res.key)
       }
 
       this.$store.dispatch('showToast', {duration: 2000, str:'上传成功', toastType:'icon-success-no-circle'})
       // this.edited.images.push(res.key)
     },
     async next() {
-      if (this.$store.state.authUser.photos) {
-        var data = await this.$store.dispatch('selectPhoto', this.$store.state.authUser.photos)
+      if (this.photos) {
+        var data = await this.$store.dispatch('selectPhoto', this.photos)
         if (data.success) {
           const visit = '/register/registername'
           this.$router.push({path: visit})
@@ -125,6 +133,10 @@ export default {
   },
 
   components: {
+  },
+
+  mounted() {
+    this.photos = this.$store.state.authUser.photos
   },
 
   async beforeCreate() {
