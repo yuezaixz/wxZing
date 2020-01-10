@@ -15,6 +15,7 @@ const SmsCode = mongoose.model('SmsCode')
 const Activity = mongoose.model('Activity')
 const ActivityApply = mongoose.model('ActivityApply')
 const Interest = mongoose.model('Interest')
+const Browse = mongoose.model('Browse')
 
 const FULL_NUM = 100
 
@@ -724,18 +725,25 @@ export class DatabaseController {
       userQueryDict['height'] = {$gte:session.user.filterHeight}
     }
     if (userId) {
-      if (!execludeUserIds || execludeUserIds == 0) {
-        execludeUserIds = [userId]
-      } else {
-        execludeUserIds.push(userId)
-      }
+
+      let browses = await Browse.find({userId: userId, 'liveUntil': {$gte: Date.now() - 86400000*5}}).sort('liveUntil').exec()
+      execludeUserIds = browses?browses.map((item)=>item.targetId):[]
+      execludeUserIds.push(userId)
+      // if (!execludeUserIds || execludeUserIds == 0) {
+      //   execludeUserIds = [userId]
+      // } else {
+      //   execludeUserIds.push(userId)
+      // }
     }
-    if (execludeUserIds && execludeUserIds.length > 0) {
-      userQueryDict['userId'] = {$nin:execludeUserIds}
+    if (!execludeUserIds) {
+      execludeUserIds = []
     }
+    // if (execludeUserIds && execludeUserIds.length > 0) {
+    //   userQueryDict['userId'] = {$nin:execludeUserIds}
+    // }
     userQueryDict['wxcode'] = {$ne: null}
     userQueryDict['phoneNumber'] = {$ne: null}
-    var users = await User.find(userQueryDict).exec()
+    var users = await User.find({...userQueryDict, 'userId':{$nin:execludeUserIds}}).exec()
 
     if (session.user && session.user.filterAge) {
       var compareAge = [0, 20, 25, 30, 35][session.user.filterAge]
@@ -743,6 +751,14 @@ export class DatabaseController {
     }
     if (users) {
       users = users.filter((item)=>item.photos && item.photos.length > 0)
+    }
+    var isOldUser = false
+    console.log(users.length)
+    console.log(execludeUserIds)
+    if ((!users || users.length == 0) && execludeUserIds.length > 1) {
+      let oldUser = await User.findOne({'userId': execludeUserIds[0]}).exec()
+      users = [oldUser]
+      isOldUser = true
     }
     const currentActivity = await Activity.findOne({isOver: false}).sort('-createAt').exec()
     var isExit = false
@@ -760,6 +776,20 @@ export class DatabaseController {
     }
     
     let user = users ? users[parseInt(Math.random()*users.length)]:null
+    if (!isOldUser && user) {
+      var browse = Browse({
+        userId: userId,
+        targetId: user.userId
+      })
+      browse.save()
+    } else {
+      var browse = await Browse.findOne({
+        userId: userId,
+        targetId: user.userId
+      }).exec()
+      browse.liveUntil = Date.now()
+      browse.save()
+    }
     if (user) {
       return (ctx.body = {
         success: true,

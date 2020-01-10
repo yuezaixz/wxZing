@@ -35,7 +35,7 @@ import { mapState } from 'vuex'
 import { setTimeout } from 'timers';
 
 export default {
-  middleware: 'wechat-info',
+  middleware: 'wechat-oauth',
   data() {
     return {
       showApply: false,
@@ -55,6 +55,13 @@ export default {
 
   methods: {
     async apply() {
+      if (!this.$store.state.authUser || !this.$store.state.authUser.phoneNumber || !this.$store.state.authUser.wxcode) {
+        const visit = '/register'
+        this.$router.replace(visit)
+        // this.$store.dispatch('showToast', {duration: 2000, str:'未注册', toastType:'icon-warn'})
+        return;
+      }
+
       if (this.isFull && !this.isShare) {
         this.$store.dispatch('showToast', {duration: 2000, str:'分享后三名好友点击即可获得加入', toastType:'icon-warn'})
       } else if (this.activitys) {
@@ -87,6 +94,12 @@ export default {
       this.activityName = activityName
     },
     async submit() {
+      if (!this.$store.state.authUser || !this.$store.state.authUser.phoneNumber || !this.$store.state.authUser.wxcode) {
+        const visit = '/register'
+        this.$router.replace(visit)
+        // this.$store.dispatch('showToast', {duration: 2000, str:'未注册', toastType:'icon-warn'})
+        return;
+      }
       if (this.activityId || this.activityId === 0) {
         let data = await this.$store.dispatch('applyActivity', {activityId:this.activityId})
         if (data.success) {

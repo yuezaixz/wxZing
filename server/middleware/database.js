@@ -78,6 +78,13 @@ export const database = app => {
     }
 
     {
+      let browseCounter = await Counter.findOne({_id: 'browseId'}).exec()
+      if (!browseCounter) {
+        await new Counter({_id: 'browseId'}).save()
+      }
+    }
+
+    {
       let sharedClickIdCounter = await Counter.findOne({_id: 'sharedClickId'}).exec()
       if (!sharedClickIdCounter) {
         await new Counter({_id: 'sharedClickId'}).save()

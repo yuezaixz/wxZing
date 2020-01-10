@@ -26,7 +26,7 @@
   div(style="flex:1;")
   .next
     //- nuxt-link.link(to='/register/registerzing') //因为不用互赞了，所以跳过
-    nuxt-link.link(to='/user')
+    nuxt-link.link(to='/apply')
       .title 下一步
 
 </template>
