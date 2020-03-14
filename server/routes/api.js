@@ -777,20 +777,26 @@ export class DatabaseController {
     }
     
     let user = users ? users[parseInt(Math.random()*users.length)]:null
-    if (!isOldUser && user) {
-      var browse = Browse({
-        userId: userId,
-        targetId: user.userId
-      })
-      browse.save()
-    } else {
-      var browse = await Browse.findOne({
-        userId: userId,
-        targetId: user.userId
-      }).exec()
-      browse.liveUntil = Date.now()
-      browse.save()
-    }
+
+    var browse = Browse({
+      userId: userId,
+      targetId: user.userId
+    })
+    browse.save()
+    // if (!isOldUser && user) {
+    //   var browse = Browse({
+    //     userId: userId,
+    //     targetId: user.userId
+    //   })
+    //   browse.save()
+    // } else {
+    //   var browse = await Browse.findOne({
+    //     userId: userId,
+    //     targetId: user.userId
+    //   }).exec()
+    //   browse.liveUntil = Date.now()
+    //   browse.save()
+    // }
     if (user) {
       return (ctx.body = {
         success: true,
