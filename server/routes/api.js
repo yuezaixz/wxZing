@@ -756,6 +756,7 @@ export class DatabaseController {
     var isOldUser = false
     console.log(users.length)
     console.log(execludeUserIds)
+    console.log(1111)
     if ((!users || users.length == 0) && execludeUserIds.length > 1) {
       let oldUser = await User.findOne({'userId': execludeUserIds[0]}).exec()
       users = [oldUser]
