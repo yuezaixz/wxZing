@@ -15,7 +15,7 @@
   "deploy": {
     "production": {
       "user":"ubuntu",
-      "host": ["wxzing.davidandty.com"],
+      "host": ["wxzing.officeplan.cn"],
       "ref": "origin/master",
       "repo": "git@github.com:yuezaixz/wxZing.git",
       "path": "/data/www/wxZing",
@@ -27,7 +27,7 @@
     },
     "plus": {
       "user":"ubuntu",
-      "host": ["wxzing.davidandty.com"],
+      "host": ["wxzing.officeplan.cn"],
       "ref": "origin/master",
       "repo": "git@github.com:yuezaixz/wxZing.git",
       "path": "/data/www/wxZing",
