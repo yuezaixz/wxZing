@@ -653,17 +653,18 @@ export class DatabaseController {
       })
     }
 
-    const activityApplyResults = await ActivityApply.find({activity, isCancel:false}).exec()
-    if (!session.user.isVip && activityApplyResults && activityApplyResults.length > FULL_NUM) {//测试时候把100调小
-      let count = await SharedClick.count({activityId: activityId}).exec()
-      if (count < 3) {
-        return (ctx.body = {
-          success: false,
-          code: 509,
-          msg: '人数已满'
-        })
-      }
-    }
+    // 暂时不做限制
+    // const activityApplyResults = await ActivityApply.find({activity, isCancel:false}).exec()
+    // if (!session.user.isVip && activityApplyResults && activityApplyResults.length > FULL_NUM) {//测试时候把100调小
+    //   let count = await SharedClick.count({activityId: activityId}).exec()
+    //   if (count < 3) {
+    //     return (ctx.body = {
+    //       success: false,
+    //       code: 509,
+    //       msg: '人数已满'
+    //     })
+    //   }
+    // }
 
     const check = await ActivityApply.findOne({activity, userId, isCancel:false }).exec()
     if (check) {
