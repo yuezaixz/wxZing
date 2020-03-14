@@ -726,7 +726,8 @@ export class DatabaseController {
     }
     if (userId) {
 
-      let browses = await Browse.find({userId: userId, 'liveUntil': {$gte: Date.now() - 86400000*5}}).sort('liveUntil').exec()
+      // let browses = await Browse.find({userId: userId, 'liveUntil': {$gte: Date.now() - 86400000*5}}).sort('liveUntil').exec()
+      let browses = await Browse.find({userId: userId}).sort('liveUntil').exec()
       execludeUserIds = browses?browses.map((item)=>item.targetId):[]
       execludeUserIds.push(userId)
       // if (!execludeUserIds || execludeUserIds == 0) {
@@ -782,6 +783,7 @@ export class DatabaseController {
       userId: userId,
       targetId: user.userId
     })
+    browse.liveUntil = Date.now()
     browse.save()
     // if (!isOldUser && user) {
     //   var browse = Browse({
