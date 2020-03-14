@@ -759,6 +759,7 @@ export class DatabaseController {
       let oldUser = await User.findOne({'userId': execludeUserIds[0]}).exec()
       users = [oldUser]
       isOldUser = true
+      Browse.remove({userId}).exec()
     }
     const currentActivity = await Activity.findOne({isOver: false}).sort('-createAt').exec()
     var isExit = false
