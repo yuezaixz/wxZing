@@ -11,22 +11,23 @@
 
     .card-body(style="align-items:center;")
       div(style="height:45px;")
-      img.apply-office-qrcode(src='~static/img/apply_success_top_img.png' style="height:58px;width:50px;")
-      .apply-success-title {{!activityApply?'--':(!activityApply.isHandle?'报名成功':'报名失败')}}
+
+      img.apply-office-qrcode(src='~static/img/office_qrcode.jpeg')
+      div(style="height:4px;")
+      .apply-success-qrcode-title 长按识别二维码，添加小秘书微信进群
+      div(style="flex:1;")
+      .apply-success-title {{!activityApply?'--':(!activityApply.isHandle?'报名成功!':'报名失败!')}}
       div(style="height:10px;")
       .apply-success-sub-title( v-if="!activityApply || !activityApply.fellowUserId" style='white-space:pre;') 
-                                                        | 已成功报名参加第一期线上活动「办公室吃货养成计划」
-                                                        | 请扫码添加办公室小秘书等待活动安排！
+                                                        | 请扫码添加办公室小秘书微信等待活动安排！
+                                                        | 我们预计将在周日晚间加你进群
                                                         | 小秘书活人操作，如有延迟回复，万万谅解。
       .apply-success-sub-title( v-else style='white-space:pre;') 
                                                         | 你已申请与 <em style="text-decoration:underline" ><em style="font-weight: bold; font-size:15px;" >{{fellowUser?fellowUser.nickname:""}}</em>(ID:{{activityApply.fellowUserId}})</em>进入同一群聊，
-                                                        | 请扫码添加办公室小秘书等待活动安排！
+                                                        | 请扫码添加办公室小秘书微信等待活动安排！
+                                                        | 我们预计将在周日晚间加你进群
                                                         | 小秘书活人操作，如有延迟回复，万万谅解。
-      div(style="flex:1;")
-      img.apply-office-qrcode(src='~static/img/office_qrcode.jpeg')
-      div(style="height:4px;")
-      .apply-success-qrcode-title 长按识别二维码，添加工作人员微信
-      div(style="height:20px;")
+      div(style="height:40px;")
       .apply-cancel-button 
         .apply-cancel-button-text(@click="cancel_apply") 取消报名
 
