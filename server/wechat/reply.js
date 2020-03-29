@@ -43,7 +43,13 @@ export default async (ctx, next) => {
         console.log('创建菜单失败')
         console.log(err)
       }
-      ctx.body = tip
+
+      ctx.body = {
+        type: 'image',
+        mediaId: 'hG-Q981jcOiLF_sk2TFoodLyrW2-kaNV1NYnRKQNBc4'
+      }
+
+      // ctx.body = tip
     } else if (message.Event === 'unsubscribe') {
       console.log('取关了')
     } else if (message.Event === 'LOCATION') {
