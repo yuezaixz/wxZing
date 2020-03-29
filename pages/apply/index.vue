@@ -1,15 +1,15 @@
 <template lang="pug">
 .apply-container
   .apply-next(v-if="!isFull || isShare" @click="apply")
-    .title(v-if="!isFull") 活动报名 {{activitys.length > 0 && activitys[0] ? ('第'+(parseInt(activitys[0].activityId) + 1)+'期'):''}}
+    .title(v-if="!isFull") 点击立即报名活动 {{activitys.length > 0 && activitys[0] ? ('第'+(parseInt(activitys[0].activityId) + 1)+'期'):''}}
     .title(v-else) 分享成功，点击报名
   .detail-next-disable(v-else @click="apply")
     .title() 活动已满员
   div(style="flex:1")
   .tip-container
-    .tip-title 办公室吃货养成计划
+    .tip-title TIP:
     div(style="flex:1;") 
-    .tip-content 干啥啥不行，吃饭第一名！吃货之间最幸福的事情莫过于互相喂养，欢迎加入办公室吃货养成计划，小秘书将会把群聊人数控制在20人之内，请大家认真当一个饭桶，寻找另一个饭桶吧！
+    .tip-content 点击报名后，未来一周你将会有一段奇妙的相遇之旅，在随机组建的微信群里（周日晚间组建）你将会结识来自不同领域的人，有纹身师、电影编剧、服装设计师、歌手、创业者......在这里，你会遇到相见恨晚的soul挚友，也可能会遇到牵手相爱的亲密伴侣，当然，这一切的前提，是你一直在保持着真诚又善良的自己。
   
   div.apply-modal(:style="showApply?'':'display:none;'")
     div.weui-mask(@click="hideApply")
