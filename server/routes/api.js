@@ -668,7 +668,8 @@ export class DatabaseController {
       oldUser.isUseFress = true
       isUserFree = true
       oldUser = await oldUser.save()
-    } else if (!session.user.isVip && activityApplyResults && activityApplyResults.length > FULL_NUM) {//测试时候把100调小
+    } else if (activityApplyResults && activityApplyResults.length > FULL_NUM) {//测试时候把100调小
+    // } else if (!session.user.isVip && activityApplyResults && activityApplyResults.length > FULL_NUM) {//测试时候把100调小
       let count = await SharedClick.count({activityId: activityId}).exec()
       if (count < 3) {
         return (ctx.body = {
