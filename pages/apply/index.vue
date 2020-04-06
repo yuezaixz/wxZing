@@ -3,8 +3,10 @@
   .apply-next(v-if="!isFull || isShare" @click="apply")
     .title(v-if="!isFull") 点击立即报名活动 {{activitys.length > 0 && activitys[0] ? ('第'+(parseInt(activitys[0].activityId) + 1)+'期'):''}}
     .title(v-else) 分享成功，点击报名
-  .detail-next-disable(v-else @click="apply")
-    .title() 活动已满员
+  .detail-next(v-else-if="!authUser.isUserFree" @click="apply")
+    .title() 活动已满员,免费报名一次
+  .detail-next-disable(v-else)
+    .title() 活动已满员,分享得免费名额
   div(style="flex:1")
   .tip-container
     .tip-title TIP:
@@ -62,7 +64,7 @@ export default {
         return;
       }
 
-      if (this.isFull && !this.isShare) {
+      if (this.isFull && !this.isShare && this.$store.state.authUser.isUserFree) {
         this.$store.dispatch('showToast', {duration: 2000, str:'分享后三名好友点击即可获得加入', toastType:'icon-warn'})
       } else if (this.activitys) {
         let activity = this.activitys[0]
