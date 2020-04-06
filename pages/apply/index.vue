@@ -68,7 +68,7 @@ export default {
         let activity = this.activitys[0]
         let data = await this.$store.dispatch('applyActivity', {activityId:activity.activityId})
         if (data.success) {
-          this.$store.dispatch('showToast', {duration: 2000, str:"报名成功", toastType:'icon-success-no-circle'})
+          this.$store.dispatch('showToast', {duration: 2000, str:data.isUserFree?"免费报名成功": "报名成功", toastType:'icon-success-no-circle'})
           setTimeout(()=>this.$router.push({
             path: '/apply/success',
             query: {

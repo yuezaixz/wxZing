@@ -327,7 +327,7 @@ export default {
         if (activityId || parseInt(activityId) === 0) {
           this.$store.dispatch('applyActivity', {activityId, fellowUserId: this.zingUser.userId}).then((data)=>{
             if (data.success) {
-              this.$store.dispatch('showToast', {duration: 2000, str:"报名成功", toastType:'icon-success-no-circle'})
+              this.$store.dispatch('showToast', {duration: 2000, str:data.isUserFree?"免费报名成功": "报名成功", toastType:'icon-success-no-circle'})
               setTimeout(()=>this.$router.push({
                 path: '/apply/success',
                 query: {
