@@ -17,7 +17,7 @@ const ActivityApply = mongoose.model('ActivityApply')
 const Interest = mongoose.model('Interest')
 const Browse = mongoose.model('Browse')
 
-const FULL_NUM = 40
+const FULL_NUM = 2
 
 @controller('/api')
 export class DatabaseController {
