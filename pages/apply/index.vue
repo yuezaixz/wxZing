@@ -3,10 +3,10 @@
   .apply-next(v-if="!isFull || isShare" @click="apply")
     .title(v-if="!isFull") 点击立即报名活动 {{activitys.length > 0 && activitys[0] ? ('第'+(parseInt(activitys[0].activityId) + 1)+'期'):''}}
     .title(v-else) 分享成功，点击报名
-  .detail-next(v-else-if="!authUser.isUserFree" @click="apply")
-    .title() 活动已满员,免费报名一次
+  .apply-next(v-else-if='!authUser.isUseFress' @click="apply")
+    .title 活动已满员,免费报名一次
   .detail-next-disable(v-else)
-    .title() 活动已满员,分享得免费名额
+    .title 活动已满员,分享得免费名额
   div(style="flex:1")
   .tip-container
     .tip-title TIP:
