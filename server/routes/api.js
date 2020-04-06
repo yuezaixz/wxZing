@@ -17,7 +17,7 @@ const ActivityApply = mongoose.model('ActivityApply')
 const Interest = mongoose.model('Interest')
 const Browse = mongoose.model('Browse')
 
-const FULL_NUM = 2
+const FULL_NUM = 100
 
 @controller('/api')
 export class DatabaseController {
@@ -668,8 +668,8 @@ export class DatabaseController {
       oldUser.isUseFress = true
       isUserFree = true
       oldUser = await oldUser.save()
-    } else if (activityApplyResults && activityApplyResults.length > FULL_NUM) {//测试时候把100调小
-    // } else if (!session.user.isVip && activityApplyResults && activityApplyResults.length > FULL_NUM) {//测试时候把100调小
+    // } else if (activityApplyResults && activityApplyResults.length > FULL_NUM) {//测试时候把100调小
+    } else if (!session.user.isVip && activityApplyResults && activityApplyResults.length > FULL_NUM) {//测试时候把100调小
       let count = await SharedClick.count({activityId: activityId}).exec()
       if (count < 3) {
         return (ctx.body = {
