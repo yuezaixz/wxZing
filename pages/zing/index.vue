@@ -235,7 +235,7 @@ export default {
         wx.updateAppMessageShareData({
           title: '我是' + nickname+ '推荐来的，交个朋友吧！', // 分享标题
           desc: nickname+ '你好哇。', // 分享描述
-          link: sharedUrl+'/zing/detail?zingUserId='+this.$store.state.authUser.userId+'&sharedId='+this.$store.state.authUser.userId, // 分享链接
+          link: sharedUrl+'/zing/detail?zingUserId='+this.zingUser.userId+'&sharedId='+this.$store.state.authUser.userId, // 分享链接
           imgUrl: 'http://wxzing.podoon.cn/wxzing_share.jpg', // 分享图标
           success: function () {
             console.log('update share success')
@@ -245,7 +245,7 @@ export default {
         wx.updateTimelineShareData({ 
           title: '我是' + nickname+ '推荐来的，交个朋友吧！', // 分享标题
           desc: nickname+ '你好哇。', // 分享描述
-          link: sharedUrl+'/zing/detail?zingUserId='+this.$store.state.authUser.userId+'&sharedId='+this.$store.state.authUser.userId, // 分享链接
+          link: sharedUrl+'/zing/detail?zingUserId='+this.zingUser.userId+'&sharedId='+this.$store.state.authUser.userId, // 分享链接
           imgUrl: 'http://wxzing.podoon.cn/wxzing_share.jpg', // 分享图标
           success: function () {
             console.log('update time share success')
@@ -255,7 +255,7 @@ export default {
         wx.onMenuShareAppMessage({
           title: '我是' + nickname+ '推荐来的，交个朋友吧！', // 分享标题
           desc: nickname+ '你好哇。', // 分享描述
-          link: sharedUrl+'/zing/detail?zingUserId='+this.$store.state.authUser.userId+'&sharedId='+this.$store.state.authUser.userId, // 分享链接
+          link: sharedUrl+'/zing/detail?zingUserId='+this.zingUser.userId+'&sharedId='+this.$store.state.authUser.userId, // 分享链接
           imgUrl: 'http://wxzing.podoon.cn/wxzing_share.jpg', // 分享图标
           type: 'link', // 分享类型,music、video或link，不填默认为link
           dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
@@ -272,7 +272,7 @@ export default {
         wx.onMenuShareTimeline({
           title: '我是' + nickname+ '推荐来的，交个朋友吧！', // 分享标题
           desc: nickname+ '你好哇。', // 分享描述
-          link: sharedUrl+'/zing/detail?zingUserId='+this.$store.state.authUser.userId+'&sharedId='+this.$store.state.authUser.userId, // 分享链接
+          link: sharedUrl+'/zing/detail?zingUserId='+this.zingUser.userId+'&sharedId='+this.$store.state.authUser.userId, // 分享链接
           imgUrl: 'http://wxzing.podoon.cn/wxzing_share.jpg', // 分享图标
           type: 'link', // 分享类型,music、video或link，不填默认为link
           dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
