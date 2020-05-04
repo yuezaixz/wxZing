@@ -1,6 +1,8 @@
 <template lang="pug">
 .apply-container
-  .apply-next(v-if="!isFull || isShare" @click="apply")
+  .detail-next-disable(v-if="!activitys || activitys.length == 0")
+    .title 本期已结束,下期敬请期待
+  .apply-next(v-else-if="!isFull || isShare" @click="apply")
     .title(v-if="!isFull") 点击立即报名活动 {{activitys.length > 0 && activitys[0] ? ('第'+(parseInt(activitys[0].activityId) + 1)+'期'):''}}
     .title(v-else) 分享成功，点击报名
   .apply-next(v-else-if='!authUser.isUseFress' @click="apply")
