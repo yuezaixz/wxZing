@@ -170,7 +170,7 @@ export async function wechatPay(ctx, next) {
     if (vipType !== 1 && vipType !== 3 && vipType !== 12) {
       return (ctx.body = {success: false, err: 'vipType输入错误'})
     }
-    const price = vipType === 1 ? 6000 : (vipType === 3 ? 13800 : 41800)
+    const price = vipType === 1 ? 9900 : (vipType === 3 ? 26700 : 59900)
     let user = await api.user.findUserByUnionId(session.user.unionid)
 
     if (!user) return (ctx.body = {success: false, err: '用户不存在'})

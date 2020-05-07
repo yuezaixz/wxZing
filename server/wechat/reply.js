@@ -46,7 +46,7 @@ export default async (ctx, next) => {
 
       ctx.body = {
         type: 'image',
-        mediaId: 'hG-Q981jcOiLF_sk2TFoodLyrW2-kaNV1NYnRKQNBc4'
+        mediaId: 'hG-Q981jcOiLF_sk2TFoofp-FLUb-qpHhPhspbjt2fc'
       }
 
       // ctx.body = tip

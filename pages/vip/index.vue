@@ -39,22 +39,22 @@
           .card-row
             .card-body-bottom-digital 1
             .card-body-bottom-digital-follow 个月
-          .card-body-bottom-price ¥60/月
-          .card-body-bottom-total ¥60
+          .card-body-bottom-price ¥99/月
+          .card-body-bottom-total ¥99
 
         .card-body-bottom-block(@click="selectAction(2)" :class="selectIndex === 2 ?'card-body-bottom-selected':''")
           .card-row
             .card-body-bottom-digital 3
             .card-body-bottom-digital-follow 个月
-          .card-body-bottom-price ¥46/月
-          .card-body-bottom-total ¥138
+          .card-body-bottom-price ¥89/月
+          .card-body-bottom-total ¥267
 
         .card-body-bottom-block-right(@click="selectAction(3)" :class="selectIndex === 3 ?'card-body-bottom-selected':''")
           .card-row
             .card-body-bottom-digital 12
             .card-body-bottom-digital-follow 个月
-          .card-body-bottom-price ¥34.9/月
-          .card-body-bottom-total ¥418
+          .card-body-bottom-price ¥49.9/月
+          .card-body-bottom-total ¥599
 
 
     .card-footer
