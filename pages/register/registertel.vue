@@ -54,7 +54,7 @@ export default {
     async next() {
       if (this.$store.state.registerInfo.tel) {// TODO 验证下手机号
         //手机号正则
-        var phoneReg = /(^1[3|4|5|7|8]\d{9}$)|(^09\d{8}$)/;
+        var phoneReg = /(^1[3|4|5|7|8|9]\d{9}$)|(^09\d{8}$)/;
         if (!phoneReg.test(this.$store.state.registerInfo.tel)) {
           this.$store.dispatch('showToast', {duration: 2000, str:'号码错误', toastType:'icon-warn'})
         } else {
