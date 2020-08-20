@@ -22,7 +22,7 @@
     "babel-polyfill": "^6.26.0",
     "babel-preset-latest-node": "0.2.2",
     "babel-preset-stage-3": "6.24.1",
-    "bcrypt": "^2.0.1",
+    "bcrypt": "^5.0.0",
     "cheerio": "^1.0.0-rc.2",
     "cheerio-advanced-selectors": "^2.0.1",
     "cloudinary": "^1.11.0",
