@@ -42,7 +42,7 @@
     "node-sass": "^4.9.0",
     "nuxt": "latest",
     "promise-polyfill": "^8.0.0",
-    "pug": "^2.0.3",
+    "pug": "^3.0.1",
     "qcloudsms_js": "^0.1.1",
     "qiniu": "^7.2.1",
     "qiniu-web-uploader": "^2.1.2",
